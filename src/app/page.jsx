@@ -3,10 +3,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import ToggleTheme from "@/ui/common/ToggleTheme";
 
 const Home = () => {
   return (
-    <div className="center h-screen">
+    <div className="center h-screen bg1 content1">
       <div className="center">
         <motion.div
           initial={{ opacity: 0, scale: 1, y: 30 }}

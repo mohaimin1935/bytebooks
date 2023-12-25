@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { cn } from "@/utils/cn";
 import React, { useContext, useEffect, useState } from "react";
 
 const ThemeProvider = ({ children }) => {
@@ -12,7 +13,7 @@ const ThemeProvider = ({ children }) => {
   }, []);
 
   if (mounted) {
-    return <main data-theme={theme}>{children}</main>;
+    return <main className={cn(theme, "relative")}>{children}</main>;
   }
 };
 

@@ -4,24 +4,73 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  main {
-    --color-bkg1: 50deg 60% 98%;
-    --color-bkg2: 50deg 32% 90%;
-    --color-content1: 0deg 32.6% 50%;
-    --color-content2: 50deg 32.6% 17.5%;
-    --color-accent1: 0deg 32.6% 80%;
-  }
+:root {
+  --bkg-1: #fdfcf7;
+  --bkg-2: #f0eee2;
+  --content-1: #272934;
+  --content-2: #444; /* change */
+  --content-3: #666; /* change */
+  --content-4: #fdfcf7;
+  --accent-1: #272934;
+  --accent-2: #e36263;
+}
 
-  main[data-theme="dark"] {
-    --color-bkg1: 50deg 60% 17.5%;
-    --color-bkg2: 50deg 32% 17.5%;
-    --color-content1: 50deg 32.6% 98%;
-    --color-content2: 50deg 32.6% 90%;
-  }
+.light {
+  --bkg-1: #fdfcf7;
+  --bkg-2: #f0eee2;
+  --content-1: #272934;
+  --content-2: #444; /* change */
+  --content-3: #666; /* change */
+  --content-4: #fdfcf7;
+  --accent-1: #272934;
+  --accent-2: #e36263;
+}
+
+.dark {
+  /* change all */
+  --bkg-1: #333;
+  --bkg-2: #111;
+  --content-1: #eee;
+  --content-2: #ddd;
+  --content-3: #ccc;
+  --content-4: #111;
+  --accent-1: #ccc;
+  --accent-2: #777;
 }
 
 @layer components {
+  .bg1 {
+    @apply bg-[var(--bkg-1)];
+  }
+
+  .bg2 {
+    @apply bg-[var(--bkg-2)];
+  }
+
+  .content1 {
+    @apply text-[var(--content-1)];
+  }
+
+  .content2 {
+    @apply text-[var(--content-2)];
+  }
+
+  .content3 {
+    @apply text-[var(--content-3)];
+  }
+
+  .content4 {
+    @apply text-[var(--content-4)];
+  }
+
+  .accent1 {
+    @apply bg-[var(--accent-1)];
+  }
+
+  .accent2 {
+    @apply bg-[var(--accent-2)];
+  }
+
   .center {
     @apply flex flex-col items-center justify-center;
   }
@@ -31,16 +80,12 @@
   }
 
   .primary-btn {
-    @apply btn bg-accent-1 border-2 border-accent-1;
+    @apply btn accent1 border-2 border-[var(--accent-1)] dark:border-[var(--accent-1)] content4;
   }
 
   .secondary-btn {
-    @apply btn border-2 border-accent-1;
+    @apply btn border-2 border-[var(--accent-1)] dark:border-[var(--accent-1)] content1;
   }
-}
-
-body {
-  color: var(--color-content1);
 }
 
 .font-space-mono {
