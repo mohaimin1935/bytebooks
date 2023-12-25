@@ -1,14 +1,20 @@
-import './globals.css'
+"use client"
 
-export const metadata = {
-  title: 'ByteBooks',
-  description: '',
-}
+import './globals.css'
+import { ThemeContextProvider } from '@/contexts/ThemeContext'
+import ThemeProvider from '@/providers/ThemeProvider'
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
-      <body className={""}>{children}</body>
+      <body>
+        <ThemeContextProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ThemeContextProvider>
+        </body>
     </html>
   )
 }

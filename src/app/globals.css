@@ -1,7 +1,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Rubik:wght@400;600;700&family=Karla:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  main {
+    --color-bkg1: 50deg 60% 98%;
+    --color-bkg2: 50deg 32% 90%;
+    --color-content1: 50deg 32.6% 17.5%;
+    --color-content2: 50deg 32.6% 17.5%;
+  }
+
+  main[data-theme="dark"] {
+    --color-bkg1: 50deg 60% 17.5%;
+    --color-bkg2: 50deg 32% 17.5%;
+    --color-content1: 50deg 32.6% 98%;
+    --color-content2: 50deg 32.6% 90%;
+  }
+}
 
 .font-space-mono {
   font-family: "Space Mono", monospace;
@@ -16,5 +33,5 @@
 }
 
 .font-karla {
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
 }

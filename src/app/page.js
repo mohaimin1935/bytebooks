@@ -1,11 +1,13 @@
-import React from 'react'
+"use client";
+
+import { ThemeContext } from "@/contexts/ThemeContext";
+import ThemeContainer from "@/ui/common/ThemeContainer";
+import { useContext } from "react";
 
 const Home = () => {
-  return (
-    <div>
-        Hello World
-    </div>
-  )
-}
+  const { toggle } = useContext(ThemeContext);
 
-export default Home
+  return <ThemeContainer>Homepage</ThemeContainer>;
+};
+
+export default Home;
