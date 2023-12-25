@@ -1,10 +1,7 @@
-"use client";
-
-import ThemeContainer from "@/ui/common/ThemeContainer";
 import React from "react";
 
-const View = () => {
-  return <ThemeContainer>View</ThemeContainer>;
+const ViewBook = () => {
+  return <div>ViewBook</div>;
 };
 
-export default View;
+export default ViewBook;

@@ -1,10 +1,7 @@
-"use client";
-
-import ThemeContainer from "@/ui/common/ThemeContainer";
 import React from "react";
 
 const Library = () => {
-  return <ThemeContainer>Library</ThemeContainer>;
+  return <div>Library</div>;
 };
 
 export default Library;

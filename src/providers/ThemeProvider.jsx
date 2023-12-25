@@ -12,7 +12,7 @@ const ThemeProvider = ({ children }) => {
   }, []);
 
   if (mounted) {
-    return <div className={theme}>{children}</div>;
+    return <main data-theme={theme}>{children}</main>;
   }
 };
 

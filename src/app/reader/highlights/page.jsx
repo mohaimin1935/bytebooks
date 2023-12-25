@@ -1,10 +1,7 @@
-"use client";
-
-import ThemeContainer from "@/ui/common/ThemeContainer";
 import React from "react";
 
 const Highlights = () => {
-  return <ThemeContainer>Highlights</ThemeContainer>;
+  return <div>Highlights</div>;
 };
 
 export default Highlights;

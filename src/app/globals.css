@@ -8,8 +8,9 @@
   main {
     --color-bkg1: 50deg 60% 98%;
     --color-bkg2: 50deg 32% 90%;
-    --color-content1: 50deg 32.6% 17.5%;
+    --color-content1: 0deg 32.6% 50%;
     --color-content2: 50deg 32.6% 17.5%;
+    --color-accent1: 0deg 32.6% 80%;
   }
 
   main[data-theme="dark"] {
@@ -18,6 +19,28 @@
     --color-content1: 50deg 32.6% 98%;
     --color-content2: 50deg 32.6% 90%;
   }
+}
+
+@layer components {
+  .center {
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-full shadow hover:shadow-xl cursor-pointer duration-300 text-center text-lg;
+  }
+
+  .primary-btn {
+    @apply btn bg-accent-1 border-2 border-accent-1;
+  }
+
+  .secondary-btn {
+    @apply btn border-2 border-accent-1;
+  }
+}
+
+body {
+  color: var(--color-content1);
 }
 
 .font-space-mono {
