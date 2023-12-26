@@ -9,7 +9,7 @@
   --bkg-2: #f0eee2;
   --content-1: #272934;
   --content-2: #444; /* change */
-  --content-3: #666; /* change */
+  --content-3: #aaa; /* change */
   --content-4: #fdfcf7;
   --accent-1: #272934;
   --accent-2: #e36263;
@@ -20,7 +20,7 @@
   --bkg-2: #f0eee2;
   --content-1: #272934;
   --content-2: #444; /* change */
-  --content-3: #666; /* change */
+  --content-3: #aaa; /* change */
   --content-4: #fdfcf7;
   --accent-1: #272934;
   --accent-2: #e36263;
@@ -28,51 +28,59 @@
 
 .dark {
   /* change all */
-  --bkg-1: #333;
-  --bkg-2: #111;
-  --content-1: #eee;
-  --content-2: #ddd;
+  --bkg-1: #25293c;
+  --bkg-2: #1f2335;
+  --content-1: #fdfcf7;
+  --content-2: #f0eee2;
   --content-3: #ccc;
-  --content-4: #111;
-  --accent-1: #ccc;
-  --accent-2: #777;
+  --content-4: #272934;
+  --accent-1: #f0eee2;
+  --accent-2: #e36263;
 }
 
 @layer components {
   .bg1 {
-    @apply bg-[var(--bkg-1)];
+    @apply bg-[var(--bkg-1)] duration-300;
   }
 
   .bg2 {
-    @apply bg-[var(--bkg-2)];
+    @apply bg-[var(--bkg-2)] duration-300;
   }
 
   .content1 {
-    @apply text-[var(--content-1)];
+    @apply text-[var(--content-1)] duration-300;
   }
 
   .content2 {
-    @apply text-[var(--content-2)];
+    @apply text-[var(--content-2)] duration-300;
   }
 
   .content3 {
-    @apply text-[var(--content-3)];
+    @apply text-[var(--content-3)] duration-300;
   }
 
   .content4 {
-    @apply text-[var(--content-4)];
+    @apply text-[var(--content-4)] duration-300;
   }
 
   .accent1 {
-    @apply bg-[var(--accent-1)];
+    @apply bg-[var(--accent-1)] duration-300;
   }
 
   .accent2 {
-    @apply bg-[var(--accent-2)];
+    @apply bg-[var(--accent-2)] duration-300;
+  }
+
+  .border-check {
+    @apply border-[var(--accent-1)] duration-300;
   }
 
   .center {
     @apply flex flex-col items-center justify-center;
+  }
+
+  .auth-input {
+    @apply px-3 py-2.5 bg1 rounded outline-none focus:outline-[var(--accent-1)] border-2 border-[var(--bkg-2)] focus:border-transparent content3;
   }
 
   .btn {
