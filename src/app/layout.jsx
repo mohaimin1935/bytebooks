@@ -8,6 +8,12 @@ import ToggleTheme from "@/ui/common/ToggleTheme";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="awV4VyXQbl7jUwfzaQEgi_kYCECNKUMbNhrxmNIp7E0"
+        />
+      </head>
       <body>
         <ThemeContextProvider>
           <ThemeProvider>
