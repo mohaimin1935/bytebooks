@@ -4,6 +4,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaGoogle } from "react-icons/fa";
+import { signIn, signOut, useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -11,6 +14,13 @@ const Signup = () => {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const signup = () => {
+    axios
+      .post("/api/register", { name, email, password })
+      .then((res) => console.log(res))
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className="flex h-screen">
@@ -54,7 +64,10 @@ const Signup = () => {
           </button>
         </div>
 
-        <button className="primary-btn w-[300px] rounded py-2.5 mb-6 text-base">
+        <button
+          className="primary-btn w-[300px] rounded py-2.5 mb-6 text-base"
+          onClick={signup}
+        >
           Sign up
         </button>
 
@@ -80,8 +93,6 @@ const Signup = () => {
       </div>
     </div>
   );
-
-  return <div>Signup</div>;
 };
 
 export default Signup;

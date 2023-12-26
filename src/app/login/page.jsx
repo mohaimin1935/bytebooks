@@ -4,7 +4,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaGoogle } from "react-icons/fa";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,12 +13,31 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const { status } = useSession();
-  console.log(status);
+  const login = async () => {
+    signIn("credentials", { email, password, redirect: false }).then(
+      (callback) => {
+        if (callback?.error) {
+          console.log(callback.error);
+          toast.error(callback.error);
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast.success("Logged in successfully!");
+        }
+      }
+    );
+  };
+
+  const { data, status } = useSession();
+  console.log(data?.user);
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 h-full bg2"></div>
+      <div className="w-1/2 h-full bg2">
+        <button className="p-4 border" onClick={signOut}>
+          Logout
+        </button>
+      </div>
       <div className="center w-1/2">
         <h3 className="text-center text-4xl font-semibold mb-12">Log in</h3>
 
@@ -47,7 +67,10 @@ const Login = () => {
           </button>
         </div>
 
-        <button className="primary-btn w-[300px] rounded py-2.5 mb-6 text-base">
+        <button
+          className="primary-btn w-[300px] rounded py-2.5 mb-6 text-base"
+          onClick={login}
+        >
           Log in
         </button>
 
