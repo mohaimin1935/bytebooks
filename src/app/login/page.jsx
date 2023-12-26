@@ -70,7 +70,7 @@ const Login = () => {
           href="/signup"
           className="content3 text-left w-[300px] text-sm mb-1"
         >
-          Don't have an account? Sign up.
+          Don&apos;t have an account? Sign up.
         </Link>
       </div>
     </div>
