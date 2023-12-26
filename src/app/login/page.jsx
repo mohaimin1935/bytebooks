@@ -4,12 +4,16 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaGoogle } from "react-icons/fa";
+import { signIn, useSession } from "next-auth/react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const { status } = useSession();
+  console.log(status);
 
   return (
     <div className="flex h-screen">
@@ -53,7 +57,10 @@ const Login = () => {
           <div className="flex-1 bg2 h-[2px]"></div>
         </div>
 
-        <button className="secondary-btn w-[300px] rounded py-2.5 mb-6 flex items-center text-base">
+        <button
+          className="secondary-btn w-[300px] rounded py-2.5 mb-6 flex items-center text-base"
+          onClick={() => signIn("google")}
+        >
           <p className="text-lg mr-4">
             <FaGoogle />
           </p>

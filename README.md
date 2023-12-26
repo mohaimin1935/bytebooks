@@ -1,5 +1,4 @@
-Live website: https://byte-books.vercel.app/ 
-
+Live website: https://byte-books.vercel.app/
 
 ## Getting Started
 
@@ -12,5 +11,10 @@ yarn add
 yarn run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+npx prisma init --datasource-provider mongodb
+npx prisma generate
+npx prisma studio
+```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
