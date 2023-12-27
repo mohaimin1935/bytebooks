@@ -4,7 +4,8 @@ import "./globals.css";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
 import AuthProvider from "@/providers/AuthProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
-import ToggleTheme from "@/ui/common/ToggleTheme";
+import ToggleTheme from "@/app/ui/common/ToggleTheme";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({ children }) {
   return (
@@ -16,6 +17,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <div>
+          <Toaster />
+        </div>
         <AuthProvider>
           <ThemeContextProvider>
             <ThemeProvider>

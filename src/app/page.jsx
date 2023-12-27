@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import ToggleTheme from "@/ui/common/ToggleTheme";
+import ToggleTheme from "@/app/ui/common/ToggleTheme";
 
 const Home = () => {
   return (
