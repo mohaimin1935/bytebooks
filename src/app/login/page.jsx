@@ -15,6 +15,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const { user, status } = useSession();
   const router = useRouter();
 
@@ -36,7 +38,9 @@ const Login = () => {
       return;
     }
 
+    setLoading(true);
     signIn("credentials", { email, password, redirect: false }).then((res) => {
+      setLoading(false);
       if (res?.error) toast.error(res.error);
       if (res?.ok && !res?.error) toast.success("Logged in successfully!");
     });
@@ -71,7 +75,7 @@ const Login = () => {
           )}
           onClick={login}
         >
-          {status !== "loading" ? (
+          {status !== "loading" && !loading ? (
             <>Log in</>
           ) : (
             <div className="animate-spin text-lg">

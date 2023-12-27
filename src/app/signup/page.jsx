@@ -9,12 +9,15 @@ import Input from "@/app/ui/auth/Input";
 import ProviderLogin from "@/app/ui/auth/ProviderLogin";
 import { useRouter } from "next/navigation";
 import { validateEmail } from "@/utils/util";
+import { CgSpinner } from "react-icons/cg";
+import { cn } from "@/utils/cn";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
   const { user, status } = useSession();
   const router = useRouter();
 
@@ -24,6 +27,8 @@ const Signup = () => {
   }
 
   const signup = () => {
+    if (loading) return;
+
     if (!email || !password || !name) {
       toast.error("Name, email and password are required.");
       return;
@@ -39,9 +44,11 @@ const Signup = () => {
       return;
     }
 
+    setLoading(true);
     axios
       .post("/api/register", { name, email, password })
       .then(() => {
+        setLoading(false);
         toast.success("Registered successfully.");
         signIn("credentials", { email, password, redirect: false }).then(
           (res) => {
@@ -51,7 +58,10 @@ const Signup = () => {
           }
         );
       })
-      .catch((e) => toast.error(e?.response?.data || "Something went wrong."));
+      .catch((e) => {
+        setLoading(false);
+        toast.error(e?.response?.data || "Something went wrong.");
+      });
   };
 
   return (
@@ -86,10 +96,19 @@ const Signup = () => {
         />
 
         <button
-          className="primary-btn w-[300px] rounded py-2.5 mb-6 text-base"
+          className={cn(
+            "primary-btn w-[300px] center rounded py-2.5 mb-6 text-base",
+            loading && "cursor-not-allowed"
+          )}
           onClick={signup}
         >
-          Sign up
+          {!loading ? (
+            <>Sign up</>
+          ) : (
+            <div className="animate-spin text-lg">
+              <CgSpinner />
+            </div>
+          )}
         </button>
 
         <ProviderLogin className={"mb-6"} />
