@@ -9,9 +9,9 @@ import { FiLogOut } from "react-icons/fi";
 
 const LeftPanel = ({ options, active }) => {
   return (
-    <div className=" mt-16">
+    <div className=" mt-6">
       {/* logo */}
-      <div className="my-12 font-semibold text-xl pl-10 flex items-center gap-x-4">
+      <div className="mb-12 font-semibold text-xl pl-10 flex items-center gap-x-4">
         <div className="w-6 h-8 rounded-full accent1"></div>
         <h3 className="">ByteBooks</h3>
       </div>

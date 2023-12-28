@@ -1,25 +1,24 @@
 import React from "react";
 import ReaderLeft from "../ui/reader/ReaderLeft";
+import Topbar from "../ui/reader/Topbar";
 
 const ReaderLayout = ({ children }) => {
   return (
     <div class="flex h-screen bg1">
       {/* left panel */}
-      <div class="w-1/4 bg2">
+      <div class="w-[300px] bg2">
         <ReaderLeft active={"for-you"} />
       </div>
 
       {/* right */}
-      <div class="flex-1 flex flex-col overflow-hidden">
+      <div class="flex-1 flex flex-col overflow-hidden px-16">
         {/* top navbar */}
         <div class="bg-transparent">
-          <p>Fixed Navbar Content</p>
+          <Topbar />
         </div>
 
         {/* main content */}
-        <div class="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
-          {children}
-        </div>
+        <div class="flex-1 overflow-y-auto py-12">{children}</div>
       </div>
     </div>
   );

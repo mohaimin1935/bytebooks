@@ -12,15 +12,7 @@ const ForYou = () => {
     router.push("/login");
   }
 
-  if (status === "authenticated")
-    return (
-      <div>
-        <button className="p-4 border" onClick={signOut}>
-          Logout
-        </button>
-        {data?.user && <>hi {data?.user?.name}</>}
-      </div>
-    );
+  if (status === "authenticated") return <div></div>;
 };
 
 export default ForYou;
