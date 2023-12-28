@@ -22,7 +22,7 @@ const Login = () => {
 
   if (status === "authenticated") {
     const role = user?.role ?? "reader";
-    router.push(`/${role}/`);
+    router.push(`/${role}/home`);
   }
 
   const login = async () => {

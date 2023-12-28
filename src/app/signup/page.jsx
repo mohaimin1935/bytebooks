@@ -23,7 +23,7 @@ const Signup = () => {
 
   if (status === "authenticated") {
     const role = user?.role ?? "reader";
-    router.push(`/${role}/`);
+    router.push(`/${role}/home`);
   }
 
   const signup = () => {

@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
           <ThemeContextProvider>
             <ThemeProvider>
               <div className="font-rubik relative min-h-screen bg1 content1">
-                <div className="absolute bottom-12 right-12 cursor-pointer">
+                <div className="fixed bottom-12 right-12 cursor-pointer">
                   <ToggleTheme />
                 </div>
                 {children}
