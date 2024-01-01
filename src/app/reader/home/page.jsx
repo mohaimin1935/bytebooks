@@ -6,6 +6,7 @@ import React from "react";
 
 const ForYou = () => {
   const { data, status } = useSession();
+
   const router = useRouter();
 
   if (status === "unauthenticated") {

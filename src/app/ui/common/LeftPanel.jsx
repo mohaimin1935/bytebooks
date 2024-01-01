@@ -63,6 +63,13 @@ const Item = ({ option }) => {
         </div>
       </Link>
     );
+  } else {
+    return (
+      <div className="flex items-center py-2 ml-8 gap-x-4 animate-pulse">
+        <div className="w-8 h-8 rounded-full bg1"></div>
+        <div className="w-32 h-6 rounded bg1"></div>
+      </div>
+    );
   }
 };
 

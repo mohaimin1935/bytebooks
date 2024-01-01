@@ -6,6 +6,8 @@ import AuthProvider from "@/providers/AuthProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
 import ToggleTheme from "@/app/ui/common/ToggleTheme";
 import { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
+import NextTopLoader from "nextjs-toploader";
 
 export default function RootLayout({ children }) {
   return (
@@ -18,6 +20,18 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <div>
+          <NextTopLoader
+            color={"#e36263"}
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={4}
+            crawl={true}
+            showSpinner={false}
+            easing="ease"
+            speed={200}
+            zIndex={1600}
+            showAtBottom={false}
+          />
           <Toaster />
         </div>
         <AuthProvider>
