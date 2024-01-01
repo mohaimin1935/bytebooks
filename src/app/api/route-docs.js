@@ -132,55 +132,86 @@
  * /books:
  *   post:
  *     tags:
- *       - Book
+ *       - Book Info
+ *     summary: Add a book
  *
  *
  * /books/{bookid}:
  *   get:
  *     tags:
- *       - Book
+ *       - Book Info
+ *     summary: Get book info
  *
  *
- * /books/{bookid}:
  *   put:
  *     tags:
- *       - Book
+ *       - Book Info
+ *     summary: Edit a book
  *
  *
- * /books/{bookid}:
  *   delete:
  *     tags:
- *       - Book
+ *       - Book Info
+ *     summary: Delete a book
  *
  *
  * /books/{bookid}/chapters:
  *   get:
  *     tags:
- *       - Book
+ *       - Book Chapter
+ *     summary: Get all chapters of a book
  *
  *
- * /books/{bookid}/chapters:
  *   post:
  *     tags:
- *       - Book
+ *       - Book Chapter
+ *     summary: Add a chapter to a book
  *
  *
  * /books/{bookid}/chapters/{chapterid}:
  *   get:
  *     tags:
- *       - Book
+ *       - Book Chapter
+ *     summary: Get a specific chapter to a book
  *
  *
- * /books/{bookid}/chapters/{chapterid}:
  *   put:
  *     tags:
- *       - Book
+ *       - Book Chapter
+ *     summary: Edit a specific chapter of a book
  *
  *
- * /books/{bookid}/chapters/{chapterid}:
  *   delete:
  *     tags:
- *       - Book
+ *       - Book Chapter
+ *     summary: Delete a specific chapter of a book
+ *
+
+ * /books/{bookid}/bytes:
+ *   get:
+ *     tags:
+ *       - Book Byte
+ *
+ *
+ *   post:
+ *     tags:
+ *       - Book Byte
+ *
+ *
+ * /books/{bookid}/bytes/{byteid}:
+ *   get:
+ *     tags:
+ *       - Book Byte
+ *
+ *
+ *   put:
+ *     tags:
+ *       - Book Byte
+ *
+ *
+ *   delete:
+ *     tags:
+ *       - Book Byte
  *
  *
  *
@@ -319,10 +350,10 @@
 // ! Save
 /**
  * @swagger
- * /highlights:
+ * /save:
  *   get:
  *     tags:
- *       - Highlights
+ *       - Save
  *
  *
  */
