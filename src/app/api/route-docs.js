@@ -130,6 +130,28 @@
 /**
  * @swagger
  * /books:
+ *   get:
+ *     tags:
+ *       - Book Info
+ *     summary: Get list of books
+ *     parameters:
+ *       - name: genreid
+ *         in: query
+ *         description: Filter book list by genre
+ *       - name: sort
+ *         in: query
+ *         description: Sort book by time or other options
+ *       - name: authorid
+ *         in: query
+ *         description: Filter book list by author
+ *       - name: publish-year
+ *         in: query
+ *         description: Filter book list by year
+ *       - name: language
+ *         in: query
+ *         description: Filter book list by language
+ * 
+ * 
  *   post:
  *     tags:
  *       - Book Info
@@ -222,6 +244,12 @@
 // !User
 /**
  * @swagger
+ * /users:
+ *   get:
+ *     summary: Get user list with filtering option for admin
+ *     tags:
+ *       - User
+ *
  * /users/{userid}:
  *   get:
  *     summary: Get details of an user
@@ -340,20 +368,61 @@
 /**
  * @swagger
  * /highlights:
+ *   post:
+ *     tags:
+ *       - Highlights
+ *
+ *
+ * /highlights/{highlightid}:
  *   get:
  *     tags:
  *       - Highlights
  *
  *
- */
-
-// ! Save
-/**
- * @swagger
- * /save:
+ *   put:
+ *     tags:
+ *       - Highlights
+ *
+ *
+ *   delete:
+ *     tags:
+ *       - Highlights
+ *
+ *
+ * /highlights/user/{userid}:
  *   get:
  *     tags:
- *       - Save
+ *       - Highlights
+ *     summary: Get highlights of an user
+ *     parameters:
+ *       - name: bookid
+ *         in: query
+ *         description: Filter an user's highlights of a book
+ *       - name: year
+ *         in: query
+ *         description: Filter an user's highlights of a year
+ *       - name: start-date
+ *         in: query
+ *         description: Filter an user's highlights of a time-limit
+ *       - name: end-date
+ *         in: query
+ *         description: Filter an user's highlights of a time-limit
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+// ! Shelf
+/**
+ * @swagger
+ * /shelf:
+ *   get:
+ *     tags:
+ *       - Shelf
  *
  *
  */

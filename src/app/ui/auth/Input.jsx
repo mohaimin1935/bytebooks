@@ -25,7 +25,7 @@ const Input = ({ type, placeholder, value, setValue, rule, className }) => {
         </button>
       )}
       {rule && (
-        <p className="absolute text-xs right-0 content3 -bottom-[15px] l-0">
+        <p className="absolute text-xs right-2 content3 -bottom-[16px] l-0 px-1">
           {rule}
         </p>
       )}
