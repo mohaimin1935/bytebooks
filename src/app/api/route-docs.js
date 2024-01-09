@@ -16,6 +16,210 @@
  *         role:
  *           type: string
  *
+ *     Author:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         image:
+ *           type: string
+ *         desc:
+ *           type: string
+ *         primary_language:
+ *           type: string
+ *         country:
+ *           type: string
+ *         description:
+ *           type: string
+ *
+ *     Tag:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         tag:
+ *           type: string
+ *
+ *     Genre:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         title:
+ *           type: string
+ *         image:
+ *           type: string
+ *
+ *     BookInfo:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         isbn:
+ *           type: string
+ *         publishing_year:
+ *           type: integer
+ *         title:
+ *           type: string
+ *         image:
+ *           type: string
+ *         authors:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Author'
+ *         creatorids:
+ *           type: array
+ *           items:
+ *             type: string
+ *         brief_desc:
+ *           type: string
+ *         desc:
+ *           type: string
+ *         tags:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Tag'
+ *         genres:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Genre'
+ *         languages:
+ *           type: array
+ *           items:
+ *             type: string
+ *         first_byte:
+ *           type: string
+ *         first_chapter:
+ *           type: string
+ *
+ *     Chapter:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *         serial:
+ *           type: integer
+ *         title:
+ *           type: string
+ *         content:
+ *           type: string
+ *         audio:
+ *           type: string
+ *
+ *     Byte:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *         serial:
+ *           type: integer
+ *         title:
+ *           type: string
+ *         content:
+ *           type: string
+ *         audio:
+ *           type: string
+ *
+ *     Collection:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         title:
+ *           type: string
+ *         image:
+ *           type: string
+ *         book_ids:
+ *           type: array
+ *           items:
+ *             type: string
+ *
+ *     Shelf:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         status:
+ *           type: string
+ *           enum:
+ *             - To Read
+ *             - Currently Reading
+ *             - Read
+ *             - Left
+ *         userid:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *
+ *
+ *     Highlight:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         userid:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *         chapterid:
+ *           type: string
+ *         byteid:
+ *           type: string
+ *         start_location:
+ *           type: integer
+ *         end_location:
+ *           type: integer
+ *
+ *     Progress:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *         userid:
+ *           type: string
+ *         chapterid:
+ *           type: string
+ *         byteid:
+ *           type: string
+ *         audio_location:
+ *           type: time
+ *
+ *     Notification:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         userid:
+ *           type: string
+ *         desc:
+ *           type: string
+ *         remainder:
+ *           type: date-time
+ *         bookid:
+ *           type: string
+ *
+ *     Review:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         userid:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *         rating:
+ *           type: integer
+ *         comment:
+ *           type: string
+ *
  *
  *
  *
@@ -47,6 +251,46 @@
  *             user:
  *               $ref: '#/components/schemas/User'
  *         status:
+ *           type: string
+ *
+ *     BookBriefInfoResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         title:
+ *           type: string
+ *         image:
+ *           type: string
+ *         authors:
+ *           type: array
+ *           items:
+ *             type: string
+ *         genres:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Genre'
+ *         Rating:
+ *           type: float
+ *
+ *     ChapterListResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         serial:
+ *           type: integer
+ *         title:
+ *           type: string
+ *
+ *     ByteListResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         serial:
+ *           type: integer
+ *         title:
  *           type: string
  *
  *
@@ -150,12 +394,50 @@
  *       - name: language
  *         in: query
  *         description: Filter book list by language
- * 
- * 
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/BookBriefInfoResponse'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
  *   post:
  *     tags:
  *       - Book Info
  *     summary: Add a book
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/BookInfo'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BookInfo'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict with ISBN
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  * /books/{bookid}:
@@ -163,77 +445,312 @@
  *     tags:
  *       - Book Info
  *     summary: Get book info
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BookInfo'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not Found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   put:
  *     tags:
  *       - Book Info
  *     summary: Edit a book
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/BookInfo'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BookInfo'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No book found with bookid
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   delete:
  *     tags:
  *       - Book Info
  *     summary: Delete a book
- *
- *
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No book found with bookid
+ *       '500':
+ *         description: Internal Server Error
+ */
+
+// ! Book Chapter & Byte
+/**
+ * @swagger
  * /books/{bookid}/chapters:
  *   get:
  *     tags:
  *       - Book Chapter
  *     summary: Get all chapters of a book
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ChapterListResponse'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No book found (bookid)
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   post:
  *     tags:
  *       - Book Chapter
  *     summary: Add a chapter to a book
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Chapter'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Chapter'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict with chapterid
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  * /books/{bookid}/chapters/{chapterid}:
  *   get:
  *     tags:
  *       - Book Chapter
- *     summary: Get a specific chapter to a book
+ *     summary: Get a specific chapter of a book
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Chapter'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No chapter/book found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   put:
  *     tags:
  *       - Book Chapter
  *     summary: Edit a specific chapter of a book
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Chapter'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Chapter'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No chapter/book found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   delete:
  *     tags:
  *       - Book Chapter
  *     summary: Delete a specific chapter of a book
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No chapter found with chapterid
+ *       '500':
+ *         description: Internal Server Error
  *
 
  * /books/{bookid}/bytes:
  *   get:
  *     tags:
  *       - Book Byte
+ *     summary: Get all bytes of a book
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ByteListResponse'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found (bookid)
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   post:
  *     tags:
  *       - Book Byte
+ *     summary: Add a byte to a book
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Byte'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Byte'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict with chapterid
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  * /books/{bookid}/bytes/{byteid}:
  *   get:
  *     tags:
  *       - Book Byte
+ *     summary: Get a specific byte of a book
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Byte'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No byte/book found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   put:
  *     tags:
  *       - Book Byte
+ *     summary: Edit a specific byte of a book
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Byte'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Byte'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No byte/book found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   delete:
  *     tags:
  *       - Book Byte
+ *     summary: Delete a specific byte of a book
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: No byte found with chapterid
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *
@@ -424,16 +941,21 @@
  *     tags:
  *       - Shelf
  *
+ *   post:
+ *     tags:
+ *       - Shelf
+ *
+ *
  *
  */
 
-// ! Reading Info
+// ! Progress
 /**
  * @swagger
- * /reading-info:
+ * /progress:
  *   get:
  *     tags:
- *       - Reading Info
+ *       - Progress
  *
  *
  */
