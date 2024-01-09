@@ -15,6 +15,8 @@
  *           type: string
  *         role:
  *           type: string
+ *         country:
+ *           type: string
  *
  *     Author:
  *       type: object
@@ -89,10 +91,6 @@
  *           type: array
  *           items:
  *             type: string
- *         first_byte:
- *           type: string
- *         first_chapter:
- *           type: string
  *
  *     Chapter:
  *       type: object
@@ -109,6 +107,8 @@
  *           type: string
  *         audio:
  *           type: string
+ *         language:
+ *           type: string
  *
  *     Byte:
  *       type: object
@@ -124,6 +124,8 @@
  *         content:
  *           type: string
  *         audio:
+ *           type: string
+ *         language:
  *           type: string
  *
  *     Collection:
@@ -150,7 +152,7 @@
  *           enum:
  *             - To Read
  *             - Currently Reading
- *             - Read
+ *             - Finished
  *             - Left
  *         userid:
  *           type: string
@@ -202,7 +204,7 @@
  *         desc:
  *           type: string
  *         remainder:
- *           type: date-time
+ *           type: string
  *         bookid:
  *           type: string
  *
@@ -269,9 +271,15 @@
  *         genres:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/Genre'
- *         Rating:
- *           type: float
+ *             type: string
+ *         rating:
+ *           type: number
+ *         audio_duration:
+ *           type: number
+ *         short_desc:
+ *           type: string
+ *         progress:
+ *           type: number
  *
  *     ChapterListResponse:
  *       type: object
@@ -291,6 +299,60 @@
  *         serial:
  *           type: integer
  *         title:
+ *           type: string
+ *
+ *     UserStatResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         streak:
+ *           type: number
+ *         books_read:
+ *           type: number
+ *         authors_read:
+ *           type: number
+ *         top_genres:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               count:
+ *                 type: number
+ *         top_authors:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               count:
+ *                 type: number
+ *         recent_reviews:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/BookBriefInfoResponse'
+ *
+ *     HighlightResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         content:
+ *           type: string
+ *         timestamp:
+ *           type: string
+ *         book_name:
+ *           type: string
+ *         author_name:
+ *           type: string
+ *         bookid:
+ *           type: string
+ *         chapterid:
+ *           type: string
+ *         byteid:
  *           type: string
  *
  *
@@ -394,6 +456,9 @@
  *       - name: language
  *         in: query
  *         description: Filter book list by language
+ *       - name: tag
+ *         in: query
+ *         description: Filter book list by tag
  *     responses:
  *       '200':
  *         description: Success
@@ -680,7 +745,7 @@
  *       '403':
  *         description: Forbidden
  *       '409':
- *         description: Conflict with chapterid
+ *         description: Conflict
  *       '500':
  *         description: Internal Server Error
  *
@@ -702,7 +767,7 @@
  *       '403':
  *         description: Forbidden
  *       '404':
- *         description: No byte/book found
+ *         description: Not found
  *       '500':
  *         description: Internal Server Error
  *
@@ -731,7 +796,7 @@
  *       '403':
  *         description: Forbidden
  *       '404':
- *         description: No byte/book found
+ *         description: Not found
  *       '500':
  *         description: Internal Server Error
  *
@@ -748,7 +813,7 @@
  *       '403':
  *         description: Forbidden
  *       '404':
- *         description: No byte found with chapterid
+ *         description: Not found
  *       '500':
  *         description: Internal Server Error
  *
@@ -766,6 +831,36 @@
  *     summary: Get user list with filtering option for admin
  *     tags:
  *       - User
+ *     parameters:
+ *       - name: role
+ *         in: query
+ *         description: Filter user list by role
+ *       - name: country
+ *         in: query
+ *         description: Filter user list by country
+ *       - name: sort
+ *         in: query
+ *         description: Filter user list by activity, or other options
+ *       - name: search
+ *         in: query
+ *         description: Filter user list by search term
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal Server Error
  *
  * /users/{userid}:
  *   get:
@@ -775,20 +870,46 @@
  *     responses:
  *       '200':
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       '401':
  *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
  *       '404':
  *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *   put:
  *     summary: Edit user details
  *     tags:
  *       - User
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       '400':
+ *         description: Bad Request
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *   delete:
  *     summary: Delete an user
@@ -796,19 +917,43 @@
  *       - User
  *     responses:
  *       '204':
+ *         description: Success and No Content
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  * /users/{userid}/change-password:
  *   post:
  *     tags:
  *       - User
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             properties:
+ *               old_password:
+ *                 type: string
+ *               new_password:
+ *                 type: string
  *     responses:
- *       '200':
+ *       '204':
+ *         description: Success
  *       '400':
+ *         description: Invalid input
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  * /users/{userid}/stat:
  *   get:
@@ -816,8 +961,21 @@
  *       - User
  *     responses:
  *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserStatResponse'
+ *       '400':
+ *         description: Bad Request
  *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *
@@ -833,18 +991,48 @@
  *       - User Notifications
  *     responses:
  *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Notification'
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *   post:
  *     tags:
  *       - User Notifications
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Notification'
  *     responses:
  *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notification'
+ *       '400':
+ *         description: Bad Request
  *       '401':
+ *         description: Unauthorized
  *       '403':
- *       '404':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict with notification id
+ *       '500':
+ *         description: Internal Server Error
  *
  * /users/{userid}/notifications/{notificationid}:
  *   get:
@@ -852,27 +1040,61 @@
  *       - User Notifications
  *     responses:
  *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notification'
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *   put:
  *     tags:
  *       - User Notifications
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Notification'
  *     responses:
  *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notification'
+ *       '400':
+ *         description: Bad Request
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *   delete:
  *     tags:
  *       - User Notifications
  *     responses:
- *       '200':
+ *       '204':
+ *         description: Success and No Content
  *       '401':
+ *         description: Unauthorized
  *       '403':
+ *         description: Forbidden
  *       '404':
+ *         description: No byte found with chapterid
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *
@@ -888,22 +1110,94 @@
  *   post:
  *     tags:
  *       - Highlights
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Highlight'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Highlight'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  * /highlights/{highlightid}:
  *   get:
  *     tags:
  *       - Highlights
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Highlight'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   put:
  *     tags:
  *       - Highlights
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Highlight'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Highlight'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *   delete:
  *     tags:
  *       - Highlights
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  * /highlights/user/{userid}:
@@ -924,11 +1218,29 @@
  *       - name: end-date
  *         in: query
  *         description: Filter an user's highlights of a time-limit
- *
- *
- *
- *
- *
+ *       - name: sort
+ *         in: query
+ *         description: Sort an user's highlights
+ *       - name: genre
+ *         in: query
+ *         description: Filter by genre
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/HighlightResponse'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found (bookid)
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  */
@@ -940,10 +1252,128 @@
  *   get:
  *     tags:
  *       - Shelf
+ *     parameters:
+ *       - name: userid
+ *         in: query
+ *         description: Filter by user id
+ *       - name: bookid
+ *         in: query
+ *         description: Filter by book id
+ *       - name: status
+ *         in: query
+ *         description: Filter by status
+ *       - name: genre
+ *         in: query
+ *         description: Filter by genre
+ *       - name: sort
+ *         in: query
+ *         description: Sort
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Shelf'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal Server Error
  *
  *   post:
  *     tags:
  *       - Shelf
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Shelf'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Shelf'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
+ *
+ * /shelf/{shelfid}:
+ *   get:
+ *     tags:
+ *       - Shelf
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Shelf'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   put:
+ *     tags:
+ *       - Shelf
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Shelf'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Shelf'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   delete:
+ *     tags:
+ *       - Shelf
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  *
@@ -953,23 +1383,100 @@
 /**
  * @swagger
  * /progress:
+ *   post:
+ *     tags:
+ *       - Progress
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Progress'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Progress'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
+ *
+ * /progress/user/{userid}/book/{bookid}:
  *   get:
  *     tags:
  *       - Progress
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Progress'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   put:
+ *     tags:
+ *       - Progress
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Progress'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Progress'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ *   delete:
+ *     tags:
+ *       - Progress
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  */
 
 // ! Collection
-/**
- * @swagger
- * /collections:
- *   get:
- *     tags:
- *       - Collection
- *
- *
- */
 
 // ! Genre
 /**
@@ -978,6 +1485,117 @@
  *   get:
  *     tags:
  *       - Genre
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Filter by search term
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Genre'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   post:
+ *     tags:
+ *       - Genre
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Genre'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Genre'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ * /genres/{genreid}:
+ *   get:
+ *     tags:
+ *       - Genre
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Genre'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   put:
+ *     tags:
+ *       - Genre
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Genre'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Genre'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   delete:
+ *     tags:
+ *       - Genre
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  */
@@ -989,6 +1607,239 @@
  *   get:
  *     tags:
  *       - Author
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Filter by search term
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Author'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   post:
+ *     tags:
+ *       - Author
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Author'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ * /authors/{authorid}:
+ *   get:
+ *     tags:
+ *       - Author
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   put:
+ *     tags:
+ *       - Author
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Author'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   delete:
+ *     tags:
+ *       - Author
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ */
+
+// ! Tag
+/**
+ * @swagger
+ * /tags:
+ *   get:
+ *     tags:
+ *       - Tag
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Filter by search term
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Tag'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   post:
+ *     tags:
+ *       - Tag
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Tag'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tag'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ * /tags/{tagid}:
+ *   get:
+ *     tags:
+ *       - Tag
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tag'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   put:
+ *     tags:
+ *       - Tag
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Tag'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tag'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   delete:
+ *     tags:
+ *       - Tag
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  */
