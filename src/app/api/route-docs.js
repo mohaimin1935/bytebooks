@@ -17,6 +17,8 @@
  *           type: string
  *         country:
  *           type: string
+ *         xp:
+ *           type: string
  *
  *     Author:
  *       type: object
@@ -390,6 +392,9 @@
  *         description: Invalid input
  *       '401':
  *         description: Wrong credential
+ *       '500':
+ *         description: Internal Server Error
+ * 
  *
  *
  *
@@ -407,8 +412,12 @@
  *         description: Success
  *       '400':
  *          description: Invalid input
+ *       '401':
+ *          description: Unauthorized
  *       '409':
  *          description: Email already exists
+ *       '500':
+ *         description: Internal Server Error
  *
  *
  * /reset:
@@ -1477,6 +1486,153 @@
  */
 
 // ! Collection
+/**
+ * @swagger
+ * /collections:
+ *   get:
+ *     tags:
+ *       - Collection
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Collection'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   post:
+ *     tags:
+ *       - Collection
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Collection'
+ *     responses:
+ *       '201':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Collection'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '409':
+ *         description: Conflict
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ * /collections/{collectionid}:
+ *   get:
+ *     tags:
+ *       - Collection
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Collection'
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   put:
+ *     tags:
+ *       - Collection
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             $ref: '#/components/schemas/Collection'
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Collection'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *   delete:
+ *     tags:
+ *       - Genre
+ *     responses:
+ *       '204':
+ *         description: Success and No Content
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ * /collections/{collectionid}/addbook:
+ *   put:
+ *     tags:
+ *       - Collection
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           type: object
+ *           schema:
+ *             properties:
+ *               bookid:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Collection'
+ *       '400':
+ *         description: Bad Request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Internal Server Error
+ *
+ *
+ *
+ */
 
 // ! Genre
 /**
