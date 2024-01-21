@@ -8,6 +8,7 @@ import ToggleTheme from "@/app/ui/common/ToggleTheme";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import NextTopLoader from "nextjs-toploader";
+import ModalBg from "./ui/common/ModalBg";
 
 export default function RootLayout({ children }) {
   return (
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
                   <ToggleTheme />
                 </div>
                 {children}
+                <ModalBg />
               </div>
             </ThemeProvider>
           </ThemeContextProvider>

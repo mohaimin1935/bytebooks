@@ -1,20 +1,20 @@
 import React from "react";
-import ReaderLeft from "../ui/reader/ReaderLeft";
+import CreatorLeft from "../ui/creator/CreatorLeft";
 import TopBar from "../ui/common/TopBar";
 
-const ReaderLayout = ({ children }) => {
+const CreatorLayout = ({ children }) => {
   return (
     <div class="flex h-screen bg1">
       {/* left panel */}
       <div class="w-[300px] bg2">
-        <ReaderLeft active={"for-you"} />
+        <CreatorLeft active={"for-you"} />
       </div>
 
       {/* right */}
       <div class="flex-1 flex flex-col overflow-hidden px-16">
         {/* top navbar */}
         <div class="bg-transparent">
-          <TopBar role={"reader"} />
+          <TopBar role={"creator"} />
         </div>
 
         {/* main content */}
@@ -24,4 +24,4 @@ const ReaderLayout = ({ children }) => {
   );
 };
 
-export default ReaderLayout;
+export default CreatorLayout;

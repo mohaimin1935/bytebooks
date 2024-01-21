@@ -18,11 +18,11 @@ const Signup = () => {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const { user, status } = useSession();
+  const { data, status } = useSession();
   const router = useRouter();
 
   if (status === "authenticated") {
-    const role = user?.role ?? "reader";
+    const role = data?.user?.role ?? reader;
     router.push(`/${role}/home`);
   }
 

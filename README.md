@@ -8,7 +8,7 @@ Install node.js and yarnpkg.
 git clone https://github.com/mohaimin1935/bytebooks.git
 cd bytebooks
 yarn add
-npx prisma generate
+yarn prisma generate
 yarn run dev
 ```
 

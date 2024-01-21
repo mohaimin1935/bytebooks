@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Account {
   id                String  @id @default(cuid()) @map("_id")
   userId            String
@@ -36,15 +35,20 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid()) @map("_id")
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  hashedPassword      String?
-  role          String?
-  accounts      Account[]
-  sessions      Session[]
+  id             String    @id @default(cuid()) @map("_id")
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  role           String?
+  accounts       Account[]
+  sessions       Session[]
+
+  BookCreator BookCreator[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model VerificationToken {
@@ -53,4 +57,78 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Author {
+  id   String @id @default(cuid()) @map("_id")
+  name String
+
+  books BookAuthor[]
+}
+
+model Tag {
+  id    String @id @default(cuid()) @map("_id")
+  title String
+
+  books BookTag[]
+}
+
+model Genre {
+  id    String @id @default(cuid()) @map("_id")
+  title String
+
+  books BookGenre[]
+}
+
+model BookInfo {
+  id             String   @id @default(cuid()) @map("_id")
+  isbn           String?
+  publishingYear Int?
+  title          String
+  image          String?
+  briefDesc      String?
+  authorIds      String[]
+  tagIds         String[]
+  genreIds       String[]
+
+  authors  BookAuthor[]
+  tags     BookTag[]
+  genres   BookGenre[]
+  creators BookCreator[]
+}
+
+model BookAuthor {
+  id String @id @default(cuid()) @map("_id")
+
+  book     BookInfo @relation(fields: [bookId], references: [id])
+  bookId   String
+  author   Author   @relation(fields: [authorId], references: [id])
+  authorId String
+}
+
+model BookCreator {
+  id String @id @default(cuid()) @map("_id")
+
+  book      BookInfo @relation(fields: [bookId], references: [id])
+  bookId    String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId String
+}
+
+model BookTag {
+  id String @id @default(cuid()) @map("_id")
+
+  book   BookInfo @relation(fields: [bookId], references: [id])
+  bookId String
+  tag    Tag      @relation(fields: [tagId], references: [id])
+  tagId  String
+}
+
+model BookGenre {
+  id String @id @default(cuid()) @map("_id")
+
+  book    BookInfo @relation(fields: [bookId], references: [id])
+  bookId  String
+  genre   Genre    @relation(fields: [genreId], references: [id])
+  genreId String
 }

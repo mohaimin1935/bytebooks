@@ -16,6 +16,8 @@ export const ThemeContextProvider = ({ children }) => {
     return getFromLocalStorage();
   });
 
+  const [modal, setModal] = useState(false);
+
   const toggle = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
@@ -25,7 +27,7 @@ export const ThemeContextProvider = ({ children }) => {
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggle }}>
+    <ThemeContext.Provider value={{ theme, toggle, modal, setModal }}>
       {children}
     </ThemeContext.Provider>
   );
