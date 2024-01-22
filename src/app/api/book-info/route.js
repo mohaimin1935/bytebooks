@@ -1,27 +1,25 @@
-import { getAuthSession } from "@/utils/auth";
+import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
 // CREATE A BOOK INFO
 export const POST = async (req) => {
-  const session = await getAuthSession();
-
-  if (!session) {
-    return new NextResponse(
-      JSON.stringify({ message: "Not authenticated" }, { status: 401 })
-    );
+  const authError = await creatorOnlyFailed();
+  if (authError) {
+    return authError;
   }
 
   try {
     const body = await req.json();
-    const bookInfo = await prisma.post.create({})
+    // const bookInfo = await prisma.BookInfo.create({});
 
-    return new NextResponse(JSON.stringify(body, { status: 201 }));
+    return NextResponse.json(body, { status: 201 });
   } catch (err) {
     console.log(err);
 
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong" }, { status: 500 })
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 }
     );
   }
 };

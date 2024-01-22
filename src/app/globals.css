@@ -13,17 +13,19 @@
   --content-4: #fdfcf7;
   --accent-1: #272934;
   --accent-2: #e36263;
+  --white: #fff;
 }
 
 .light {
   --bkg-1: #fdfcf7;
   --bkg-2: #f0eee2;
   --content-1: #272934;
-  --content-2: #444; /* change */
+  --content-2: #777; /* change */
   --content-3: #aaa; /* change */
   --content-4: #fdfcf7;
   --accent-1: #272934;
   --accent-2: #e36263;
+  --white: #fff;
 }
 
 .dark {
@@ -36,6 +38,7 @@
   --content-4: #272934;
   --accent-1: #f0eee2;
   --accent-2: #e36263;
+  --white: #181b29;
 }
 
 * {
@@ -51,6 +54,10 @@
 
   .bg2 {
     @apply bg-[var(--bkg-2)] duration-300;
+  }
+
+  .bg-pure {
+    @apply bg-[var(--white)] duration-300;
   }
 
   .content1 {

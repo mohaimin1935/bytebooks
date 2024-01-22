@@ -48,16 +48,16 @@ const TopBar = ({ role }) => {
           </div>
         )}
         {openSwitch && data?.user?.role !== "reader" && (
-          <div className="absolute w-32 bg2 center py-4 rounded-lg top-12 gap-y-4 z-10">
+          <div className="absolute w-32 bg2 center p-2 rounded-lg top-12 z-10">
             <button
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg1 py-2 w-full rounded-lg transition duration-300"
               onClick={() => handleSwitch("reader")}
             >
               Reader
             </button>
             {data?.user?.role === "creator" && (
               <button
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg1 py-2 w-full rounded-lg transition duration-300"
                 onClick={() => handleSwitch("creator")}
               >
                 Creator
@@ -65,7 +65,7 @@ const TopBar = ({ role }) => {
             )}
             {data?.user?.role === "admin" && (
               <button
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg1 py-2 w-full rounded-lg transition duration-300"
                 onClick={() => handleSwitch("admin")}
               >
                 Creator

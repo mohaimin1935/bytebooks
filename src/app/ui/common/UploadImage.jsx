@@ -11,13 +11,11 @@ import {
 import { AiOutlineCamera } from "react-icons/ai";
 import toast from "react-hot-toast";
 
-const UploadImage = ({ setURL }) => {
+const UploadImage = ({ setURL, initialImage }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [imageURL, setImageURL] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/bytebooks-1574e.appspot.com/o/1705828236681imageUpload.jpg?alt=media&token=38836241-9b5a-4a2a-88ba-7854dd6ce6bd"
-  );
+  const [imageURL, setImageURL] = useState(initialImage);
 
   const inputFileRef = useRef();
 
@@ -67,9 +65,9 @@ const UploadImage = ({ setURL }) => {
   }, [image]);
 
   return (
-    <>
+    <div className="relative rounded-xl">
       <div
-        className="center cursor-pointer pb-[100%] relative"
+        className="center cursor-pointer pb-[133%] relative rounded-xl"
         onClick={() => {
           if (inputFileRef.current) {
             inputFileRef.current.click();
@@ -107,7 +105,7 @@ const UploadImage = ({ setURL }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
