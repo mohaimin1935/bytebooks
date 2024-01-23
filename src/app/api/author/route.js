@@ -1,5 +1,4 @@
 import { creatorOnlyFailed } from "@/middleware/authorization";
-import { getAuthSession } from "@/utils/auth";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
@@ -12,9 +11,9 @@ export const POST = async (req) => {
 
   try {
     const body = await req.json();
-    // const newAuthor = await prisma.Author.create({})
+    const newAuthor = await prisma.author.create({ data: body });
 
-    return new NextResponse(JSON.stringify(body, { status: 201 }));
+    return new NextResponse(JSON.stringify(newAuthor, { status: 201 }));
   } catch (err) {
     console.log(err);
 
@@ -28,9 +27,9 @@ export const POST = async (req) => {
 // GET AUTHOR LIST
 export const GET = async (req) => {
   try {
-    // const newAuthor = await prisma.Author.create({})
+    const authors = await prisma.author.findMany();
 
-    return new NextResponse(JSON.stringify({}, { status: 200 }));
+    return new NextResponse(JSON.stringify(authors, { status: 200 }));
   } catch (err) {
     console.log(err);
 

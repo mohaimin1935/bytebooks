@@ -8,11 +8,11 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { AiOutlineCamera } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { FiUpload } from "react-icons/fi";
+import { cn } from "@/utils/cn";
 
-const UploadImage = ({ setURL, initialImage }) => {
+const UploadImage = ({ setURL, initialImage = "", className }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -67,7 +67,12 @@ const UploadImage = ({ setURL, initialImage }) => {
 
   return (
     <div className="relative rounded-xl accent1">
-      <div className="absolute left-0 right-0 top-0 bottom-0 center m-auto bg2">
+      <div
+        className={cn(
+          "absolute left-0 right-0 top-0 bottom-0 center m-auto bg2 rounded-xl",
+          className
+        )}
+      >
         <FiUpload size={24} />
       </div>
       <div
@@ -101,9 +106,9 @@ const UploadImage = ({ setURL, initialImage }) => {
             "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-xl"
           }
         >
-          <div className="bg-gray-200 rounded w-full mx-2">
+          <div className="bg-gray-200 rounded-xl w-full mx-2">
             <div
-              className="bg-green-400 rounded h-1.5"
+              className="bg-green-400 rounded-xl h-1.5"
               style={{ width: `${progress}%` }}
             ></div>
           </div>

@@ -6,24 +6,38 @@ import Selector from "@/app/ui/common/Selector";
 import TextArea from "@/app/ui/common/TextArea";
 import UploadImage from "@/app/ui/common/UploadImage";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { AiFillAudio } from "react-icons/ai";
-import { FaWindowClose } from "react-icons/fa";
-import {
-  FiArrowLeft,
-  FiArrowRight,
-  FiBookmark,
-  FiEdit3,
-  FiPlus,
-  FiShare2,
-  FiStar,
-  FiUpload,
-} from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
+import useSWR from "swr";
+
+const fetcher = async (url) => {
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const AddBook = () => {
+  const { data: authorList, isLoading: authorLoading } = useSWR(
+    "/api/author",
+    fetcher
+  );
+  const { data: tagList, isLoading: tagLoading } = useSWR("/api/tag", fetcher);
+  const { data: genreList, isLoading: genreLoading } = useSWR(
+    "/api/genre",
+    fetcher
+  );
+
+  const { data } = useSession();
+  const userId = data?.user.id;
+
   const [bookImage, setBookImage] = useState("");
   const [bookTitle, setBookTitle] = useState();
   const [authors, setAuthors] = useState([]);
@@ -60,26 +74,35 @@ const AddBook = () => {
     setShowModal("author");
   };
 
-  const removeGenre = (id) => {};
+  const removeGenre = (id) => {
+    console.log("genre remove:", id);
+    let temp = genres;
+    temp = temp.filter((a) => a.id !== id);
+    setGenres(temp);
+  };
 
   const addGenre = () => {
     setModal(true);
     setShowModal("genre");
   };
 
-  const removeTag = (id) => {};
+  const removeTag = (id) => {
+    let temp = tags;
+    temp = temp.filter((a) => a.id !== id);
+    setTags(temp);
+  };
 
   const addTag = () => {
     setModal(true);
     setShowModal("tag");
   };
 
-  const handleSave = () => {
-    setLoading(true);
+  const handleSave = async () => {
+    if (loading) return;
 
     const bookInfo = {
       isbn,
-      publishingYear,
+      publishingYear: parseInt(publishingYear),
       title: bookTitle,
       image: bookImage,
       intro,
@@ -87,26 +110,64 @@ const AddBook = () => {
       authorIds: authors.map((author) => author.id),
       tagIds: tags.map((tag) => tag.id),
       genreIds: genres.map((genres) => genres.id),
-      // creators:
+      creatorIds: [userId],
     };
 
-    console.log(bookInfo);
+    try {
+      setLoading(true);
 
-    setSaved(true);
-    toast.success("Saved successfully.");
+      const res = await axios.post("/api/book-info", bookInfo);
+      console.log(res.data);
+
+      setSaved(true);
+      toast.success("Saved successfully.");
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      {modal && (
+      {showModal === "author" && (
         <Selector
-          options={authors}
+          options={authorList}
           addLink={"/author/add"}
           selected={authors}
           setSelected={setAuthors}
           handleRemove={removeAuthor}
+          defaultImage={"/author.png"}
+          hasImage={true}
+          isLoading={authorLoading}
         />
       )}
+
+      {showModal === "tag" && (
+        <Selector
+          options={tagList}
+          selected={tags}
+          setSelected={setTags}
+          handleRemove={removeTag}
+          hasImage={false}
+          creatable
+          createApi="/api/tag"
+          isLoading={tagLoading}
+        />
+      )}
+
+      {showModal === "genre" && (
+        <Selector
+          options={genreList}
+          selected={genres}
+          setSelected={setGenres}
+          handleRemove={removeGenre}
+          hasImage={false}
+          creatable
+          createApi="/api/genre"
+          isLoading={genreLoading}
+        />
+      )}
+
       <div className="flex gap-x-16 ml-12 relative">
         {!saved ? (
           <button
@@ -142,7 +203,7 @@ const AddBook = () => {
         )}
 
         <div className="w-1/5 rounded-xl shadow-xl relative z-10">
-          <UploadImage initialImage={""} setURL={setBookImage} />
+          <UploadImage setURL={setBookImage} />
         </div>
 
         <div className="w-1/2">
@@ -192,14 +253,14 @@ const AddBook = () => {
           <div className="w-3/5">
             {/* genres */}
             <p className="font-semibold text-lg mb-4">Genres</p>
-            <div className="flex items-center mb-12">
-              {genres.map(({ title, id }) => (
+            <div className="flex flex-wrap items-center mb-12">
+              {genres.map(({ name, id }) => (
                 <span
-                  className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center"
+                  className="border border-check rounded-full pl-4 py-1.5 mr-2 mb-2 inline-flex items-center"
                   key={id}
                 >
-                  {title}
-                  <button className="px-2" onClick={(id) => removeGenre(id)}>
+                  {name}
+                  <button className="px-2" onClick={() => removeGenre(id)}>
                     <IoMdClose size={18} />
                   </button>
                 </span>
@@ -215,13 +276,13 @@ const AddBook = () => {
             {/* tags */}
             <p className="font-semibold text-lg mb-4">Tags</p>
             <div className="flex items-center mb-12">
-              {tags.map(({ title, id }) => (
+              {tags.map(({ name, id }) => (
                 <span
                   className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center"
                   key={id}
                 >
-                  {title}
-                  <button className="px-2" onClick={(id) => removeTag(id)}>
+                  {name}
+                  <button className="px-2" onClick={() => removeTag(id)}>
                     <IoMdClose size={18} />
                   </button>
                 </span>

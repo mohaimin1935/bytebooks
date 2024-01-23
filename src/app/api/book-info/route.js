@@ -11,9 +11,10 @@ export const POST = async (req) => {
 
   try {
     const body = await req.json();
-    // const bookInfo = await prisma.BookInfo.create({});
 
-    return NextResponse.json(body, { status: 201 });
+    const bookInfo = await prisma.bookInfo.create({ data: body });
+
+    return NextResponse.json(bookInfo, { status: 201 });
   } catch (err) {
     console.log(err);
 

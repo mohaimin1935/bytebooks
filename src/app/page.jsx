@@ -6,6 +6,7 @@ import Link from "next/link";
 import ToggleTheme from "@/app/ui/common/ToggleTheme";
 
 const Home = () => {
+
   return (
     <div className="center h-screen bg1 content1">
       <div className="center">

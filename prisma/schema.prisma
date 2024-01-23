@@ -45,7 +45,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
 
-  BookCreator BookCreator[]
+  books BookCreator[]
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -62,6 +62,8 @@ model VerificationToken {
 model Author {
   id   String @id @default(cuid()) @map("_id")
   name String
+  desc String?
+  image String?
   
 
   books BookAuthor[]
@@ -69,14 +71,14 @@ model Author {
 
 model Tag {
   id    String @id @default(cuid()) @map("_id")
-  name String
+  name String @unique
 
   books BookTag[]
 }
 
 model Genre {
-  id    String @id @default(cuid()) @map("_id")
-  name String
+  id    String  @id@default(cuid()) @map("_id")
+  name String @unique
 
   books BookGenre[]
 }
@@ -92,11 +94,15 @@ model BookInfo {
   authorIds      String[]
   tagIds         String[]
   genreIds       String[]
+  creatorIds String[]
 
   authors  BookAuthor[]
   tags     BookTag[]
   genres   BookGenre[]
   creators BookCreator[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model BookAuthor {

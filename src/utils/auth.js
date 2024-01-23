@@ -47,7 +47,7 @@ export const authOptions = {
         );
 
         if (!passwordMatch) {
-          throw new Error("Incorrent password");
+          throw new Error("Incorrect password");
         }
 
         return foundUser;
@@ -60,7 +60,10 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session?.user) session.user.role = token?.role;
+      if (session?.user) {
+        session.user.role = token?.role;
+        session.user.id = token?.sub;
+      }
       return session;
     },
   },
