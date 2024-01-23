@@ -69,14 +69,14 @@ model Author {
 
 model Tag {
   id    String @id @default(cuid()) @map("_id")
-  title String
+  name String
 
   books BookTag[]
 }
 
 model Genre {
   id    String @id @default(cuid()) @map("_id")
-  title String
+  name String
 
   books BookGenre[]
 }
@@ -87,7 +87,8 @@ model BookInfo {
   publishingYear Int?
   title          String
   image          String?
-  briefDesc      String?
+  intro String
+  desc      String?
   authorIds      String[]
   tagIds         String[]
   genreIds       String[]

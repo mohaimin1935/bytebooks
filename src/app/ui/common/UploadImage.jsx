@@ -10,6 +10,7 @@ import {
 } from "firebase/storage";
 import { AiOutlineCamera } from "react-icons/ai";
 import toast from "react-hot-toast";
+import { FiUpload } from "react-icons/fi";
 
 const UploadImage = ({ setURL, initialImage }) => {
   const [image, setImage] = useState();
@@ -65,9 +66,12 @@ const UploadImage = ({ setURL, initialImage }) => {
   }, [image]);
 
   return (
-    <div className="relative rounded-xl">
+    <div className="relative rounded-xl accent1">
+      <div className="absolute left-0 right-0 top-0 bottom-0 center m-auto bg2">
+        <FiUpload size={24} />
+      </div>
       <div
-        className="center cursor-pointer pb-[133%] relative rounded-xl"
+        className="center cursor-pointer pb-[133%] relative rounded-xl hover:opacity-50  transition duration-300"
         onClick={() => {
           if (inputFileRef.current) {
             inputFileRef.current.click();
@@ -94,7 +98,7 @@ const UploadImage = ({ setURL, initialImage }) => {
       {isUploading && (
         <div
           className={
-            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1"
+            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-xl"
           }
         >
           <div className="bg-gray-200 rounded w-full mx-2">

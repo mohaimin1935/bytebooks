@@ -7,7 +7,7 @@ const ModalBg = () => {
   if (modal) {
     return (
       <div
-        className="absolute left-0 right-0 top-0 bottom-0 m-auto accent1 opacity-60"
+        className="absolute left-0 right-0 top-0 bottom-0 m-auto accent1 opacity-60 z-20"
         onClick={() => setModal((modal) => !modal)}
       ></div>
     );
