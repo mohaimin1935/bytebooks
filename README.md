@@ -4,12 +4,32 @@ Live website: https://byte-books.vercel.app/
 
 Install node.js and yarnpkg.
 
+#### Fresh Start
+
 ```bash
-git clone https://github.com/mohaimin1935/bytebooks.git
-cd bytebooks
-yarn add
-yarn prisma generate
-yarn run dev
+    git clone https://github.com/mohaimin1935/bytebooks.git
+    cd bytebooks
+    yarn
+    yarn prisma generate
+    yarn run dev
+```
+
+#### Working project
+
+```bash
+    // go to bytrebooks folder
+    git pull
+    yarn // if not working
+    yarn prisma generate
+    yarn run dev
+```
+
+#### Push
+
+```bash
+   git add .
+   git commit -m "any message"
+   git push
 ```
 
 ```
