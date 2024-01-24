@@ -241,7 +241,7 @@ const AddBook = () => {
             value={intro}
             setValue={setIntro}
             className={""}
-            maxLength={120}
+            maxLength={80}
             placeholder={"Intro here..."}
             maxHeight={100}
           ></TextArea>
@@ -273,6 +273,18 @@ const AddBook = () => {
               </button>
             </div>
 
+            {/* desc */}
+            <p className="font-semibold text-lg mb-4">Description</p>
+            <TextArea
+              className={"text-justify"}
+              placeholder={"Description here..."}
+              maxLength={800}
+              value={desc}
+              setValue={setDesc}
+              maxHeight={1000}
+            ></TextArea>
+          </div>
+          <div className="w-2/5">
             {/* tags */}
             <p className="font-semibold text-lg mb-4">Tags</p>
             <div className="flex items-center mb-12">
@@ -294,22 +306,6 @@ const AddBook = () => {
                 <FiPlus size={18} />
               </button>
             </div>
-
-            {/* desc */}
-            <p className="font-semibold text-lg mb-4">Description</p>
-            <TextArea
-              className={"text-justify"}
-              placeholder={"Description here..."}
-              maxLength={800}
-              value={desc}
-              setValue={setDesc}
-              maxHeight={1000}
-            ></TextArea>
-          </div>
-          <div className="w-2/5">
-            <p className="font-semibold text-lg mb-4">About the Authors</p>
-            <AUthorCard author={""} editable={true} />
-
             {/* isbn */}
             <p className="font-semibold text-lg mb-4 mt-12">ISBN</p>
             <input

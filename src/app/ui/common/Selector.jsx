@@ -137,7 +137,6 @@ const Selector = ({
               href={addLink}
               className="secondary-btn py-1.5 px-4 mx-auto mt-4 inline-block text-sm"
             >
-              {/* TODO: change the wording */}
               Not found? Create new.
             </Link>
           )}
@@ -147,7 +146,15 @@ const Selector = ({
               className="secondary-btn py-1.5 px-4 mx-auto mt-4 inline-block text-sm"
               onClick={handleAdd}
             >
-              {!loading ? <span>Create "{query}"</span> : <Loader />}
+              {!loading ? (
+                <span>
+                  Create &quot;
+                  {query}
+                  &quot;
+                </span>
+              ) : (
+                <Loader />
+              )}
             </button>
           )}
         </div>

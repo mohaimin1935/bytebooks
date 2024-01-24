@@ -12,7 +12,23 @@ export const POST = async (req) => {
   try {
     const body = await req.json();
 
-    const bookInfo = await prisma.bookInfo.create({ data: body });
+    const bookInfo = await prisma.bookInfo.create({
+      data: {
+        ...body,
+        authors: {
+          create: body.authorIds.map((authorId) => ({ authorId })),
+        },
+        tags: {
+          create: body.tagIds.map((tagId) => ({ tagId })),
+        },
+        genres: {
+          create: body.genreIds.map((genreId) => ({ genreId })),
+        },
+        creators: {
+          create: body.creatorIds.map((creatorId) => ({ creatorId })),
+        },
+      },
+    });
 
     return NextResponse.json(bookInfo, { status: 201 });
   } catch (err) {

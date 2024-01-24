@@ -139,4 +139,6 @@ model BookGenre {
   bookId  String
   genre   Genre    @relation(fields: [genreId], references: [id])
   genreId String
+
+  @@index([bookId, genreId])
 }

@@ -55,7 +55,9 @@ const AddBook = () => {
 
         <div className="flex gap-x-16 mt-32 mx-12 mb-12">
           <div className="w-3/5">
-            <p className="font-semibold text-lg mb-4">What's this about?</p>
+            <p className="font-semibold text-lg mb-4">
+              What{`&apos;`}s this about?
+            </p>
             <div className="flex items-center mb-12">
               <span className="px-4 py-1.5 border border-check rounded-full mr-2">
                 Genre1
