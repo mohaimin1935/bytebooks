@@ -47,8 +47,8 @@ model User {
 
   books BookCreator[]
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -60,54 +60,53 @@ model VerificationToken {
 }
 
 model Author {
-  id   String @id @default(cuid()) @map("_id")
-  name String
-  desc String?
+  id    String  @id @default(cuid()) @map("_id")
+  name  String
+  desc  String?
   image String?
-  
 
   books BookAuthor[]
 }
 
 model Tag {
-  id    String @id @default(cuid()) @map("_id")
+  id   String @id @default(cuid()) @map("_id")
   name String @unique
 
   books BookTag[]
 }
 
 model Genre {
-  id    String  @id@default(cuid()) @map("_id")
+  id   String @id @default(cuid()) @map("_id")
   name String @unique
 
   books BookGenre[]
 }
 
 model BookInfo {
-  id             String   @id @default(cuid()) @map("_id")
+  id             String  @id @default(cuid()) @map("_id")
   isbn           String?
   publishingYear Int?
   title          String
   image          String?
-  intro String
-  desc      String?
+  intro          String
+  desc           String?
 
   authors  BookAuthor[]
   tags     BookTag[]
   genres   BookGenre[]
   creators BookCreator[]
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BookAuthor {
   id String @id @default(cuid()) @map("_id")
 
-  book     BookInfo @relation(fields: [bookId], references: [id])
-  bookId   String
-  author   Author   @relation(fields: [authorId], references: [id])
-  authorId String
+  book     BookInfo? @relation(fields: [bookId], references: [id])
+  bookId   String?
+  author   Author?   @relation(fields: [authorId], references: [id])
+  authorId String?
 }
 
 model BookCreator {
@@ -131,10 +130,10 @@ model BookTag {
 model BookGenre {
   id String @id @default(cuid()) @map("_id")
 
-  book    BookInfo @relation(fields: [bookId], references: [id])
-  bookId  String
-  genre   Genre    @relation(fields: [genreId], references: [id])
-  genreId String
+  book    BookInfo? @relation(fields: [bookId], references: [id])
+  bookId  String?
+  genre   Genre?    @relation(fields: [genreId], references: [id])
+  genreId String?
 
   @@index([bookId, genreId])
 }

@@ -50,8 +50,16 @@ export const GET = async (req) => {
   try {
     const books = await prisma.bookInfo.findMany({
       include: {
-        authors:true,
-        genres:true
+        authors: {
+          include: {
+            author: true,
+          },
+        },
+        genres: {
+          include: {
+            genre: true,
+          },
+        },
       },
     });
 
