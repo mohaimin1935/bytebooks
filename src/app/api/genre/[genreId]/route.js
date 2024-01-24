@@ -48,38 +48,38 @@ export const PATCH = async (req, { params }) => {
     }
 };
 
-// export const DELETE = async (req, { params }) => {
-//     const { authorId } = params;
-//     try {
-//         await prisma.bookAuthor.deleteMany({
-//             where: {
-//                 authorId: authorId,
-//             },
-//         });
+export const DELETE = async (req, { params }) => {
+    const { genreId } = params;
+    try {
+        await prisma.bookGenre.deleteMany({
+            where: {
+                genreId: genreId,
+            },
+        });
 
-//         const deletedAuthor = await prisma.author.delete({
-//             where: {
-//                 id: authorId,
-//             },
-//         });
+        const deletedGenre = await prisma.genre.delete({
+            where: {
+                id: genreId,
+            },
+        });
 
-//         return NextResponse.json(
-//             { message: "Author deleted successfully", author: deletedAuthor },
-//             { status: 200 }
-//         );
-//     } catch (err) {
-//         console.log(err);
+        return NextResponse.json(
+            { message: "Genre deleted successfully", genre: deletedGenre },
+            { status: 200 }
+        );
+    } catch (err) {
+        console.log(err);
 
-//         if (err.code === 'P2025') {
-//             return NextResponse.json(
-//                 { message: "Author not found" },
-//                 { status: 404 }
-//             );
-//         } else {
-//             return NextResponse.json(
-//                 { message: "Something went wrong", error: err.message },
-//                 { status: 500 }
-//             );
-//         }
-//     }
-// };
+        if (err.code === 'P2025') {
+            return NextResponse.json(
+                { message: "genre not found" },
+                { status: 404 }
+            );
+        } else {
+            return NextResponse.json(
+                { message: "Something went wrong", error: err.message },
+                { status: 500 }
+            );
+        }
+    }
+};
