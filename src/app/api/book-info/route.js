@@ -44,3 +44,27 @@ export const POST = async (req) => {
     );
   }
 };
+
+export const GET = async (req) => {
+
+  try {
+    const books = await prisma.bookInfo.findMany({
+      include: {
+        authors:true,
+        genres:true
+      },
+    });
+
+    //const books = await prisma.bookInfo.findMany();
+
+    return NextResponse.json(books);
+  } catch (err) {
+    console.log(err);
+
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+};
+
