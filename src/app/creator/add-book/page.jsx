@@ -51,8 +51,11 @@ const AddBook = () => {
   const [isbn, setIsbn] = useState();
   const [publishingYear, setPublishingYear] = useState();
 
+  const [bookId, setBookId] = useState();
+
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [actionProgressing, setActionProgressing] = useState(false);
 
   const [showModal, setShowModal] = useState();
 
@@ -64,7 +67,7 @@ const AddBook = () => {
   }, [modal]);
 
   useEffect(() => {
-    if (saved && !modal) {
+    if (saved && !modal && !actionProgressing) {
       router?.push("/creator/home");
     }
   }, [saved, modal, router]);
@@ -103,6 +106,19 @@ const AddBook = () => {
     setShowModal("tag");
   };
 
+  const handleSaveAction = (action) => {
+    if (!saved) return;
+
+    setActionProgressing(true);
+    setModal(false);
+    console.log(action);
+
+    if (action === "back") router.push("home");
+    else if (action === "chapter")
+      router.push(`/creator/book/${bookId}/add-chapter`);
+    else if (action === "byte") router.push(`/creator/book/${bookId}/add-byte`);
+  };
+
   const handleSave = async () => {
     if (loading) return;
 
@@ -124,19 +140,19 @@ const AddBook = () => {
 
       const res = await axios.post("/api/book-info", bookInfo);
       console.log(res.data);
+      setBookId(res.data.id);
       setSaved(true);
-      toast.success("Saved successfully.");
       setModal(true);
       setShowModal("save-action");
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error?.response.data?.message || error.message || "Something went wrong"
+      );
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
-
-  console.log(showModal, modal);
 
   return (
     <div>
@@ -198,18 +214,26 @@ const AddBook = () => {
               Saved Successfully. What do you want to do next?
             </div>
             <div className="flex mt-8 items-center justify-between gap-x-4">
-              <Link href="/" className="flex items-center gap-x-1">
-                {" "}
+              <button
+                onClick={() => handleSaveAction("back")}
+                className="flex items-center gap-x-1"
+              >
                 <FiArrowLeft className="inline" />{" "}
                 <span className="">Back</span>
-              </Link>
+              </button>
               <div className="flex gap-x-4">
-                <Link className="secondary-btn py-1 rounded" href="/">
+                <button
+                  onClick={() => handleSaveAction("chapter")}
+                  className="secondary-btn py-1 rounded"
+                >
                   Add Chapter
-                </Link>
-                <Link className="primary-btn py-1 rounded" href="/">
+                </button>
+                <button
+                  onClick={() => handleSaveAction("byte")}
+                  className="primary-btn py-1 rounded"
+                >
                   Add Byte
-                </Link>
+                </button>
               </div>
             </div>
           </div>
