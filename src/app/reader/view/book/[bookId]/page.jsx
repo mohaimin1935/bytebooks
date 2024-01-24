@@ -21,6 +21,8 @@ const ViewBook = async ({ params }) => {
   const { bookId } = params;
   const book = await getData(bookId);
 
+  console.log(book);
+
   return (
     <div>
       <div className="flex gap-x-16 ml-12 relative">

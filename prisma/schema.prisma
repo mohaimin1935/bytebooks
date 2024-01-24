@@ -91,10 +91,6 @@ model BookInfo {
   image          String?
   intro String
   desc      String?
-  authorIds      String[]
-  tagIds         String[]
-  genreIds       String[]
-  creatorIds String[]
 
   authors  BookAuthor[]
   tags     BookTag[]

@@ -11,10 +11,14 @@ export const POST = async (req) => {
 
   try {
     const body = await req.json();
-
     const bookInfo = await prisma.bookInfo.create({
       data: {
-        ...body,
+        isbn: body.isbn,
+        publishingYear: body.publishingYear,
+        title: body.title,
+        image: body.image,
+        intro: body.intro,
+        desc: body.desc,
         authors: {
           create: body.authorIds.map((authorId) => ({ authorId })),
         },

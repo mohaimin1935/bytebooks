@@ -2,6 +2,7 @@
 
 import AddAuthor from "@/app/ui/author/AddAuthor";
 import Loader from "@/app/ui/common/Loader";
+import Modal from "@/app/ui/common/Modal";
 import Selector from "@/app/ui/common/Selector";
 import TextArea from "@/app/ui/common/TextArea";
 import UploadImage from "@/app/ui/common/UploadImage";
@@ -9,6 +10,7 @@ import { ThemeContext } from "@/contexts/ThemeContext";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
@@ -53,11 +55,8 @@ const AddBook = () => {
 
   const [showModal, setShowModal] = useState();
 
+  const router = useRouter();
   const { modal, setModal } = useContext(ThemeContext);
-
-  useEffect(() => {
-    setSaved(false);
-  }, [bookImage, bookTitle, authors, genres, intro, desc, isbn]);
 
   useEffect(() => {
     if (!modal) setShowModal();
@@ -118,10 +117,13 @@ const AddBook = () => {
 
       const res = await axios.post("/api/book-info", bookInfo);
       console.log(res.data);
-
       setSaved(true);
       toast.success("Saved successfully.");
+      setModal(true);
+      setShowModal("save-action");
     } catch (error) {
+      toast.error(error.message);
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -177,6 +179,8 @@ const AddBook = () => {
           isLoading={genreLoading}
         />
       )}
+
+      {showModal === "save-action" && <Modal>Save Action</Modal>}
 
       <div className="flex gap-x-16 ml-12 relative">
         {!saved ? (
@@ -263,10 +267,10 @@ const AddBook = () => {
           <div className="w-3/5">
             {/* genres */}
             <p className="font-semibold text-lg mb-4">Genres</p>
-            <div className="flex flex-wrap items-center mb-12">
+            <div className="flex flex-wrap items-center mb-12 ">
               {genres.map(({ name, id }) => (
                 <span
-                  className="border border-check rounded-full pl-4 py-1.5 mr-2 mb-2 inline-flex items-center"
+                  className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center capitalize"
                   key={id}
                 >
                   {name}
