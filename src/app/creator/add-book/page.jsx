@@ -15,6 +15,7 @@ import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
+import { IoCloudDoneOutline } from "react-icons/io5";
 import useSWR from "swr";
 
 const fetcher = async (url) => {
@@ -55,11 +56,18 @@ const AddBook = () => {
 
   const [showModal, setShowModal] = useState();
 
+  const router = useRouter();
   const { modal, setModal } = useContext(ThemeContext);
 
   useEffect(() => {
     if (!modal) setShowModal();
   }, [modal]);
+
+  useEffect(() => {
+    if (saved && !modal) {
+      router?.push("/creator/home");
+    }
+  }, [saved, modal, router]);
 
   const removeAuthor = (id) => {
     let temp = authors;
@@ -179,40 +187,43 @@ const AddBook = () => {
         />
       )}
 
-      {showModal === "save-action" && <Modal>Save Action</Modal>}
+      {showModal === "save-action" && (
+        <Modal className={"h-[180px]"}>
+          <div className="">
+            <div className="flex items-center gap-x-2">
+              <IoCloudDoneOutline
+                size={24}
+                className="text-emerald-500 inline"
+              />
+              Saved Successfully. What do you want to do next?
+            </div>
+            <div className="flex mt-8 items-center justify-between gap-x-4">
+              <Link href="/" className="flex items-center gap-x-1">
+                {" "}
+                <FiArrowLeft className="inline" />{" "}
+                <span className="">Back</span>
+              </Link>
+              <div className="flex gap-x-4">
+                <Link className="secondary-btn py-1 rounded" href="/">
+                  Add Chapter
+                </Link>
+                <Link className="primary-btn py-1 rounded" href="/">
+                  Add Byte
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
 
       <div className="flex gap-x-16 ml-12 relative">
-        {!saved ? (
+        {!saved && (
           <button
             className="primary-btn rounded-md shadow hover:shadow-xl transition duration-300 py-2 px-5 absolute right-0 top-0"
             onClick={handleSave}
           >
             {!loading ? <span>Save</span> : <Loader />}
           </button>
-        ) : (
-          <div className="absolute right-0 top-0 flex flex-col items-end">
-            <Link
-              href=""
-              className="flex gap-x-2 transition duration-300 items-center"
-            >
-              <p>Chapter Editor</p>
-              <FiArrowRight />
-            </Link>
-            <Link
-              href=""
-              className="flex gap-x-2 transition duration-300 items-center"
-            >
-              <p>Summary Editor</p>
-              <FiArrowRight />
-            </Link>
-            <Link
-              href=""
-              className="flex gap-x-2 transition duration-300 items-center"
-            >
-              <FiArrowLeft />
-              <p>Back</p>
-            </Link>
-          </div>
         )}
 
         <div className="w-1/5 rounded-xl shadow-xl relative z-10">
