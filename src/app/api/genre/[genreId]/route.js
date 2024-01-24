@@ -24,29 +24,29 @@ export const GET = async (req,{params}) => {
   }
 };
 
-// export const PATCH = async (req, { params }) => {
-//     const { authorId } = params;
-//     try {
-//         const body = await req.json(); 
+export const PATCH = async (req, { params }) => {
+    const { genreId } = params;
+    try {
+        const body = await req.json(); 
         
         
-//         const updatedAuthor = await prisma.author.update({
-//             where: {
-//                 id: authorId,
-//             },
-//             data: body, 
-//         });
+        const updatedGenre = await prisma.genre.update({
+            where: {
+                id: genreId,
+            },
+            data: body, 
+        });
 
-//         return NextResponse.json(updatedAuthor);
-//     } catch (err) {
-//         console.log(err);
+        return NextResponse.json(updatedGenre);
+    } catch (err) {
+        console.log(err);
 
-//         return NextResponse.json(
-//             { message: "Something went wrong", error: err.message },
-//             { status: 500 }
-//         );
-//     }
-// };
+        return NextResponse.json(
+            { message: "Something went wrong", error: err.message },
+            { status: 500 }
+        );
+    }
+};
 
 // export const DELETE = async (req, { params }) => {
 //     const { authorId } = params;
