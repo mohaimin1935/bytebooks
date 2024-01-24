@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 
 // CREATE A GENRE
 export const POST = async (req) => {
-  const authError = await creatorOnlyFailed();
-  if (authError) {
-    return authError;
-  }
+  // const authError = await creatorOnlyFailed();
+  // if (authError) {
+  //   return authError;
+  // }
 
   try {
     const body = await req.json();
