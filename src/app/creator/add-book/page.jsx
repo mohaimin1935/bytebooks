@@ -55,7 +55,6 @@ const AddBook = () => {
 
   const [showModal, setShowModal] = useState();
 
-  const router = useRouter();
   const { modal, setModal } = useContext(ThemeContext);
 
   useEffect(() => {
