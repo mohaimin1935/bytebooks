@@ -1,16 +1,29 @@
 import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
+import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
 
 // CREATE A BOOK INFO
 export const POST = async (req) => {
-  const authError = await creatorOnlyFailed();
-  if (authError) {
-    return authError;
-  }
+  // const authError = await creatorOnlyFailed();
+  // if (authError) {
+  //   return authError;
+  // }
 
   try {
     const body = await req.json();
+
+    //input validation
+     const { isValid, missingFields } = validateMandatoryFields('BookInfo', body);
+
+        if (!isValid) {
+            return NextResponse.json(
+                { message: "Missing mandatory fields", missingFields },
+                { status: 400 }
+            );
+        }
+
+
     const bookInfo = await prisma.bookInfo.create({
       data: {
         isbn: body.isbn,
@@ -20,16 +33,16 @@ export const POST = async (req) => {
         intro: body.intro,
         desc: body.desc,
         authors: {
-          create: body.authorIds.map((authorId) => ({ authorId })),
+          create: body.authorIds?.map((authorId) => ({ authorId })),
         },
         tags: {
-          create: body.tagIds.map((tagId) => ({ tagId })),
+          create: body.tagIds?.map((tagId) => ({ tagId })),
         },
         genres: {
-          create: body.genreIds.map((genreId) => ({ genreId })),
+          create: body.genreIds?.map((genreId) => ({ genreId })),
         },
         creators: {
-          create: body.creatorIds.map((creatorId) => ({ creatorId })),
+          create: body.creatorIds?.map((creatorId) => ({ creatorId })),
         },
       },
     });
@@ -68,6 +81,8 @@ export const GET = async (req) => {
     return NextResponse.json(books);
   } catch (err) {
     console.log(err);
+
+    
 
     return NextResponse.json(
       { message: "Something went wrong" },
