@@ -1,6 +1,6 @@
 "use client";
 
-import AUthorCard from "@/app/ui/author/AuthorCard";
+import AddAuthor from "@/app/ui/author/AddAuthor";
 import Loader from "@/app/ui/common/Loader";
 import Selector from "@/app/ui/common/Selector";
 import TextArea from "@/app/ui/common/TextArea";
@@ -127,6 +127,8 @@ const AddBook = () => {
     }
   };
 
+  console.log(showModal, modal);
+
   return (
     <div>
       {showModal === "author" && (
@@ -139,7 +141,15 @@ const AddBook = () => {
           defaultImage={"/author.png"}
           hasImage={true}
           isLoading={authorLoading}
+          setShowModal={setShowModal}
+          modalType="add-author"
         />
+      )}
+
+      {showModal === "add-author" && (
+        <div className="">
+          <AddAuthor setAuthors={setAuthors} setShowModal={setShowModal} />
+        </div>
       )}
 
       {showModal === "tag" && (
