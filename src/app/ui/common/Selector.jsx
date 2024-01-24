@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import { IoMdClose } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,7 +10,6 @@ import Loader from "./Loader";
 
 const Selector = ({
   options = [],
-  addLink = "",
   selected = [],
   setSelected,
   handleRemove,
@@ -20,6 +18,8 @@ const Selector = ({
   creatable = false,
   createApi = "",
   isLoading = false,
+  setShowModal = () => {},
+  modalType = "",
 }) => {
   const [allItems, setAllItems] = useState(options);
   const [query, setQuery] = useState("");
@@ -133,12 +133,12 @@ const Selector = ({
 
         <div className="center">
           {!creatable && (
-            <Link
-              href={addLink}
+            <button
+              onClick={() => setShowModal(modalType)}
               className="secondary-btn py-1.5 px-4 mx-auto mt-4 inline-block text-sm"
             >
               Not found? Create new.
-            </Link>
+            </button>
           )}
 
           {creatable && query && (
