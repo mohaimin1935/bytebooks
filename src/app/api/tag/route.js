@@ -4,13 +4,29 @@ import { NextResponse } from "next/server";
 
 // CREATE A TAG
 export const POST = async (req) => {
-  const authError = await creatorOnlyFailed();
-  if (authError) {
-    return authError;
-  }
+  // const authError = await creatorOnlyFailed();
+  // if (authError) {
+  //   return authError;
+  // }
+
 
   try {
     const body = await req.json();
+
+    const existingTag = await prisma.tag.findUnique({
+      where: {
+        name: body.name,
+      },
+    });
+
+    
+    if (existingTag) {
+      return NextResponse.json(
+        { message: "Tag with this name already exists" },
+        { status: 409 }
+      );
+    }
+    
     const newTag = await prisma.tag.create({ data: body });
 
     return new NextResponse(JSON.stringify(newTag, { status: 201 }));

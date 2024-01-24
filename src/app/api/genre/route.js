@@ -8,9 +8,28 @@ export const POST = async (req) => {
   // if (authError) {
   //   return authError;
   // }
+  
 
   try {
+
     const body = await req.json();
+
+    const existingGenre = await prisma.genre.findUnique({
+      where: {
+        name: body.name,
+      },
+    });
+
+    
+    if (existingGenre) {
+      return NextResponse.json(
+        { message: "Genre with this name already exists" },
+        { status: 409 }
+      );
+    }
+
+
+    
     const newGenre = await prisma.genre.create({ data: body });
 
     return new NextResponse(JSON.stringify(newGenre, { status: 201 }));

@@ -29,6 +29,19 @@ export const PATCH = async (req, { params }) => {
     try {
         const body = await req.json(); 
         
+        const existingTag = await prisma.tag.findUnique({
+            where: {
+                name: body.name,
+            },
+        });
+
+    
+        if (existingTag) {
+            return NextResponse.json(
+                { message: "Tag with this name already exists" },
+                { status: 409 }
+            );
+        }
         
         const updatedTag = await prisma.tag.update({
             where: {

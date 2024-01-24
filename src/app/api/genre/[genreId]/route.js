@@ -29,6 +29,20 @@ export const PATCH = async (req, { params }) => {
     try {
         const body = await req.json(); 
         
+
+        const existingGenre = await prisma.genre.findUnique({
+            where: {
+                name: body.name,
+            },
+        });
+
+    
+        if (existingGenre) {
+            return NextResponse.json(
+                { message: "Genre with this name already exists" },
+                {  status: 409 }
+            );
+        }
         
         const updatedGenre = await prisma.genre.update({
             where: {
