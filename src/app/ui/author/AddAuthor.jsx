@@ -69,7 +69,7 @@ const AddAuthor = ({
       >
         <IoMdClose size={24} />
       </div>
-      <div className="w-full h-full mt-4">
+      <div className="w-full h-full mt-4 pb-8">
         <div className="flex items-center w-full gap-x-12">
           <div className="w-1/5 rounded shadow border-check relative z-10">
             <UploadImage
@@ -100,7 +100,7 @@ const AddAuthor = ({
           maxHeight={200}
         ></TextArea>
 
-        <div className="mt-12 flex items-center justify-between">
+        <div className="my-12 flex items-center justify-between">
           <button
             className="border border-check px-4 py-1.5 rounded"
             onClick={handleCancel}

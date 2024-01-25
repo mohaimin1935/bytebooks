@@ -105,9 +105,8 @@ const AddBook = () => {
     console.log(action);
 
     if (action === "back") router.push("home");
-    else if (action === "chapter")
-      router.push(`/creator/book/${bookId}/add-chapter`);
-    else if (action === "byte") router.push(`/creator/book/${bookId}/add-byte`);
+    else if (action === "chapter") router.push(`/book/${bookId}/chapter`);
+    else if (action === "byte") router.push(`/book/${bookId}/byte`);
   };
 
   const handleSave = async () => {

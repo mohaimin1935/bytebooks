@@ -74,10 +74,14 @@ const TopBar = ({ role }) => {
           </div>
         )}
 
-        <div className="w-12 h-12 accent2 rounded-full left-4"></div>
         <div className="text-xl">
           <IoNotificationsOutline />
         </div>
+        <img
+          src={data?.user?.image || "/profile.png"}
+          alt="profile"
+          className="w-12 h-12 p-[2px] border border-check rounded-full left-4"
+        />
       </div>
     </div>
   );

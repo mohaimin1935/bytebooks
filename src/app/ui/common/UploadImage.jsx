@@ -66,17 +66,17 @@ const UploadImage = ({ setURL, initialImage = "", className }) => {
   }, [image]);
 
   return (
-    <div className="relative rounded-md accent1">
+    <div className="relative rounded-md accent1 shadow-lg">
       <div
         className={cn(
-          "absolute left-0 right-0 top-0 bottom-0 center content4 m-auto bg2 rounded-md",
+          "absolute left-0 right-0 top-0 bottom-0 center content2 m-auto bg2 rounded-md",
           className
         )}
       >
         <FiUpload size={24} />
       </div>
       <div
-        className="center cursor-pointer pb-[133%] relative rounded-md hover:opacity-50  transition duration-300"
+        className="center cursor-pointer pb-[133%] relative rounded-md hover:opacity-50 transition duration-300"
         onClick={() => {
           if (inputFileRef.current) {
             inputFileRef.current.click();
@@ -103,7 +103,7 @@ const UploadImage = ({ setURL, initialImage = "", className }) => {
       {isUploading && (
         <div
           className={
-            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-md"
+            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-xl"
           }
         >
           <div className="bg-gray-200 rounded-md w-full mx-2">
