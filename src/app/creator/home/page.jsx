@@ -13,7 +13,7 @@ const CreatorHome = () => {
         <div className="h-2 w-full bg-amber-500"></div>
         <h3 className="text-xl font-semibold text-center my-4">IN PROGRESS</h3>
         <Link
-          href={"/creator/add-book"}
+          href={"/creator/book/add-book"}
           className="border border-check center cursor-pointer py-2 rounded-full mt-8 m-4 text-xl"
         >
           <IoMdAdd />

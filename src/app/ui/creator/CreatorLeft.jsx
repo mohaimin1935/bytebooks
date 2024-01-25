@@ -2,7 +2,7 @@
 
 import React from "react";
 import LeftPanel from "../common/LeftPanel";
-import { FiBookOpen, FiHome, FiSettings } from "react-icons/fi";
+import { FiBookOpen, FiDatabase, FiHome, FiSettings } from "react-icons/fi";
 import { IoAnalyticsOutline } from "react-icons/io5";
 
 const CreatorLeft = ({ active }) => {
@@ -24,6 +24,12 @@ const options = [
     name: "Analytics",
     link: "analytics",
     icon: () => <IoAnalyticsOutline />,
+  },
+
+  {
+    name: "Data Manager",
+    link: "data-manager",
+    icon: () => <FiDatabase />,
   },
   {
     name: "Settings",
