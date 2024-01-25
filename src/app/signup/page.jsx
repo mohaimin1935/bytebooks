@@ -52,7 +52,7 @@ const Signup = () => {
         toast.success("Registered successfully.");
         signIn("credentials", { email, password, redirect: false }).then(
           (res) => {
-            if (res?.error) toast.error(res.error);
+            if (res?.error) toast.error("Sign up failed");
             if (res?.ok && !res?.error)
               toast.success("Logged in successfully!");
           }
