@@ -59,36 +59,41 @@ export const GET = async (req, { params }) => {
 
 
 export const PATCH = async (req, { params }) => {
-    const { genreId } = params;
+    const { bookId, chapterId } = params;
     try {
         const body = await req.json(); 
-        
 
-        const existingGenre = await prisma.genre.findUnique({
+       
+        const existingChapter = await prisma.chapter.findUnique({
             where: {
-                name: body.name,
+                    id: chapterId,
+                    bookId: bookId,
             },
         });
 
-    
-        if (existingGenre) {
+        
+        if (!existingChapter) {
             return NextResponse.json(
-                { message: "Genre with this name already exists" },
-                {  status: 409 }
+                { message: "Chapter not found" },
+                { status: 404 }
             );
         }
+
         
-        const updatedGenre = await prisma.genre.update({
+        const updatedChapter = await prisma.chapter.update({
             where: {
-                id: genreId,
+                    id: chapterId,
+                    bookId: bookId,
             },
-            data: body, 
+            data: body,
         });
 
-        return NextResponse.json(updatedGenre);
+        
+        return NextResponse.json(updatedChapter);
     } catch (err) {
-        console.log(err);
+        console.error(err);
 
+        
         return NextResponse.json(
             { message: "Something went wrong", error: err.message },
             { status: 500 }
@@ -96,38 +101,48 @@ export const PATCH = async (req, { params }) => {
     }
 };
 
+
 export const DELETE = async (req, { params }) => {
-    const { genreId } = params;
+    const { bookId, chapterId } = params;
     try {
-        await prisma.bookGenre.deleteMany({
+        
+        const existingChapter = await prisma.chapter.findUnique({
             where: {
-                genreId: genreId,
+                    id: chapterId,
+                    bookId: bookId,
             },
         });
 
-        const deletedGenre = await prisma.genre.delete({
+        
+        if (!existingChapter) {
+            return NextResponse.json(
+                { message: "Chapter not found" },
+                { status: 404 }
+            );
+        }
+
+        
+        await prisma.chapter.delete({
             where: {
-                id: genreId,
+                    id: chapterId,
+                    bookId: bookId,
             },
         });
 
+        
         return NextResponse.json(
-            { message: "Genre deleted successfully", genre: deletedGenre },
+            { message: "Chapter deleted successfully" },
             { status: 200 }
         );
     } catch (err) {
-        console.log(err);
+        console.error(err);
 
-        if (err.code === 'P2025') {
-            return NextResponse.json(
-                { message: "genre not found" },
-                { status: 404 }
-            );
-        } else {
-            return NextResponse.json(
-                { message: "Something went wrong", error: err.message },
-                { status: 500 }
-            );
-        }
+        
+        return NextResponse.json(
+            { message: "Something went wrong", error: err.message },
+            { status: 500 }
+        );
     }
 };
+
+
