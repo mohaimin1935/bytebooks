@@ -1,4 +1,6 @@
+// file-status: need to work
 // don't change without notifying @zulkar
+
 
 import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
@@ -34,7 +36,7 @@ export const POST = async (req,{params}) => {
         console.log(updateUser);
         return NextResponse.json(
             {message: "success"},
-            {status: 200}
+            {status: 200}               //check response code
         );
     }
     else {          //

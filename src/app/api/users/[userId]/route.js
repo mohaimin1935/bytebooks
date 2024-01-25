@@ -1,4 +1,6 @@
+// file-status: need to work
 // don't change without notifying @zulkar
+
 
 import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
@@ -64,6 +66,29 @@ export const PUT = async (req,{params}) => {
     console.log(err);
 
     
+
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+};
+
+// need to add authentication check and other error codes
+export const DELETE = async (req,{params}) => {
+    //console.log(params.userId);
+  try {
+    const user = await prisma.User.delete({
+        where: {
+            id: params.userId,
+        },
+    });
+    return NextResponse.json(
+        {message: "success"},
+        {status: 200}           //check status code
+    );
+  } catch (err) {
+    console.log(err);
 
     return NextResponse.json(
       { message: "Something went wrong" },
