@@ -96,6 +96,7 @@ model BookInfo {
   tags     BookTag[]
   genres   BookGenre[]
   creators BookCreator[]
+  chapters Chapter[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -137,4 +138,17 @@ model BookGenre {
   genreId String?
 
   @@index([bookId, genreId])
+}
+
+model Chapter {
+  id        String  @id @default(cuid()) @map("_id")
+  serial    Int
+  content   String
+  audioLink String?
+  bookId    String
+
+  book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
