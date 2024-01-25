@@ -147,6 +147,7 @@ model Chapter {
   content   String
   audioLink String?
   bookId    String
+  language  String?
 
   book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
