@@ -11,20 +11,16 @@ import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
 export const GET = async (req,{params}) => {
     //console.log(params.userId);
   try {
-    const user = await prisma.Chapter.findUnique({
+    const chapters = await prisma.BookInfo.findUnique({
         where: {
-            id: params.userId,
+            id: params.bookId,
         },
         select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            role: true,     // need to add country and xp
+            chapters: true,
         }
     });
-    //console.log(user)
-    return NextResponse.json(user);
+    console.log(chapters)
+    return NextResponse.json(chapters);
   } catch (err) {
     console.log(err);
 
