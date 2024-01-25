@@ -7,9 +7,9 @@ import Selector from "@/app/ui/common/Selector";
 import TextArea from "@/app/ui/common/TextArea";
 import UploadImage from "@/app/ui/common/UploadImage";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { fetcher } from "@/utils/util";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -17,15 +17,6 @@ import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { IoCloudDoneOutline } from "react-icons/io5";
 import useSWR from "swr";
-
-const fetcher = async (url) => {
-  try {
-    const res = await axios.get(url);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const AddBook = () => {
   const { data: authorList, isLoading: authorLoading } = useSWR(
