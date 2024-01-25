@@ -42,6 +42,7 @@ model User {
   image          String?
   hashedPassword String?
   role           String?
+  //need to add country and xp
   accounts       Account[]
   sessions       Session[]
 
