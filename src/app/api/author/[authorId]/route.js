@@ -25,21 +25,41 @@ export const GET = async (req,{params}) => {
 };
 
 export const PATCH = async (req, { params }) => {
-    const { authorId } = params;
+    const { bookId, chapterId } = params;
     try {
         const body = await req.json(); 
-        
-        
-        const updatedAuthor = await prisma.author.update({
+
+        const existingChapter = await prisma.chapter.findUnique({
             where: {
-                id: authorId,
+                id_bookId: {
+                    id: chapterId,
+                    bookId: bookId,
+                },
             },
-            data: body, 
         });
 
-        return NextResponse.json(updatedAuthor);
+        if (!existingChapter) {
+            return NextResponse.json(
+                { message: "Chapter not found" },
+                { status: 404 }
+            );
+        }
+
+    
+        const updatedChapter = await prisma.chapter.update({
+            where: {
+                id_bookId: {
+                    id: chapterId,
+                    bookId: bookId,
+                },
+            },
+            data: body,
+        });
+
+    
+        return NextResponse.json(updatedChapter);
     } catch (err) {
-        console.log(err);
+        console.error(err);
 
         return NextResponse.json(
             { message: "Something went wrong", error: err.message },
@@ -47,6 +67,7 @@ export const PATCH = async (req, { params }) => {
         );
     }
 };
+
 
 export const DELETE = async (req, { params }) => {
     const { authorId } = params;

@@ -2,27 +2,61 @@ import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
 
-export const GET = async (req,{params}) => {
-    const { genreId } = params;
+// export const GET = async (req,{params}) => {
+//     const { genreId } = params;
+//   try {
+//     const genres = await prisma.genre.findUnique({
+//             where: {
+//                 id:genreId
+//             }
+//         });
+
+//     //return new NextResponse(JSON.stringify(authors, { status: 200 }));
+//     //console.log(authors);
+//     return NextResponse.json(genres);
+//   } catch (err) {
+//     console.log(err);
+
+//     return NextResponse.json(
+//       { message: "Something went wrong" },
+//       { status: 500 }
+//     );
+//   }
+// };
+
+export const GET = async (req, { params }) => {
+  const { bookId, chapterId } = params;
   try {
-    const genres = await prisma.genre.findUnique({
-            where: {
-                id:genreId
-            }
-        });
+    const chapter = await prisma.chapter.findFirst({
+      where: {
+        id: chapterId,
+        bookId: bookId, 
+      }
+    });
+    //const chapter = await prisma.chapter.findMany();
 
-    //return new NextResponse(JSON.stringify(authors, { status: 200 }));
-    //console.log(authors);
-    return NextResponse.json(genres);
+    if (!chapter) {
+      
+      return NextResponse.json(
+        { message: "Chapter not found" },
+        { status: 404 }
+      );
+    }
+
+    
+    return NextResponse.json(chapter);
   } catch (err) {
-    console.log(err);
+    console.error(err);
 
+    
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }
     );
   }
 };
+
+
 
 export const PATCH = async (req, { params }) => {
     const { genreId } = params;
