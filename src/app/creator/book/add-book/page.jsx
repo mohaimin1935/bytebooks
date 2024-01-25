@@ -241,7 +241,7 @@ const AddBook = () => {
           </button>
         )}
 
-        <div className="w-1/5 rounded-xl shadow-xl relative z-10">
+        <div className="w-1/5 rounded-md  relative z-10">
           <UploadImage setURL={setBookImage} />
         </div>
 

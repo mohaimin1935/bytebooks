@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { FiUpload } from "react-icons/fi";
 import { cn } from "@/utils/cn";
 
-const UploadImage = ({setURL, initialImage = "", className }) => {
+const UploadImage = ({ setURL, initialImage = "", className }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -66,17 +66,17 @@ const UploadImage = ({setURL, initialImage = "", className }) => {
   }, [image]);
 
   return (
-    <div className="relative rounded-xl accent1">
+    <div className="relative rounded-md accent1">
       <div
         className={cn(
-          "absolute left-0 right-0 top-0 bottom-0 center m-auto bg2 rounded-xl",
+          "absolute left-0 right-0 top-0 bottom-0 center content4 m-auto bg2 rounded-md",
           className
         )}
       >
         <FiUpload size={24} />
       </div>
       <div
-        className="center cursor-pointer pb-[133%] relative rounded-xl hover:opacity-50  transition duration-300"
+        className="center cursor-pointer pb-[133%] relative rounded-md hover:opacity-50  transition duration-300"
         onClick={() => {
           if (inputFileRef.current) {
             inputFileRef.current.click();
@@ -103,12 +103,12 @@ const UploadImage = ({setURL, initialImage = "", className }) => {
       {isUploading && (
         <div
           className={
-            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-xl"
+            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-md"
           }
         >
-          <div className="bg-gray-200 rounded-xl w-full mx-2">
+          <div className="bg-gray-200 rounded-md w-full mx-2">
             <div
-              className="bg-green-400 rounded-xl h-1.5"
+              className="bg-green-400 rounded-md h-1.5"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
