@@ -142,6 +142,7 @@ model BookGenre {
 
 model Chapter {
   id        String  @id @default(cuid()) @map("_id")
+  title     String?
   serial    Int
   content   String
   audioLink String?
