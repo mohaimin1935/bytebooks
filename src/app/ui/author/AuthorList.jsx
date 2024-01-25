@@ -5,7 +5,7 @@ import Loader from "../common/Loader";
 import DataTable from "../common/DataTable";
 
 const AuthorList = () => {
-  const { data, error, isLoading } = useSWR("/api/author", fetcher);
+  const { data, isLoading } = useSWR("/api/author", fetcher);
   if (isLoading)
     return (
       <div className="mt-16">
@@ -17,8 +17,9 @@ const AuthorList = () => {
     <DataTable
       data={data}
       hasImage
-      columns={["name", "desc"]}
       defaultImage={"/author.png"}
+      deleteApi="/api/author"
+      type={"author"}
     />
   );
 };

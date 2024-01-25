@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { FiUpload } from "react-icons/fi";
 import { cn } from "@/utils/cn";
 
-const UploadImage = ({ setURL, initialImage = "", className }) => {
+const UploadImage = ({setURL, initialImage = "", className }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);

@@ -33,8 +33,7 @@ const Selector = ({
     if (query.length > 0 && allItems) {
       setSuggestions([]);
       allItems.forEach((r) => {
-        let name = r?.name?.toString().slice(0, query.length).toLowerCase();
-        if (name?.indexOf(query.toLowerCase()) !== -1) {
+        if (r?.name?.toString().toLowerCase().includes(query.toLowerCase())) {
           setSuggestions((prev) => [...prev, r]);
         }
       });

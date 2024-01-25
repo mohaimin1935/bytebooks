@@ -81,11 +81,11 @@
   }
 
   .accent1 {
-    @apply bg-[var(--accent-1)] duration-300;
+    @apply bg-[var(--accent-1)] text-[var(--content-4)]  duration-300;
   }
 
   .accent2 {
-    @apply bg-[var(--accent-2)] duration-300;
+    @apply bg-[var(--accent-2)] text-[var(--content-4)] duration-300;
   }
 
   .border-check {
