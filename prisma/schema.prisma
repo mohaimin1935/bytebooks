@@ -100,6 +100,7 @@ model BookInfo {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  byte      Byte[]
 }
 
 model BookAuthor {
@@ -141,6 +142,21 @@ model BookGenre {
 }
 
 model Chapter {
+  id        String  @id @default(cuid()) @map("_id")
+  title     String?
+  serial    Int
+  content   String
+  audioLink String?
+  bookId    String
+  language  String?
+
+  book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Byte {
   id        String  @id @default(cuid()) @map("_id")
   title     String?
   serial    Int
