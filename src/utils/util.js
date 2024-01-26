@@ -17,4 +17,4 @@ export const fetcher = async (url) => {
   }
 };
 
-export const baseApi = "http://localhost:3000/api";
+export const baseApi = process.env.BASE_API;

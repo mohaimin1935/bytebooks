@@ -76,6 +76,7 @@ const AddAuthor = ({
               setURL={setImageURL}
               initialImage={imageURL}
               className={"accent2"}
+              previousUrl={author?.image}
             />
           </div>
 

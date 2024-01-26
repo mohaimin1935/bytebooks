@@ -46,7 +46,7 @@ const AddBook = ({ bookInfo }) => {
   const [isbn, setIsbn] = useState();
   const [publishingYear, setPublishingYear] = useState();
 
-  const [bookId, setBookId] = useState();
+  const [bookId, setBookId] = useState("");
 
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -61,22 +61,35 @@ const AddBook = ({ bookInfo }) => {
     if (book) {
       setBookTitle(book.title);
       setBookImage(book.image);
-      setAuthors(book.authors);
-      setGenres(book.genres);
-      setTags(book.tags);
+      setAuthors(book.authors?.map((a) => a.author) || []);
+      setGenres(book.genres?.map((a) => a.genre) || []);
+      setTags(book.tags?.map((a) => a.tag) || []);
       setIntro(book.intro);
       setDesc(book.desc);
       setIsbn(book.isbn);
       setPublishingYear(book.publishingYear);
 
       setBookId(book.id);
-      console.log("here here", book.intro, intro);
     }
   }, [book]);
 
   useEffect(() => {
     if (!modal) setShowModal();
   }, [modal]);
+
+  useEffect(() => {
+    setSaved(false);
+  }, [
+    book,
+    bookImage,
+    authors,
+    genres,
+    tags,
+    intro,
+    desc,
+    isbn,
+    publishingYear,
+  ]);
 
   useEffect(() => {
     if (saved && !modal && !actionProgressing && !book) {
@@ -119,11 +132,10 @@ const AddBook = ({ bookInfo }) => {
   };
 
   const handleSaveAction = (action) => {
-    if (!saved) return;
+    if (!saved) handleSave();
 
     setActionProgressing(true);
     setModal(false);
-    console.log(action);
 
     if (action === "back") router.push("home");
     else if (action === "chapter")
@@ -142,9 +154,9 @@ const AddBook = ({ bookInfo }) => {
       image: bookImage,
       intro,
       desc,
-      authorIds: authors.map((author) => author.id),
-      tagIds: tags.map((tag) => tag.id),
-      genreIds: genres.map((genres) => genres.id),
+      authorIds: authors?.map((author) => author.id) || [],
+      tagIds: tags?.map((tag) => tag.id) || [],
+      genreIds: genres?.map((genres) => genres.id) || [],
       creatorIds: [userId],
     };
 
@@ -152,10 +164,7 @@ const AddBook = ({ bookInfo }) => {
       setLoading(true);
 
       if (book) {
-        const res = await axios.book.patch(
-          `/api/book-info/${bookId}`,
-          bookInfo
-        );
+        const res = await axios.patch(`/api/book-info/${bookId}`, bookInfo);
         setBook(res.data);
       } else {
         const res = await axios.post("/api/book-info", bookInfo);
@@ -293,7 +302,11 @@ const AddBook = ({ bookInfo }) => {
         )}
 
         <div className="w-1/5 rounded-md relative z-10">
-          <UploadFile setURL={setBookImage} />
+          <UploadFile
+            setURL={setBookImage}
+            initialImage={book?.image || ""}
+            previousUrl={book?.image}
+          />
         </div>
 
         <div className="w-1/2">

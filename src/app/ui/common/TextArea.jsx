@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn";
 import React, { useEffect, useRef } from "react";
 
-const TextArea = ({
+const CustomTextArea = ({
   value,
   setValue,
   className,
@@ -28,7 +28,9 @@ const TextArea = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-      ></textArea>
+      >
+        {value}
+      </textArea>
       <div className="absolute content3 text-sm">
         {value?.length ?? 0} / {maxLength}
       </div>
@@ -36,4 +38,4 @@ const TextArea = ({
   );
 };
 
-export default TextArea;
+export default CustomTextArea;

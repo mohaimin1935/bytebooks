@@ -42,7 +42,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo
 
-[] forgot password
+- [x] autosave book content
+- [ ] work on edit content from add content
+- [ ] add base api env to production
+- [ ] delete previous file from firebase on new upload
+- [ ] add api: crud content, get book of a creator, edit book-info
+
+- [ ] forgot password
 
 ---
 

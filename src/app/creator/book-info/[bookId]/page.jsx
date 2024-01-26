@@ -16,7 +16,12 @@ const getData = async (bookId) => {
 const page = async ({ params }) => {
   const book = await getData(params.bookId);
 
-  if (book) return <AddBook bookInfo={book} />;
+  if (book)
+    return (
+      <Suspense fallback={<Loader />}>
+        <AddBook bookInfo={book} />
+      </Suspense>
+    );
 };
 
 export default page;

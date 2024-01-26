@@ -7,6 +7,7 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 import toast from "react-hot-toast";
 import { FiUpload } from "react-icons/fi";
@@ -18,13 +19,24 @@ const UploadFile = ({
   className = "",
   aspectRatio = 3 / 4,
   type = "image",
+  showImage = false,
+  previousUrl,
 }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imageURL, setImageURL] = useState(initialImage);
+  const [acceptType, setAcceptType] = useState();
 
   const inputFileRef = useRef();
+
+  useEffect(() => {
+    if (type === "image") setAcceptType("image/*");
+    else if (type === "audio") {
+      setAcceptType("audio/*");
+    } else if (type === "video") setAcceptType("video/*");
+    else setAcceptType("media_type");
+  }, [type]);
 
   useEffect(() => {
     const storage = getStorage(app);
@@ -60,6 +72,12 @@ const UploadFile = ({
         () => {
           setIsUploading(false);
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            if (previousUrl) {
+              const prevRef = ref(storage, previousUrl);
+              deleteObject(prevRef)
+                .then(() => {})
+                .catch((err) => console.log(err));
+            }
             setImageURL(downloadURL);
             setURL(downloadURL);
             console.log(downloadURL);
@@ -72,12 +90,9 @@ const UploadFile = ({
   }, [image]);
 
   return (
-    <div className="relative rounded-md accent1 shadow-lg">
+    <div className={cn("relative rounded-md accent1 shadow-lg", className)}>
       <div
-        className={cn(
-          "absolute inset-0 center content2 m-auto bg2 rounded",
-          className
-        )}
+        className={cn("absolute inset-0 center content2 m-auto bg2 rounded")}
       >
         <FiUpload size={24} />
       </div>
@@ -92,7 +107,12 @@ const UploadFile = ({
         }}
         style={{
           paddingBottom: `${(1 / aspectRatio) * 100}%`,
-          backgroundImage: `url(${imageURL})`,
+          backgroundImage:
+            type === "image"
+              ? `url(${imageURL})`
+              : type === "audio" && showImage
+              ? `url(/audio.avif)`
+              : "",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -106,13 +126,13 @@ const UploadFile = ({
           onChange={(e) => {
             setImage(e.target.files[0]);
           }}
-          accept="image/*"
+          accept={acceptType}
         />
       </div>
       {isUploading && (
         <div
           className={
-            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center accent1 rounded-xl"
+            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center accent1 rounded"
           }
         >
           <div className="bg-gray-200 rounded-md w-full mx-2">
