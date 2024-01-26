@@ -2,7 +2,7 @@
 
 import Loader from "@/app/ui/common/Loader";
 import TextArea from "@/app/ui/common/TextArea";
-import UploadImage from "@/app/ui/common/UploadImage";
+import UploadFile from "@/app/ui/common/UploadFile";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import axios from "axios";
 import { useContext, useState } from "react";
@@ -72,7 +72,7 @@ const AddAuthor = ({
       <div className="w-full h-full mt-4 pb-8">
         <div className="flex items-center w-full gap-x-12">
           <div className="w-1/5 rounded shadow border-check relative z-10">
-            <UploadImage
+            <UploadFile
               setURL={setImageURL}
               initialImage={imageURL}
               className={"accent2"}

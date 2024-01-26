@@ -16,3 +16,5 @@ export const fetcher = async (url) => {
     console.log(error);
   }
 };
+
+export const baseApi = "http://localhost:3000/api";

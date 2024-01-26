@@ -12,7 +12,13 @@ import toast from "react-hot-toast";
 import { FiUpload } from "react-icons/fi";
 import { cn } from "@/utils/cn";
 
-const UploadImage = ({ setURL, initialImage = "", className }) => {
+const UploadFile = ({
+  setURL = () => {},
+  initialImage = "",
+  className = "",
+  aspectRatio = 3 / 4,
+  type = "image",
+}) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -69,20 +75,23 @@ const UploadImage = ({ setURL, initialImage = "", className }) => {
     <div className="relative rounded-md accent1 shadow-lg">
       <div
         className={cn(
-          "absolute left-0 right-0 top-0 bottom-0 center content2 m-auto bg2 rounded-md",
+          "absolute inset-0 center content2 m-auto bg2 rounded",
           className
         )}
       >
         <FiUpload size={24} />
       </div>
       <div
-        className="center cursor-pointer pb-[133%] relative rounded-md hover:opacity-50 transition duration-300"
+        className={cn(
+          "center cursor-pointer pb-[133%] relative rounded-md hover:opacity-50 transition duration-300"
+        )}
         onClick={() => {
           if (inputFileRef.current) {
             inputFileRef.current.click();
           }
         }}
         style={{
+          paddingBottom: `${(1 / aspectRatio) * 100}%`,
           backgroundImage: `url(${imageURL})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -103,7 +112,7 @@ const UploadImage = ({ setURL, initialImage = "", className }) => {
       {isUploading && (
         <div
           className={
-            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center border-2 accent1 rounded-xl"
+            "absolute bottom-0 left-0 w-full h-full dark-bg px-2 flex items-center accent1 rounded-xl"
           }
         >
           <div className="bg-gray-200 rounded-md w-full mx-2">
@@ -118,4 +127,4 @@ const UploadImage = ({ setURL, initialImage = "", className }) => {
   );
 };
 
-export default UploadImage;
+export default UploadFile;

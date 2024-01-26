@@ -2,12 +2,12 @@ import React from "react";
 import ChapterEditor from "./ChapterEditor";
 import TopBar from "../common/TopBar";
 
-const BookEditorLayout = ({ children }) => {
+const BookEditorLayout = ({ children, chapterList, handleAdd }) => {
   return (
     <div class="flex h-screen bg1">
       {/* left panel */}
       <div class="w-[300px] bg2">
-        <ChapterEditor />
+        <ChapterEditor chapterList={chapterList} />
       </div>
 
       {/* right */}

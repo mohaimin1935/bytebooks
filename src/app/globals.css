@@ -149,3 +149,36 @@
   opacity: 0.5;
   border-radius: 3px;
 }
+
+.quill {
+  @apply relative overflow-visible !important;
+}
+
+.ql-toolbar.ql-snow {
+  background-color: var(--bkg-2);
+  @apply border-none rounded !important;
+}
+
+.ql-container.ql-snow {
+  @apply border-none ml-0 pl-0 font-karla text-lg !important;
+}
+
+.ql-tooltip {
+  background-color: var(--bkg-2) !important;
+  border-radius: 100px;
+  box-shadow: none !important;
+  z-index: 1000;
+  @apply px-6 absolute left-[50%] -translate-x-[50%] !important;
+}
+
+.ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+  @apply content-highlight cursor-pointer;
+}
+
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  @apply bg2;
+}
+
+.ql-snow a {
+  color: var(--accent-2) !important;
+}

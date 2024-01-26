@@ -91,6 +91,7 @@ model BookInfo {
   image          String?
   intro          String
   desc           String?
+  isPublished Boolean @default(false)
 
   authors  BookAuthor[]
   tags     BookTag[]

@@ -4,7 +4,7 @@ import React from "react";
 import { AiFillAudio } from "react-icons/ai";
 import { FiBookmark, FiPlus, FiShare2, FiStar } from "react-icons/fi";
 
-const AddBook = () => {
+const ViewBook = () => {
   return (
     <div>
       <div className="flex gap-x-16 ml-12">
@@ -105,4 +105,4 @@ const AddBook = () => {
   );
 };
 
-export default AddBook;
+export default ViewBook;

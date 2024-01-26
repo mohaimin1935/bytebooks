@@ -8,9 +8,7 @@ import { FiArrowRight, FiBookmark, FiShare2, FiStar } from "react-icons/fi";
 const getData = async (bookId) => {
   console.log("ok");
   try {
-    const res = await axios.get(
-      `http://localhost:3000/api/book-info/${bookId}`
-    );
+    const res = await axios.get(`${baseApi}/book-info/${bookId}`);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -62,14 +60,9 @@ const ViewBook = async ({ params }) => {
           <p className="text-lg content2">
             By{" "}
             {book.authors.map(({ author }) => (
-              // TODO: update author link
-              <Link
-                key={author.id}
-                href="/"
-                className="mr-2 bg2 px-2 py-1 rounded"
-              >
+              <p key={author.id} className="mr-2 bg2 px-2 py-1 rounded">
                 {author.name}
-              </Link>
+              </p>
             ))}
           </p>
 

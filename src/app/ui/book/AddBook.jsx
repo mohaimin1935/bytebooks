@@ -5,20 +5,22 @@ import Loader from "@/app/ui/common/Loader";
 import Modal from "@/app/ui/common/Modal";
 import Selector from "@/app/ui/common/Selector";
 import TextArea from "@/app/ui/common/TextArea";
-import UploadImage from "@/app/ui/common/UploadImage";
+import UploadFile from "@/app/ui/common/UploadFile";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { fetcher } from "@/utils/util";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import NoWorkResult from "postcss/lib/no-work-result";
+import React, { use, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { IoCloudDoneOutline } from "react-icons/io5";
 import useSWR from "swr";
 
-const AddBook = () => {
+const AddBook = ({ bookInfo }) => {
   const { data: authorList, isLoading: authorLoading } = useSWR(
     "/api/author",
     fetcher
@@ -32,7 +34,9 @@ const AddBook = () => {
   const { data } = useSession();
   const userId = data?.user.id;
 
-  const [bookImage, setBookImage] = useState("");
+  const [book, setBook] = useState(bookInfo);
+
+  const [bookImage, setBookImage] = useState();
   const [bookTitle, setBookTitle] = useState();
   const [authors, setAuthors] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -54,11 +58,28 @@ const AddBook = () => {
   const { modal, setModal } = useContext(ThemeContext);
 
   useEffect(() => {
+    if (book) {
+      setBookTitle(book.title);
+      setBookImage(book.image);
+      setAuthors(book.authors);
+      setGenres(book.genres);
+      setTags(book.tags);
+      setIntro(book.intro);
+      setDesc(book.desc);
+      setIsbn(book.isbn);
+      setPublishingYear(book.publishingYear);
+
+      setBookId(book.id);
+      console.log("here here", book.intro, intro);
+    }
+  }, [book]);
+
+  useEffect(() => {
     if (!modal) setShowModal();
   }, [modal]);
 
   useEffect(() => {
-    if (saved && !modal && !actionProgressing) {
+    if (saved && !modal && !actionProgressing && !book) {
       router?.push("/creator/home");
     }
   }, [saved, modal, router]);
@@ -105,8 +126,10 @@ const AddBook = () => {
     console.log(action);
 
     if (action === "back") router.push("home");
-    else if (action === "chapter") router.push(`/book/${bookId}/chapter`);
-    else if (action === "byte") router.push(`/book/${bookId}/byte`);
+    else if (action === "chapter")
+      router.push(`/book/${bookId}/add-content?type=chapter`);
+    else if (action === "byte")
+      router.push(`/book/${bookId}/add-content?type=byte`);
   };
 
   const handleSave = async () => {
@@ -128,15 +151,26 @@ const AddBook = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post("/api/book-info", bookInfo);
-      console.log(res.data);
-      setBookId(res.data.id);
+      if (book) {
+        const res = await axios.book.patch(
+          `/api/book-info/${bookId}`,
+          bookInfo
+        );
+        setBook(res.data);
+      } else {
+        const res = await axios.post("/api/book-info", bookInfo);
+        console.log(res.data);
+        setBook(res.data);
+        setBookId(res.data.id);
+      }
       setSaved(true);
       setModal(true);
       setShowModal("save-action");
     } catch (error) {
       toast.error(
-        error?.response.data?.message || error.message || "Something went wrong"
+        error?.response?.data?.message ||
+          error.message ||
+          "Something went wrong"
       );
       console.log(error);
     } finally {
@@ -231,7 +265,7 @@ const AddBook = () => {
       )}
 
       <div className="flex gap-x-16 ml-12 relative">
-        {!saved && (
+        {(!saved || book) && (
           <button
             className="primary-btn rounded-md shadow hover:shadow-xl transition duration-300 py-2 px-5 absolute right-0 top-0"
             onClick={handleSave}
@@ -239,9 +273,27 @@ const AddBook = () => {
             {!loading ? <span>Save</span> : <Loader />}
           </button>
         )}
+        {book && (
+          <div className="absolute right-0 top-20 flex flex-col items-end gap-y-1">
+            <button
+              onClick={() => handleSaveAction("byte")}
+              className="flex items-center gap-x-2"
+            >
+              <span>Byte Editor</span>
+              <FiArrowRight />
+            </button>
+            <button
+              onClick={() => handleSaveAction("chapter")}
+              className="flex items-center gap-x-2"
+            >
+              <span>Chapter Editor</span>
+              <FiArrowRight />
+            </button>
+          </div>
+        )}
 
-        <div className="w-1/5 rounded-md  relative z-10">
-          <UploadImage setURL={setBookImage} />
+        <div className="w-1/5 rounded-md relative z-10">
+          <UploadFile setURL={setBookImage} />
         </div>
 
         <div className="w-1/2">
@@ -256,7 +308,7 @@ const AddBook = () => {
           {/* authors */}
           <p className="text-lg content2 flex items-center">
             <span className="mr-2">By</span>
-            {authors.map(({ name, id }) => (
+            {authors?.map(({ name, id }) => (
               <span
                 className="px-2 py-1.5 mr-2 rounded inline-flex items-center text-sm bg2"
                 key={id}
@@ -292,7 +344,7 @@ const AddBook = () => {
             {/* genres */}
             <p className="font-semibold text-lg mb-4">Genres</p>
             <div className="flex flex-wrap items-center mb-12 ">
-              {genres.map(({ name, id }) => (
+              {genres?.map(({ name, id }) => (
                 <span
                   className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center capitalize"
                   key={id}
@@ -326,7 +378,7 @@ const AddBook = () => {
             {/* tags */}
             <p className="font-semibold text-lg mb-4">Tags</p>
             <div className="flex items-center mb-12">
-              {tags.map(({ name, id }) => (
+              {tags?.map(({ name, id }) => (
                 <span
                   className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center"
                   key={id}
@@ -358,7 +410,7 @@ const AddBook = () => {
             <p className="font-semibold text-lg mb-4 mt-12">Publishing Year</p>
             <input
               className={"mb-2 bg-transparent outline-none content2"}
-              type="text"
+              type="number"
               placeholder="2013"
               value={publishingYear}
               onChange={(e) => setPublishingYear(e.target.value)}
