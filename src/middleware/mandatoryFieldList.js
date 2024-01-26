@@ -12,6 +12,8 @@ const mandatoryFieldsByModel = {
     BookCreator: ['bookId', 'creatorId'], // No optional fields, but ensure existence in related tables
     BookTag: ['bookId', 'tagId'], // No optional fields, but ensure existence in related tables
     BookGenre: ['bookId', 'genreId'], // No optional fields, but ensure existence in related tables
+    Chapter: ['bookId', 'serial', 'title', 'content'], // audioLink, language are optional
+    Byte: ['bookId', 'serial', 'title', 'content'], // audioLink, language are optional
 };
 
 
