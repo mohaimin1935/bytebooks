@@ -10,6 +10,8 @@ import { LuFileAudio } from "react-icons/lu";
 import axios from "axios";
 import Modal from "../common/Modal";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { FiTrash, FiTrash2 } from "react-icons/fi";
+import DeleteConfirm from "../common/DeleteConfirm";
 
 const ContentEditor = ({
   content,
@@ -23,12 +25,15 @@ const ContentEditor = ({
   showModal,
   setActiveId,
   setShowModal,
+  setContentList,
 }) => {
   const [body, setBody] = useState(content?.content || "");
   const [audioUrl, setAudioUrl] = useState(content?.url);
   const [loading, setLoading] = useState(false);
 
   const { setModal } = useContext(ThemeContext);
+
+  console.log(audioUrl, content?.audioUrl);
 
   useEffect(() => {
     setSaved(false);
@@ -53,6 +58,7 @@ const ContentEditor = ({
         editedContent
       );
       console.log("after", res.data);
+      setContentList((prev) => [...prev, res.data]);
       setSaved(true);
       toast.success("Saved successfully");
     } catch (error) {
@@ -93,6 +99,7 @@ const ContentEditor = ({
           </div>
         </Modal>
       )}
+
       <div className="flex items-center justify-between  mb-2">
         <input
           className={

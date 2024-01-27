@@ -12,7 +12,7 @@ const ContentEditorPage = () => {
   const type = useSearchParams().get("type");
   const { bookId } = useParams();
 
-  const { data: chapters, isLoading: chaptersLoading } = useSWR(
+  const { data: chapters } = useSWR(
     `/api/book-info/${bookId}/${type}s`,
     fetcher
   );
@@ -22,6 +22,7 @@ const ContentEditorPage = () => {
   const [activeContent, setActiveContent] = useState();
   const [saved, setSaved] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [contentList, setContentList] = useState();
 
   useEffect(() => {
     if (!chapters) return;
@@ -31,7 +32,11 @@ const ContentEditorPage = () => {
         setActiveContent(chapter);
       }
     }
-  }, [activeId]);
+  }, [activeId, chapters]);
+
+  useEffect(() => {
+    if (chapters) setContentList(chapters[`${type}`]);
+  }, [chapters]);
 
   if (chapters)
     return (
@@ -44,6 +49,7 @@ const ContentEditorPage = () => {
         type={type}
         saved={saved}
         setShowModal={setShowModal}
+        setContentList={setContentList}
       >
         {activeId ? (
           <ContentEditor
@@ -58,6 +64,7 @@ const ContentEditorPage = () => {
             showModal={showModal}
             setActiveId={setActiveId}
             setShowModal={setShowModal}
+            setContentList={setContentList}
           />
         ) : (
           <div className="text-xl flex gap-x-2 items-center">

@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { motion, Reorder, useMotionValue } from "framer-motion";
 import { PiDotsNineBold } from "react-icons/pi";
-import { FiBookOpen, FiHome, FiPlus } from "react-icons/fi";
+import { FiBookOpen, FiDelete, FiHome, FiPlus, FiTrash2 } from "react-icons/fi";
 import { cn } from "@/utils/cn";
 import Loader from "../common/Loader";
 import toast from "react-hot-toast";
@@ -12,6 +12,7 @@ import { fetcher } from "@/utils/util";
 import useSWR from "swr";
 import Link from "next/link";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import DeleteConfirm from "../common/DeleteConfirm";
 
 const ChapterEditor = ({
   chapterList = [],
@@ -22,6 +23,7 @@ const ChapterEditor = ({
   type,
   saved,
   setShowModal,
+  setContentList
 }) => {
   const [chapters, setChapters] = useState(
     chapterList?.sort((a, b) => a.serial - b.serial)
@@ -92,6 +94,10 @@ const ChapterEditor = ({
                 type={type}
                 saved={saved}
                 setShowModal={setShowModal}
+                setChapters={setChapters}
+                chapters={chapters}
+                bookId={bookId}
+                setContentList={setContentList}
               />
             ))}
           </Reorder.Group>
@@ -121,10 +127,17 @@ export const Item = ({
   type,
   saved,
   setShowModal,
+  setChapters,
+  chapters,
+  bookId,
+  setContentList,
 }) => {
   const { setModal } = useContext(ThemeContext);
 
   const y = useMotionValue(0);
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const active = activeId === item.id;
   let chapterTitle = active ? title : item.title;
@@ -134,6 +147,36 @@ export const Item = ({
 
   if (item.id === activeId && title?.length !== 0) chapterTitle = title;
 
+  const handleDelete = () => {
+    setModal(true);
+    setDeleteModal(true);
+  };
+
+  const handleCancel = () => {
+    setModal(false);
+    setDeleteModal(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (deleteLoading) return;
+
+    try {
+      setDeleteLoading(true);
+      await axios.delete(`/api/book-info/${bookId}/${type}s/${item.id}`);
+      toast.success("Deleted successfully");
+      let items = chapters;
+      items = chapters.filter((c) => c.id !== item.id);
+      setChapters(items);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong.");
+    } finally {
+      setDeleteLoading(false);
+      setModal(false);
+      setDeleteModal(false);
+    }
+  };
+
   const handleClick = (id) => {
     if (!saved) {
       setShowModal(id);
@@ -142,25 +185,42 @@ export const Item = ({
   };
 
   return (
-    <Reorder.Item
-      value={item}
-      id={item.id}
-      style={{ y }}
-      className="mb-4 cursor-grab active:cursor-grabbing capitalize"
-      onClick={() => handleClick(item.id)}
-    >
-      <div
-        className={cn(
-          "flex items-center gap-x-2",
-          active && "border-b border-check capitalize"
-        )}
+    <>
+      {deleteModal && (
+        <DeleteConfirm
+          handleDeleteConfirm={handleDeleteConfirm}
+          handleCancel={handleCancel}
+          loading={deleteLoading}
+        />
+      )}
+      <Reorder.Item
+        value={item}
+        id={item.id}
+        style={{ y }}
+        className="mb-4 cursor-grab active:cursor-grabbing capitalize"
+        onClick={() => handleClick(item.id)}
       >
-        <PiDotsNineBold />
-        <span>
-          {chapterTitle?.substring(0, 20)} {chapterTitle?.length > 20 && "..."}
-        </span>
-      </div>
-    </Reorder.Item>
+        <div
+          className={cn(
+            "flex items-center gap-x-2",
+            active && "border-b border-check capitalize"
+          )}
+        >
+          <PiDotsNineBold />
+          <span>
+            {chapterTitle?.substring(0, 16)}{" "}
+            {chapterTitle?.length > 16 && "..."}
+          </span>
+          {activeId === item.id && (
+            <FiTrash2
+              size={20}
+              className="cursor-pointer"
+              onClick={handleDelete}
+            />
+          )}
+        </div>
+      </Reorder.Item>
+    </>
   );
 };
 

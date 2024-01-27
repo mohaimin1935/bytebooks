@@ -49,8 +49,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] api: get books of specific creator
 - [ ] isPublished in creatorHome
 - [ ] delete previous file from firebase on new upload
-- [ ] bold book title in chapter editor
-- [ ] warning for unsaved content
+- [x] bold book title in chapter editor
+- [x] warning for unsaved content
 
 - [ ] forgot password
 

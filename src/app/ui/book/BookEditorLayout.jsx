@@ -13,7 +13,8 @@ const BookEditorLayout = ({
   bookId,
   type,
   saved,
-  setShowModal
+  setShowModal,
+  setContentList,
 }) => {
   return (
     <div class="flex h-screen bg1">
@@ -28,6 +29,7 @@ const BookEditorLayout = ({
           type={type}
           saved={saved}
           setShowModal={setShowModal}
+          setContentList={setContentList}
         />
       </div>
 
