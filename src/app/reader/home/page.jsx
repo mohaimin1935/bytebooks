@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 
-const H = () => {
+const ReaderHome = () => {
   return (
     <div>
       <Link
@@ -16,4 +16,4 @@ const H = () => {
   );
 };
 
-export default ForYou;
+export default ReaderHome;

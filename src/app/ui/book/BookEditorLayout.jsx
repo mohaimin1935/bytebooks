@@ -12,6 +12,8 @@ const BookEditorLayout = ({
   setActiveId,
   bookId,
   type,
+  saved,
+  setShowModal
 }) => {
   return (
     <div class="flex h-screen bg1">
@@ -24,6 +26,8 @@ const BookEditorLayout = ({
           setActiveId={setActiveId}
           bookId={bookId}
           type={type}
+          saved={saved}
+          setShowModal={setShowModal}
         />
       </div>
 

@@ -156,7 +156,7 @@
 
 .ql-toolbar.ql-snow {
   background-color: var(--bkg-2);
-  @apply border-none rounded !important;
+  @apply border-none !important;
 }
 
 .ql-container.ql-snow {

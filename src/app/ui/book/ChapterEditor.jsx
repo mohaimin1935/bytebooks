@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion, Reorder, useMotionValue } from "framer-motion";
 import { PiDotsNineBold } from "react-icons/pi";
 import { FiBookOpen, FiHome, FiPlus } from "react-icons/fi";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { fetcher } from "@/utils/util";
 import useSWR from "swr";
 import Link from "next/link";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const ChapterEditor = ({
   chapterList = [],
@@ -19,8 +20,12 @@ const ChapterEditor = ({
   setActiveId,
   bookId,
   type,
+  saved,
+  setShowModal,
 }) => {
-  const [chapters, setChapters] = useState(chapterList);
+  const [chapters, setChapters] = useState(
+    chapterList?.sort((a, b) => a.serial - b.serial)
+  );
   const [loading, setLoading] = useState(false);
 
   const { data } = useSWR(`/api/book-info/${bookId}`, fetcher);
@@ -44,9 +49,17 @@ const ChapterEditor = ({
     }
   };
 
-  const handleReorder = (values) => {
+  const handleReorder = async (values) => {
     setChapters(values);
-    // TODO: update to db
+    values.forEach(async (value, index) => {
+      try {
+        await axios.patch(`/api/book-info/${bookId}/${type}s/${value.id}`, {
+          serial: index,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   return (
@@ -57,10 +70,9 @@ const ChapterEditor = ({
 
       <Link
         href={`/creator/book-info/${bookId}`}
-        className="flex items-center gap-x-3 mb-6 content-highlight"
+        className="flex items-center gap-x-3 mb-6 content-highlight font-semibold"
       >
-        <FiBookOpen className="font-semibold" />{" "}
-        <h3 className="text-xl">{data?.title}</h3>
+        <FiBookOpen className="" /> <h3 className="">{data?.title}</h3>
       </Link>
       <div className="pl-4">
         {chapters ? (
@@ -78,6 +90,8 @@ const ChapterEditor = ({
                 title={title}
                 setActiveId={setActiveId}
                 type={type}
+                saved={saved}
+                setShowModal={setShowModal}
               />
             ))}
           </Reorder.Group>
@@ -99,13 +113,33 @@ const ChapterEditor = ({
   );
 };
 
-export const Item = ({ item, title, activeId, setActiveId, type }) => {
+export const Item = ({
+  item,
+  title,
+  activeId,
+  setActiveId,
+  type,
+  saved,
+  setShowModal,
+}) => {
+  const { setModal } = useContext(ThemeContext);
+
   const y = useMotionValue(0);
+
   const active = activeId === item.id;
   let chapterTitle = active ? title : item.title;
 
   if (!item.title || item.title.length === 0)
     chapterTitle = `${type} ${item.serial}`;
+
+  if (item.id === activeId && title?.length !== 0) chapterTitle = title;
+
+  const handleClick = (id) => {
+    if (!saved) {
+      setShowModal(id);
+      setModal(true);
+    } else setActiveId(id);
+  };
 
   return (
     <Reorder.Item
@@ -113,7 +147,7 @@ export const Item = ({ item, title, activeId, setActiveId, type }) => {
       id={item.id}
       style={{ y }}
       className="mb-4 cursor-grab active:cursor-grabbing capitalize"
-      onClick={() => setActiveId(item.id)}
+      onClick={() => handleClick(item.id)}
     >
       <div
         className={cn(

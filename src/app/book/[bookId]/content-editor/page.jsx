@@ -17,15 +17,11 @@ const ContentEditorPage = () => {
     fetcher
   );
 
-  // TODO:
-  // bookid ->
-  //  - get book title
-  //  - get chapters
-  //  - add a chapter to get its id (activeId)
-
   const [title, setTitle] = useState();
   const [activeId, setActiveId] = useState();
   const [activeContent, setActiveContent] = useState();
+  const [saved, setSaved] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!chapters) return;
@@ -46,6 +42,8 @@ const ContentEditorPage = () => {
         chapterList={chapters[`${type}`]}
         bookId={bookId}
         type={type}
+        saved={saved}
+        setShowModal={setShowModal}
       >
         {activeId ? (
           <ContentEditor
@@ -55,6 +53,11 @@ const ContentEditorPage = () => {
             bookId={bookId}
             type={type}
             activeId={activeId}
+            saved={saved}
+            setSaved={setSaved}
+            showModal={showModal}
+            setActiveId={setActiveId}
+            setShowModal={setShowModal}
           />
         ) : (
           <div className="text-xl flex gap-x-2 items-center">
