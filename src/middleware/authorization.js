@@ -13,7 +13,7 @@ export const creatorOnlyFailed = async () => {
   }
 };
 
-export const readerOnlyFailed = async () => {
+export const authenticatedOnlyFailed = async () => {
   const session = await getAuthSession();
 
   if (!session) {

@@ -1,15 +1,16 @@
 // file-status: need to work
-// don't change without notifying @zulkar
 
 
-import { creatorOnlyFailed } from "@/middleware/authorization";
+import { authenticatedOnlyFailed, creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
 
-// need to add authentication check and other error codes
 export const GET = async (req,{params}) => {
-    //console.log(params.userId);
+  const authError = await authenticatedOnlyFailed();
+  if (authError) {
+    return authError;
+  }
   try {
     const user = await prisma.User.findUnique({
         where: {
@@ -24,7 +25,13 @@ export const GET = async (req,{params}) => {
         }
     });
     //console.log(user)
-    return NextResponse.json(user);
+    if (user) {
+      return NextResponse.json(user);
+    }
+    return NextResponse.json(
+      { message: "Not found" },
+      { status: 404 }
+    );
   } catch (err) {
     console.log(err);
 
