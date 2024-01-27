@@ -1,7 +1,10 @@
 import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
+import { NextApiResponse } from "next";
 import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
+
+
 
 // CREATE A BOOK INFO
 export const POST = async (req) => {
@@ -58,36 +61,127 @@ export const POST = async (req) => {
   }
 };
 
-export const GET = async (req) => {
+// export const GET = async (req,{ query }) => {
 
-  try {
-    const books = await prisma.bookInfo.findMany({
-      include: {
-        authors: {
-          include: {
-            author: true,
-          },
-        },
-        genres: {
-          include: {
-            genre: true,
-          },
-        },
-      },
-    });
+//   try {
+//     // const books = await prisma.bookInfo.findMany({
+//     //   include: {
+//     //     authors: {
+//     //       include: {
+//     //         author: true,
+//     //       },
+//     //     },
+//     //     genres: {
+//     //       include: {
+//     //         genre: true,
+//     //       },
+//     //     },
+//     //   },
+//     // });
+//     // console.log(query);
+//     // const query = query || {};
+//     const creatorId = query.creatorId;
 
-    //const books = await prisma.bookInfo.findMany();
+//     let books;
+//     if (creatorId) {
+//       // Fetch book creators (and their associated books) by the provided creatorId
+//       const bookCreators = await prisma.bookCreator.findMany({
+//         where: {
+//           creatorId: creatorId
+//         },
+//         include: {
+//           book: {
+//             include: {
+//               authors: {
+//                 include: {
+//                   author: true
+//                 }
+//               },
+//               genres: {
+//                 include: {
+//                   genre: true
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       });
 
-    return NextResponse.json(books);
-  } catch (err) {
-    console.log(err);
+//       // Extract the books from the book creators
+//       books = bookCreators.map(bc => bc.book);
+
+//     } else {
+//       // If no creatorId is provided, fetch all books
+//       books = await prisma.bookInfo.findMany({
+//         include: {
+//           authors: {
+//             include: {
+//               author: true
+//             }
+//           },
+//           genres: {
+//             include: {
+//               genre: true
+//             }
+//           }
+//         }
+//       });
+//     }
+
+//     return NextResponse.json(books);
+//     //const books = await prisma.bookInfo.findMany();
+
+//     //return NextResponse.json(books);
+//   } catch (err) {
+//     console.log(err);
 
     
 
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 }
-    );
+//     return NextResponse.json(
+//       { message: "Something went wrong" },
+//       { status: 500 }
+//     );
+//   }
+// };
+
+export const GET = async (req) => {
+  try {
+    
+    const url = req.nextUrl;
+
+    const searchParams = url.searchParams;
+
+    const creatorId = searchParams.get('creatorId');
+    //console.log(creatorId);
+
+    let books;
+    if (creatorId) {
+      // Fetch books by creatorId
+      const bookCreators = await prisma.bookCreator.findMany({
+        where: { creatorId },
+        include: {
+          book: {
+            include: {
+              authors: { include: { author: true }},
+              genres: { include: { genre: true }}
+            }
+          }
+        }
+      });
+      books = bookCreators.map(bc => bc.book);
+    } else {
+      // Fetch all books
+      books = await prisma.bookInfo.findMany({
+        include: {
+          authors: { include: { author: true }},
+          genres: { include: { genre: true }}
+        }
+      });
+    }
+
+    return NextResponse.json(books);
+  } catch (err) {
+    console.error("Error: ", err.message);
+    return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
   }
 };
-
