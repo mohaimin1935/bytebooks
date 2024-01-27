@@ -80,3 +80,63 @@ export const PATCH = async (req, { params }) => {
     }
 };
 
+export const DELETE = async (req, { params }) => {
+    const { bookId } = params;
+    try {
+        // Check if the book exists
+        const existingBook = await prisma.bookInfo.findUnique({
+            where: {
+                id: bookId,
+            },
+        });
+
+        // If the book does not exist, return a 404 status with a message
+        if (!existingBook) {
+            return NextResponse.json(
+                { message: "Book not found" },
+                { status: 404 }
+            );
+        }
+
+        await prisma.bookCreator.deleteMany({
+            where: { bookId: bookId }
+        });
+
+        await prisma.bookGenre.deleteMany({
+            where: { bookId: bookId }
+        });
+
+        // await prisma.bookChapter.deleteMany({
+        //     where: { bookId: bookId }
+        // });
+
+        await prisma.bookAuthor.deleteMany({
+            where: { bookId: bookId }
+        });
+
+        await prisma.bookTag.deleteMany({
+            where: { bookId: bookId }
+        });
+
+        // Delete the book
+        await prisma.bookInfo.delete({
+            where: {
+                id: bookId,
+            },
+        });
+
+        // Return a success message
+        return NextResponse.json(
+            { message: "Book deleted successfully" },
+            { status: 200 }
+        );
+    } catch (err) {
+        console.error(err);
+
+        // In case of any server-side error, return a 500 status with a generic error message
+        return NextResponse.json(
+            { message: "Something went wrong", error: err.message },
+            { status: 500 }
+        );
+    }
+};
