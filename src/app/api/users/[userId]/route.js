@@ -1,7 +1,7 @@
 // file-status: need to work
 
 
-import { authenticatedOnlyFailed, creatorOnlyFailed } from "@/middleware/authorization";
+import { authenticatedOnlyFailed, creatorOnlyFailed, selfValidationOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
@@ -44,9 +44,13 @@ export const GET = async (req,{params}) => {
   }
 };
 
-// need to add authentication check and other error codes
+// need to add mandatory field check aka bad request
 export const PUT = async (req,{params}) => {
-    //console.log(params.userId);
+  // self validation checks both login status and userid match
+  const authError = await selfValidationOnlyFailed();
+  if (authError) {
+    return authError;
+  }
   try {
     const body = await req.json();
     const user = await prisma.User.update({
@@ -81,9 +85,13 @@ export const PUT = async (req,{params}) => {
   }
 };
 
-// need to add authentication check and other error codes
+
 export const DELETE = async (req,{params}) => {
-    //console.log(params.userId);
+  // self validation checks both login status and userid match
+  const authError = await selfValidationOnlyFailed();
+  if (authError) {
+    return authError;
+  }
   try {
     const user = await prisma.User.delete({
         where: {
