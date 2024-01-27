@@ -1,7 +1,6 @@
 import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
-import { NextApiResponse } from "next";
 import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
 
 
