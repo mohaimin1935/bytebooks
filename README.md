@@ -44,9 +44,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [x] autosave book content
 - [x] work on edit content from add content
-- [ ] add base api env to production
+- [x] add base api env to production
+- [ ] delete content
+- [ ] api: get books of specific creator
+- [ ] isPublished in creatorHome
 - [ ] delete previous file from firebase on new upload
-- [ ] add api: crud content, get book of a creator, edit book-info
+- [ ] bold book title in chapter editor
+- [ ] warning for unsaved content
 
 - [ ] forgot password
 

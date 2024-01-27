@@ -59,7 +59,7 @@ const ChapterEditor = ({
         href={`/creator/book-info/${bookId}`}
         className="flex items-center gap-x-3 mb-6 content-highlight"
       >
-        <FiBookOpen className="text-xl " />{" "}
+        <FiBookOpen className="font-semibold" />{" "}
         <h3 className="text-xl">{data?.title}</h3>
       </Link>
       <div className="pl-4">
