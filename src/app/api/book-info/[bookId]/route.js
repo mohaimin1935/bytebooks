@@ -35,3 +35,6 @@ export const GET = async (req, { params }) => {
     );
   }
 };
+
+// TODO: PATCH
+// TODO: DELETE

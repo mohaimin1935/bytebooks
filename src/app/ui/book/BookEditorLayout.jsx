@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ChapterEditor from "./ChapterEditor";
 import TopBar from "../common/TopBar";
@@ -7,6 +9,9 @@ const BookEditorLayout = ({
   chapterList,
   title,
   activeId,
+  setActiveId,
+  bookId,
+  type,
 }) => {
   return (
     <div class="flex h-screen bg1">
@@ -16,6 +21,9 @@ const BookEditorLayout = ({
           chapterList={chapterList}
           title={title}
           activeId={activeId}
+          setActiveId={setActiveId}
+          bookId={bookId}
+          type={type}
         />
       </div>
 

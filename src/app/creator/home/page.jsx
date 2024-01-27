@@ -1,11 +1,21 @@
 "use client";
-import BookEditCard from "@/app/ui/book/BookEditCard";
-import Link from "next/link";
-import React from "react";
-import { IoMdAdd } from "react-icons/io";
 
-// indigo emerald amber
+import BookEditCard from "@/app/ui/book/BookEditCard";
+import BookEditSkeleton from "@/app/ui/book/BookEditSkeleton";
+import { fetcher } from "@/utils/util";
+import { progress } from "framer-motion";
+import Link from "next/link";
+import React, { Suspense } from "react";
+import { IoMdAdd } from "react-icons/io";
+import useSWR from "swr";
+
 const CreatorHome = () => {
+  const { data: inProgressBooks, isLoading: progressBooksLoading } = useSWR(
+    "/api/book-info",
+    fetcher
+  );
+  console.log(inProgressBooks);
+
   return (
     <div className="flex gap-12 relative">
       {/* IN PROGRESS */}
@@ -24,9 +34,18 @@ const CreatorHome = () => {
           </Link>
 
           {/* EDIT CARD */}
-          <BookEditCard />
-          <BookEditCard />
-          <BookEditCard />
+          {progressBooksLoading ? (
+            <>
+              <BookEditSkeleton />
+              <BookEditSkeleton />
+              <BookEditSkeleton />
+              <BookEditSkeleton />
+            </>
+          ) : (
+            inProgressBooks?.map((book) => (
+              <BookEditCard key={book.id} book={book} />
+            ))
+          )}
         </div>
       </div>
 

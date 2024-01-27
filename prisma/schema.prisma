@@ -146,7 +146,7 @@ model Chapter {
   id        String  @id @default(cuid()) @map("_id")
   title     String?
   serial    Int
-  content   String
+  content   String?
   audioLink String?
   bookId    String
   language  String?
@@ -161,7 +161,7 @@ model Byte {
   id        String  @id @default(cuid()) @map("_id")
   title     String?
   serial    Int
-  content   String
+  content   String?
   audioLink String?
   bookId    String
   language  String?

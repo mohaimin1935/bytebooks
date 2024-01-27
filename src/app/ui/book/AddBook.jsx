@@ -139,9 +139,9 @@ const AddBook = ({ bookInfo }) => {
 
     if (action === "back") router.push("home");
     else if (action === "chapter")
-      router.push(`/book/${bookId}/add-content?type=chapter`);
+      router.push(`/book/${bookId}/content-editor?type=chapter`);
     else if (action === "byte")
-      router.push(`/book/${bookId}/add-content?type=byte`);
+      router.push(`/book/${bookId}/content-editor?type=byte`);
   };
 
   const handleSave = async () => {

@@ -43,7 +43,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Todo
 
 - [x] autosave book content
-- [ ] work on edit content from add content
+- [x] work on edit content from add content
 - [ ] add base api env to production
 - [ ] delete previous file from firebase on new upload
 - [ ] add api: crud content, get book of a creator, edit book-info
@@ -52,5 +52,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-API-docs
-[] Notification remainder - date-time
+#### `/api/book-info/[bookId]/route.js`
+
+- patch
+- delete
