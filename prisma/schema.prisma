@@ -47,6 +47,7 @@ model User {
   sessions       Session[]
 
   books BookCreator[]
+  shelf Shelf[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,6 +103,7 @@ model BookInfo {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   byte      Byte[]
+  shelf     Shelf[]
 }
 
 model BookAuthor {
@@ -167,6 +169,19 @@ model Byte {
   language  String?
 
   book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Shelf {
+  id        String  @id @default(cuid()) @map("_id")
+  status    String?
+  bookId    String
+  userId    String
+
+  book BookInfo @relation(fields: [bookId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
