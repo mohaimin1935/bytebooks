@@ -76,7 +76,7 @@ const Selector = ({
     <Modal>
       {selected.map(({ name, id }) => (
         <span
-          className="px-2 py-1.5 mr-2 rounded inline-flex items-center text-sm bg2"
+          className="px-2 py-1.5 mr-2 mb-2 rounded inline-flex items-center text-sm bg2"
           key={id}
         >
           {name}

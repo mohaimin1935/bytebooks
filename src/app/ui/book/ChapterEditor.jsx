@@ -16,53 +16,8 @@ import DeleteConfirm from "../common/DeleteConfirm";
 
 const ChapterEditor = ({
   chapterList = [],
-  title,
-  activeId,
-  setActiveId,
-  bookId,
-  type,
-  saved,
-  setShowModal,
-  setContentList
 }) => {
-  const [chapters, setChapters] = useState(
-    chapterList?.sort((a, b) => a.serial - b.serial)
-  );
-  const [loading, setLoading] = useState(false);
-
-  const { data } = useSWR(`/api/book-info/${bookId}`, fetcher);
-
-  const handleAdd = async () => {
-    if (loading) return;
-
-    try {
-      setLoading(true);
-      const res = await axios.post(`/api/book-info/${bookId}/${type}s`, {
-        serial: chapterList.length + 1,
-      });
-      setActiveId(res.data.id);
-      setChapters((prev) => [...prev, res.data]);
-      toast.success("Content added");
-    } catch (error) {
-      toast.error("Request failed");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleReorder = async (values) => {
-    setChapters(values);
-    values.forEach(async (value, index) => {
-      try {
-        await axios.patch(`/api/book-info/${bookId}/${type}s/${value.id}`, {
-          serial: index,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  };
+  
 
   return (
     <div className="px-8 mt-20 capitalize">
@@ -88,16 +43,6 @@ const ChapterEditor = ({
               <Item
                 key={chapter.id}
                 item={chapter}
-                activeId={activeId}
-                title={title}
-                setActiveId={setActiveId}
-                type={type}
-                saved={saved}
-                setShowModal={setShowModal}
-                setChapters={setChapters}
-                chapters={chapters}
-                bookId={bookId}
-                setContentList={setContentList}
               />
             ))}
           </Reorder.Group>
@@ -122,15 +67,6 @@ const ChapterEditor = ({
 export const Item = ({
   item,
   title,
-  activeId,
-  setActiveId,
-  type,
-  saved,
-  setShowModal,
-  setChapters,
-  chapters,
-  bookId,
-  setContentList,
 }) => {
   const { setModal } = useContext(ThemeContext);
 
@@ -211,7 +147,7 @@ export const Item = ({
             {chapterTitle?.substring(0, 16)}{" "}
             {chapterTitle?.length > 16 && "..."}
           </span>
-          {activeId === item.id && (
+          {(
             <FiTrash2
               size={20}
               className="cursor-pointer"

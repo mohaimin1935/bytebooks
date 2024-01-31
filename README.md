@@ -40,23 +40,17 @@ npx prisma studio
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Todo
+### Todo FRONTEND
 
-- [x] autosave book content
-- [x] work on edit content from add content
-- [x] add base api env to production
-- [ ] delete content
-- [ ] api: get books of specific creator
-- [ ] isPublished in creatorHome
-- [ ] delete previous file from firebase on new upload
-- [x] bold book title in chapter editor
-- [x] warning for unsaved content
+- [ ]
 
-- [ ] forgot password
+### Todo BACKEND
+
+- [ ] `/book-info/[bookId]`: modify patch request
+- [ ] `/book-info/[bookId]/bytes`: sort by serial in get request
 
 ---
 
-#### `/api/book-info/[bookId]/route.js`
 
 - patch
 - delete

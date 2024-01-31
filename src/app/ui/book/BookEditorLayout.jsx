@@ -6,30 +6,12 @@ import TopBar from "../common/TopBar";
 
 const BookEditorLayout = ({
   children,
-  chapterList,
-  title,
-  activeId,
-  setActiveId,
-  bookId,
-  type,
-  saved,
-  setShowModal,
-  setContentList,
 }) => {
   return (
     <div class="flex h-screen bg1">
       {/* left panel */}
       <div class="w-[300px] bg2">
         <ChapterEditor
-          chapterList={chapterList}
-          title={title}
-          activeId={activeId}
-          setActiveId={setActiveId}
-          bookId={bookId}
-          type={type}
-          saved={saved}
-          setShowModal={setShowModal}
-          setContentList={setContentList}
         />
       </div>
 

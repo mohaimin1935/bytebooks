@@ -12,9 +12,14 @@ import useSWR from "swr";
 const CreatorHome = () => {
   const { data: inProgressBooks, isLoading: progressBooksLoading } = useSWR(
     "/api/book-info",
-    fetcher
+    fetcher,
+    // { refreshInterval: 500 }
   );
-  console.log(inProgressBooks);
+  const { data: publishedBooks, isLoading: publishedBooksLoading } = useSWR(
+    "/api/book-info",
+    fetcher,
+    // { refreshInterval: 500 }
+  );
 
   return (
     <div className="flex gap-12 relative">
@@ -56,7 +61,18 @@ const CreatorHome = () => {
         <div className="px-8 pb-8">
           <h3 className="text-xl font-semibold text-center my-4">PUBLISHED</h3>
 
-          <BookEditCard />
+          {publishedBooksLoading ? (
+            <>
+              <BookEditSkeleton />
+              <BookEditSkeleton />
+              <BookEditSkeleton />
+              <BookEditSkeleton />
+            </>
+          ) : (
+            publishedBooks?.map((book) => (
+              <BookEditCard key={book.id} book={book} />
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -10,10 +10,8 @@ import { ThemeContext } from "@/contexts/ThemeContext";
 import { fetcher } from "@/utils/util";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import NoWorkResult from "postcss/lib/no-work-result";
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
@@ -41,7 +39,6 @@ const AddBook = ({ bookInfo }) => {
   const [authors, setAuthors] = useState([]);
   const [genres, setGenres] = useState([]);
   const [tags, setTags] = useState([]);
-  const [intro, setIntro] = useState();
   const [desc, setDesc] = useState();
   const [isbn, setIsbn] = useState();
   const [publishingYear, setPublishingYear] = useState();
@@ -58,13 +55,17 @@ const AddBook = ({ bookInfo }) => {
   const { modal, setModal } = useContext(ThemeContext);
 
   useEffect(() => {
+    setModal(false);
+    setShowModal("");
+  }, []);
+  
+  useEffect(() => {
     if (book) {
       setBookTitle(book.title);
       setBookImage(book.image);
       setAuthors(book.authors?.map((a) => a.author) || []);
       setGenres(book.genres?.map((a) => a.genre) || []);
       setTags(book.tags?.map((a) => a.tag) || []);
-      setIntro(book.intro);
       setDesc(book.desc);
       setIsbn(book.isbn);
       setPublishingYear(book.publishingYear);
@@ -79,17 +80,7 @@ const AddBook = ({ bookInfo }) => {
 
   useEffect(() => {
     setSaved(false);
-  }, [
-    book,
-    bookImage,
-    authors,
-    genres,
-    tags,
-    intro,
-    desc,
-    isbn,
-    publishingYear,
-  ]);
+  }, [book, bookImage, authors, genres, tags, desc, isbn, publishingYear]);
 
   useEffect(() => {
     if (saved && !modal && !actionProgressing && !book) {
@@ -152,7 +143,6 @@ const AddBook = ({ bookInfo }) => {
       publishingYear: parseInt(publishingYear),
       title: bookTitle,
       image: bookImage,
-      intro,
       desc,
       authorIds: authors?.map((author) => author.id) || [],
       tagIds: tags?.map((tag) => tag.id) || [],
@@ -309,17 +299,17 @@ const AddBook = ({ bookInfo }) => {
           />
         </div>
 
-        <div className="w-1/2">
+        <div className="w-1/2 mb-4">
           {/* book title */}
           <input
-            className={"font-semibold text-4xl mb-2 bg1 outline-none content2"}
+            className={"font-semibold text-3xl mb-2 bg1 outline-none content2"}
             type="text"
             placeholder="Book Title"
             value={bookTitle}
             onChange={(e) => setBookTitle(e.target.value)}
           />
           {/* authors */}
-          <p className="text-lg content2 flex items-center">
+          <p className="text-sm content2 flex items-center flex-wrap gap-y-1">
             <span className="mr-2">By</span>
             {authors?.map(({ name, id }) => (
               <span
@@ -339,15 +329,6 @@ const AddBook = ({ bookInfo }) => {
               <FiPlus />
             </button>
           </p>
-          {/* intro */}
-          <TextArea
-            value={intro}
-            setValue={setIntro}
-            className={""}
-            maxLength={80}
-            placeholder={"Intro here..."}
-            maxHeight={100}
-          ></TextArea>
         </div>
       </div>
 
@@ -356,7 +337,7 @@ const AddBook = ({ bookInfo }) => {
           <div className="w-3/5">
             {/* genres */}
             <p className="font-semibold text-lg mb-4">Genres</p>
-            <div className="flex flex-wrap items-center mb-12 ">
+            <div className="flex flex-wrap items-center mb-12 gap-y-2">
               {genres?.map(({ name, id }) => (
                 <span
                   className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center capitalize"
@@ -390,7 +371,7 @@ const AddBook = ({ bookInfo }) => {
           <div className="w-2/5">
             {/* tags */}
             <p className="font-semibold text-lg mb-4">Tags</p>
-            <div className="flex items-center mb-12">
+            <div className="flex items-center mb-12 flex-wrap gap-y-2">
               {tags?.map(({ name, id }) => (
                 <span
                   className="border border-check rounded-full pl-4 py-1.5 mr-2 inline-flex items-center"

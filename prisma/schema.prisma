@@ -90,7 +90,6 @@ model BookInfo {
   publishingYear Int?
   title          String
   image          String?
-  intro          String
   desc           String?
   isPublished Boolean @default(false)
 

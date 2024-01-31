@@ -17,7 +17,7 @@ const CustomTextArea = ({
   }, [value]);
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <textArea
         ref={textAreaRef}
         className={cn(
