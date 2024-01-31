@@ -2,7 +2,9 @@
 
 import BookEditorLayout from "@/app/ui/book/BookEditorLayout";
 import ContentEditor from "@/app/ui/book/ContentEditor";
+import { BookEditContextProvider } from "@/contexts/BookEditContext";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import BookEditProvider from "@/providers/BookEditProvider";
 import { fetcher } from "@/utils/util";
 import { useParams, useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
@@ -22,14 +24,14 @@ const ContentEditorPage = () => {
     setModal(false);
   }, []);
 
-  useEffect(() => {
-    if (chapters) console.log(chapters[`${type}`]);
-  }, [chapters]);
-
   return (
-    <BookEditorLayout>
-      <ContentEditor />
-    </BookEditorLayout>
+    <BookEditContextProvider bookId={bookId} type={type}>
+      <BookEditProvider>
+        <BookEditorLayout>
+          <ContentEditor />
+        </BookEditorLayout>
+      </BookEditProvider>
+    </BookEditContextProvider>
   );
 };
 

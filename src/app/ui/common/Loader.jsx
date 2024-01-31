@@ -1,10 +1,11 @@
+import { cn } from "@/utils/cn";
 import React from "react";
 import { CgSpinner } from "react-icons/cg";
 
-const Loader = () => {
+const Loader = ({ size = 24, className = "" }) => {
   return (
-    <div className="animate-spin text-lg center w-full">
-      <CgSpinner size={24} />
+    <div className={cn("animate-spin text-lg center w-full", className)}>
+      <CgSpinner size={size} />
     </div>
   );
 };

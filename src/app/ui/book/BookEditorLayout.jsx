@@ -11,8 +11,7 @@ const BookEditorLayout = ({
     <div class="flex h-screen bg1">
       {/* left panel */}
       <div class="w-[300px] bg2">
-        <ChapterEditor
-        />
+        <ChapterEditor/>
       </div>
 
       {/* right */}

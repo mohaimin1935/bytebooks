@@ -7,6 +7,7 @@ import { RiArrowDownSLine } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const TopBar = ({ role }) => {
   const [openSwitch, setOpenSwitch] = useState(false);
@@ -77,11 +78,13 @@ const TopBar = ({ role }) => {
         <div className="text-xl">
           <IoNotificationsOutline />
         </div>
-        <img
-          src={data?.user?.image || "/profile.png"}
-          alt="profile"
-          className="w-12 h-12 p-[2px] border border-check rounded-full left-4"
-        />
+        <Link href="settings">
+          <img
+            src={data?.user?.image || "/profile.png"}
+            alt="profile"
+            className="w-12 h-12 p-[2px] border border-check rounded-full left-4"
+          />
+        </Link>
       </div>
     </div>
   );

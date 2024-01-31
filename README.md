@@ -42,15 +42,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
-- [ ]
+- [ ] delete prev file from firebase
 
 ### Todo BACKEND
 
+- [ ] `/book-info/`: get by creatorId and isPublished
 - [ ] `/book-info/[bookId]`: modify patch request
 - [ ] `/book-info/[bookId]/bytes`: sort by serial in get request
 
 ---
-
 
 - patch
 - delete
