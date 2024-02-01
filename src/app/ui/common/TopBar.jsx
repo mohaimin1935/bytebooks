@@ -33,7 +33,7 @@ const TopBar = ({ role }) => {
         </div>
         <input
           type="text"
-          className="px-1 py-1 bg1 outline-none content2 border-b text-sm w-64"
+          className="px-1 py-1 bg1 outline-none content2 border-b text-sm w-64 hidden sm:block"
           placeholder="eg, harry potter"
         />
       </div>

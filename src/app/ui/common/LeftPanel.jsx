@@ -9,11 +9,11 @@ import { FiLogOut } from "react-icons/fi";
 
 const LeftPanel = ({ options, active }) => {
   return (
-    <div className=" mt-6">
+    <div className="flex flex-col items-center md:items-start mt-6">
       {/* logo */}
-      <div className="mb-12 font-semibold text-xl pl-10 flex items-center gap-x-4">
+      <div className="mb-12 font-semibold text-xl pl-0 md:pl-10 flex items-center gap-x-4">
         <div className="w-6 h-8 rounded-full accent1"></div>
-        <h3 className="">ByteBooks</h3>
+        <h3 className="hidden md:block">ByteBooks</h3>
       </div>
       {/* menus */}
       {options.map((option) => (
@@ -25,11 +25,11 @@ const LeftPanel = ({ options, active }) => {
         onClick={() => signOut()}
       >
         <div className={cn("w-1.5 py-6 bg2")}></div>
-        <div className={cn("flex gap-x-4 ml-8 items-center")}>
+        <div className={cn("flex gap-x-4 ml-0 md:ml-8 items-center")}>
           <div className="text-lg">
             <FiLogOut />
           </div>
-          <div>Log Out</div>
+          <div className="hidden md:block">Log Out</div>
         </div>
       </button>
     </div>
@@ -44,22 +44,22 @@ const Item = ({ option }) => {
     return (
       <Link
         href={`/${data.user.role}/${option.link}`}
-        className="flex items-center hover:content-highlight transition duration-300"
+        className="flex items-center md:items-start hover:content-highlight transition duration-300 w-full relative py-3"
       >
         <div
           className={cn(
-            "w-1.5 py-6",
+            "w-1.5 bottom-0 absolute left-0 top-0",
             pathname === option.link ? "accent2" : "bg2"
           )}
         ></div>
         <div
           className={cn(
-            "flex gap-x-4 ml-8 items-center",
+            "flex gap-x-4 w-full justify-center md:justify-start  md:ml-8 items-center",
             pathname === option.link && "content-highlight"
           )}
         >
           <div className="text-lg">{option.icon()}</div>
-          <div>{option.name}</div>
+          <div className="hidden md:block">{option.name}</div>
         </div>
       </Link>
     );

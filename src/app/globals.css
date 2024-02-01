@@ -115,6 +115,11 @@
   .secondary-btn {
     @apply btn border-2 border-[var(--accent-1)] dark:border-[var(--accent-1)] content1;
   }
+
+  .section-header {
+    @apply uppercase tracking-[0.25rem] text-base font-space-mono content-highlight;
+  }
+
 }
 
 .font-space-mono {
