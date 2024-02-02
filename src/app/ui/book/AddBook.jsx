@@ -16,11 +16,10 @@ import toast from "react-hot-toast";
 import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { IoCloudDoneOutline } from "react-icons/io5";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
 const AddBook = ({ bookInfo }) => {
-
-  console.log("helloooooo")
+  const { mutate } = useSWRConfig();
 
   const { data: authorList, isLoading: authorLoading } = useSWR(
     "/api/author",
@@ -61,7 +60,7 @@ const AddBook = ({ bookInfo }) => {
     setModal(false);
     setShowModal("");
   }, []);
-  
+
   useEffect(() => {
     if (book) {
       setBookTitle(book.title);
@@ -165,6 +164,7 @@ const AddBook = ({ bookInfo }) => {
         setBook(res.data);
         setBookId(res.data.id);
       }
+      mutate(`/api/book-info/${bookId}`);
       setSaved(true);
       setModal(true);
       setShowModal("save-action");
