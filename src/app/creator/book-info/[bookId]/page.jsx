@@ -5,6 +5,9 @@ import axios from "axios";
 import React, { Suspense } from "react";
 
 const getData = async (bookId) => {
+
+  console.log("hello")
+
   try {
     const res = await axios.get(`${baseApi}/book-info/${bookId}`);
     return res.data;
@@ -16,11 +19,10 @@ const getData = async (bookId) => {
 const page = async ({ params }) => {
   const book = await getData(params.bookId);
 
+
   if (book)
     return (
-      <Suspense fallback={<Loader />}>
         <AddBook bookInfo={book} />
-      </Suspense>
     );
 };
 

@@ -19,6 +19,9 @@ import { IoCloudDoneOutline } from "react-icons/io5";
 import useSWR from "swr";
 
 const AddBook = ({ bookInfo }) => {
+
+  console.log("helloooooo")
+
   const { data: authorList, isLoading: authorLoading } = useSWR(
     "/api/author",
     fetcher
