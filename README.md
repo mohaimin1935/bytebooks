@@ -46,9 +46,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo BACKEND
 
-- [ ] `/book-info/`: get by creatorId and isPublished
-- [ ] `/book-info/[bookId]`: modify patch request
-- [ ] `/book-info/[bookId]/bytes`: sort by serial in get request
+- [x] `/book-info/`: get by creatorId and isPublished
+- [x] `/book-info/[bookId]`: modify patch request
+- [x] `/book-info/[bookId]/bytes`: sort by serial in get request
+- [ ] `/users/[userId]`: get patch delete
 
 ---
 
