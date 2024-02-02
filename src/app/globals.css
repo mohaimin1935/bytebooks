@@ -207,3 +207,12 @@
   transform: scaleX(1);
   transform-origin: bottom left;
 }
+
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  background-color: var(--accent-1);
+  border-radius: 50%;
+  cursor: grab;
+}

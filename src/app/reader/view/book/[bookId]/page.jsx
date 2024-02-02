@@ -44,7 +44,7 @@ const ViewBook = async ({ params }) => {
         <div className="flex gap-x-16 ml-12">
           <div className="w-1/5 rounded-xl shadow-xl z-10">
             <div
-              className="pb-[133%] rounded-xl"
+              className="pb-[133%] rounded-xl bg2"
               style={{
                 backgroundImage: `url(${book.image})`,
                 backgroundSize: "cover",

@@ -58,7 +58,7 @@ const BookFlip = ({
       {details && (
         <div className="mt-4 center content2">
           <Link
-            href={`/reader/view/book/clrx6hhvp000210cdh5kdl57n`}
+            href={`/reader/view/book/cls50ph5c001r1aih26119zp3`}
             className="font-medium hover"
           >
             Book Title

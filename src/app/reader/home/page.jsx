@@ -17,7 +17,6 @@ const ReaderHome = () => {
   return (
     <div className="flex flex-col xl:flex-row gap-8 md:gap-16">
       <div className="order-1 xl:order-2 w-full xl:w-2/5">
-        <RangeSlider />
         {/* right | top */}
         <ContinueCarouselSection />
         <CalenderSection />
