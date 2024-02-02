@@ -18,3 +18,27 @@ export const fetcher = async (url) => {
 };
 
 export const baseApi = process.env.BASE_API;
+
+export const getCurrentWeek = () => {
+  const today = new Date();
+  const currentDay = today.getDay();
+  const startDate = new Date(today);
+
+  startDate.setDate(today.getDate() - currentDay);
+
+  const days = [];
+
+  for (let i = 0; i < 7; i++) {
+    const currentDate = new Date(startDate);
+    currentDate.setDate(startDate.getDate() + i);
+
+    days.push({
+      day: currentDate.toLocaleDateString("en-US", { weekday: "long" }),
+      date: currentDate.toLocaleDateString("en-US", {
+        day: "numeric",
+      }),
+    });
+  }
+
+  return days;
+};

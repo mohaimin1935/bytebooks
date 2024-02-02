@@ -35,7 +35,9 @@ const ReaderLayout = ({ children }) => {
               </div>
 
               {/* main content */}
-              <div class="flex-1 overflow-y-aut pt-6">{children}</div>
+              <div class="flex-1 overflow-y-auto pr-4 -mr-16 py-12">
+                {children}
+              </div>
             </div>
           </div>
         </body>

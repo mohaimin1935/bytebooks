@@ -117,9 +117,8 @@
   }
 
   .section-header {
-    @apply uppercase tracking-[0.25rem] text-base font-space-mono content-highlight;
+    @apply uppercase tracking-[0.25rem] text-base font-rubik;
   }
-
 }
 
 .font-space-mono {
