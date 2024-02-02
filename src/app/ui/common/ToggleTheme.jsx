@@ -9,7 +9,7 @@ const ToggleTheme = () => {
   const { theme, toggle } = useContext(ThemeContext);
 
   return (
-    <button className="p-2 cursor-pointer content1 text-3xl" onClick={toggle}>
+    <button className="p-2 cursor-pointer content1 text-xl" onClick={toggle}>
       {theme === "light" ? (
         <>
           <IoMdMoon />

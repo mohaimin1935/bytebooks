@@ -42,3 +42,9 @@ export const getCurrentWeek = () => {
 
   return days;
 };
+
+export const truncateText = (text, cutLength) => {
+  if (!text) return null;
+  if (text.length <= cutLength) return text;
+  else return text.substring(0, cutLength) + "...";
+};

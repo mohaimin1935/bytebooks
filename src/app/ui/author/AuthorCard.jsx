@@ -1,9 +1,10 @@
+import { truncateText } from "@/utils/util";
 import Link from "next/link";
 import React from "react";
 
 const AuthorCard = ({ author }) => {
   return (
-    <div className="flex items-start gap-x-4 mb-4 h-24 pb-2 border-b border-bkg-2">
+    <div className="flex items-start gap-x-4 mb-4 h-28 border-b border-bkg-2 pl-2">
       <div className="w-1/6 center gap-y-2">
         <img
           src={"/author.png"}
@@ -18,9 +19,7 @@ const AuthorCard = ({ author }) => {
         <Link href="/" className="capitalize font-semibold mb-2">
           {author.name}
         </Link>
-        <p className="text-sm">
-          {author.desc.substring(0, 120)} {author.desc.length > 120 && "..."}
-        </p>
+        <p className="text-sm">{truncateText(author.desc, 80)}</p>
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const BookFlip = ({
         className={styles.container}
         style={{ height: `${width * ratio}px` }}
       >
-        <div className={styles.book}>
+        <div className={cn(styles.book)}>
           <div className={styles.front}>
             <div className={styles.cover}>
               <ColorExtractor getColors={getColors}>
@@ -57,7 +57,12 @@ const BookFlip = ({
 
       {details && (
         <div className="mt-4 center content2">
-          <Link href={`/book/`} className="font-medium hover">Book Title</Link>
+          <Link
+            href={`/reader/view/book/clrx6hhvp000210cdh5kdl57n`}
+            className="font-medium hover"
+          >
+            Book Title
+          </Link>
           <p className="text-sm font-light ">By Zulkar Naim, Tanmoy</p>
           <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">

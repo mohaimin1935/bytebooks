@@ -4,13 +4,13 @@ import React from "react";
 
 const Calendar = () => {
   const currentWeek = getCurrentWeek();
-  console.log(new Date().getDate());
 
   return (
     <div>
       <div className="flex items-center gap-x-4">
         {currentWeek.map(({ day, date }) => (
           <div
+            key={date}
             className={cn(
               "flex flex-col items-center justify-center w-14 pt-4 pb-6 rounded-full bg2 relative",
               new Date().getDate() == date && "shadow-xl border border-check"

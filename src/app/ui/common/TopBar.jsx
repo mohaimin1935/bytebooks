@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import ToggleTheme from "./ToggleTheme";
 
 const TopBar = ({ role }) => {
   const [openSwitch, setOpenSwitch] = useState(false);
@@ -75,6 +76,7 @@ const TopBar = ({ role }) => {
           </div>
         )}
 
+        <ToggleTheme />
         <div className="text-xl">
           <IoNotificationsOutline />
         </div>
