@@ -15,10 +15,16 @@ export const GET = async (req,{params}) => {
             id: params.bookId,
         },
         select: {
-            chapters: true,
+            //chapters: true,
+            chapters: {
+                orderBy: {
+                    serial: 'asc'
+                }
+              }
         }
     });
     console.log(chapters)
+
     return NextResponse.json(chapters);
   } catch (err) {
     console.log(err);
