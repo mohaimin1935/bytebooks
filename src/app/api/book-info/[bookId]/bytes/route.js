@@ -15,7 +15,12 @@ export const GET = async (req,{params}) => {
             id: params.bookId,
         },
         select: {
-            byte: true,
+          //byte: true,
+            byte: {
+                orderBy: {
+                    serial: 'asc'
+                }
+              }
         }
     });
     console.log(byte)
