@@ -9,6 +9,7 @@ import Calender from "@/app/ui/reader/Calendar";
 import CollectionCard from "@/app/ui/book/cards/CollectionCard";
 import AuthorCard from "@/app/ui/author/AuthorCard";
 import NotificationCard from "@/app/ui/common/NotificationCard";
+import RangeSlider from "@/app/ui/common/RangeSlider";
 
 const ReaderHome = () => {
   const { data } = useSession();
@@ -16,6 +17,7 @@ const ReaderHome = () => {
   return (
     <div className="flex flex-col xl:flex-row gap-8 md:gap-16">
       <div className="order-1 xl:order-2 w-full xl:w-2/5">
+        <RangeSlider />
         {/* right | top */}
         <ContinueCarouselSection />
         <CalenderSection />
