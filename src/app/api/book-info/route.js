@@ -143,40 +143,87 @@ export const POST = async (req) => {
 //   }
 // };
 
+// export const GET = async (req) => {
+//   try {
+    
+//     const url = req.nextUrl;
+
+//     const searchParams = url.searchParams;
+
+//     const creatorId = searchParams.get('creatorId');
+//     //console.log(creatorId);
+
+//     let books;
+//     if (creatorId) {
+//       // Fetch books by creatorId
+//       const bookCreators = await prisma.bookCreator.findMany({
+//         where: { creatorId },
+//         include: {
+//           book: {
+//             include: {
+//               authors: { include: { author: true }},
+//               genres: { include: { genre: true }}
+//             }
+//           }
+//         }
+//       });
+//       books = bookCreators.map(bc => bc.book);
+//     } else {
+//       // Fetch all books
+//       books = await prisma.bookInfo.findMany({
+//         include: {
+//           authors: { include: { author: true }},
+//           genres: { include: { genre: true }}
+//         }
+//       });
+//     }
+
+//     return NextResponse.json(books);
+//   } catch (err) {
+//     console.error("Error: ", err.message);
+//     return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
+//   }
+// };
+
+function parseBoolean(str) {
+  return str === 'true' || str === '1';
+}
+
 export const GET = async (req) => {
   try {
-    
     const url = req.nextUrl;
-
     const searchParams = url.searchParams;
 
-    const creatorId = searchParams.get('creatorId');
-    //console.log(creatorId);
+    // Initialize an empty filter object
+    let filter = {};
 
-    let books;
-    if (creatorId) {
-      // Fetch books by creatorId
-      const bookCreators = await prisma.bookCreator.findMany({
-        where: { creatorId },
-        include: {
-          book: {
-            include: {
-              authors: { include: { author: true }},
-              genres: { include: { genre: true }}
-            }
-          }
-        }
-      });
-      books = bookCreators.map(bc => bc.book);
-    } else {
-      // Fetch all books
-      books = await prisma.bookInfo.findMany({
-        include: {
-          authors: { include: { author: true }},
-          genres: { include: { genre: true }}
-        }
-      });
+    // Example search parameters based on your schema
+    if (searchParams.has('isbn')) {
+      filter.isbn = searchParams.get('isbn');
     }
+    if (searchParams.has('publishingYear')) {
+      filter.publishingYear = parseInt(searchParams.get('publishingYear'), 10);
+    }
+    if (searchParams.has('title')) {
+      filter.title = searchParams.get('title');
+    }
+    if (searchParams.has('creatorId')){
+      filter.id = searchParams.get('creatorId');
+    }
+    if(searchParams.has('isPublished')){
+      filter.isPublished = parseBoolean( searchParams.get('isPublished') );
+    }
+    // Add more filters as needed
+    console.log(filter);
+
+    let books = await prisma.bookInfo.findMany({
+      where: filter,
+      include: {
+        authors: { include: { author: true }},
+        genres: { include: { genre: true }},
+        // Include other relations as needed
+      }
+    });
 
     return NextResponse.json(books);
   } catch (err) {
