@@ -6,12 +6,14 @@ import { ColorExtractor } from "react-color-extractor";
 import { FiPlayCircle, FiStar } from "react-icons/fi";
 import { LuHeadphones } from "react-icons/lu";
 import { cn } from "@/utils/cn";
+import Link from "next/link";
 
 const BookFlip = ({
   audio = false,
   details = true,
   className,
   width = 200,
+  ratio = 1.7,
 }) => {
   const [bgColor, setBgColor] = useState();
 
@@ -20,8 +22,13 @@ const BookFlip = ({
   };
 
   return (
-    <div className={cn(`w-[${width}px] mx-4`, className, styles.parent)}>
-      <div className={styles.container} style={{ height: `${width * 1.5}px` }}>
+    <div
+      className={cn(`w-[${width}px] mr-4 ml-1 block`, className, styles.parent)}
+    >
+      <div
+        className={styles.container}
+        style={{ height: `${width * ratio}px` }}
+      >
         <div className={styles.book}>
           <div className={styles.front}>
             <div className={styles.cover}>
@@ -39,25 +46,20 @@ const BookFlip = ({
             style={{ background: bgColor && bgColor[3] }}
           >
             <h2
-              style={{ width: `${width * 1.5}px` }}
+              style={{ width: `${width * ratio}px` }}
               className="overflow-hidden"
             >
-              <span>
-                {"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quos?".substring(
-                  0,
-                  24
-                )}
-              </span>
+              <span>{"Book title".substring(0, 24)}</span>
             </h2>
           </div>
         </div>
       </div>
 
       {details && (
-        <div className="mt-4 center">
-          <h3 className="font-semibold">Book Title</h3>
-          <p className="text-sm">By Zulkar Naim, Tanmoy</p>
-          <div className="flex items-center gap-x-4 text-sm">
+        <div className="mt-4 center content2">
+          <Link href={`/book/`} className="font-medium hover">Book Title</Link>
+          <p className="text-sm font-light ">By Zulkar Naim, Tanmoy</p>
+          <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar /> <p className="">4.7</p>
             </div>
@@ -69,12 +71,17 @@ const BookFlip = ({
       )}
 
       {audio && (
-        <div className="flex gap-x-2 items-center mt-4">
-          <FiPlayCircle size={24} />
+        <button
+          className="flex gap-x-2 items-center w-full"
+          onClick={() => {
+            console.log("first");
+          }}
+        >
+          <FiPlayCircle size={32} />
           <div className="relative h-1.5 w-full rounded-full bg2">
             <div className="absolute w-[30%] accent1 left-0 top-0 bottom-0 rounded-full bg2"></div>
           </div>
-        </div>
+        </button>
       )}
     </div>
   );

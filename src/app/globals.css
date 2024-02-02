@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Rubik:wght@400;600;700&family=Karla:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Rubik:wght@300;400;500;600;700&family=Karla:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -185,4 +185,25 @@
 
 .ql-snow a {
   color: var(--accent-2) !important;
+}
+
+.hover {
+  position: relative;
+}
+.hover::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  border-radius: 5px;
+  height: 0.05rem;
+  bottom: 2px;
+  left: 0;
+  background: var(--accent-2);
+  transform-origin: bottom right;
+  transition: transform 0.15s ease-out;
+}
+.hover:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

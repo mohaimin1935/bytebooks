@@ -5,6 +5,7 @@ import ReaderLeft from "../ui/reader/ReaderLeft";
 import TopBar from "../ui/common/TopBar";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import AudioBar from "../ui/reader/AudioBar";
 
 const ReaderLayout = ({ children }) => {
   const { data, status } = useSession();
@@ -35,8 +36,12 @@ const ReaderLayout = ({ children }) => {
               </div>
 
               {/* main content */}
-              <div class="flex-1 overflow-y-auto pr-4 -mr-16 py-12">
+              <div class="flex-1 overflow-y-auto -mr-4 sm:-mr-12 xl:-mr-16 pr-4 sm:pr-12 xl:pr-16 py-12">
                 {children}
+              </div>
+
+              <div className="-mx-4 sm:-mx-12 xl:-mx-16 ">
+                <AudioBar />
               </div>
             </div>
           </div>
