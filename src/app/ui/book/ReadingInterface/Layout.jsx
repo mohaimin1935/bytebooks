@@ -70,6 +70,7 @@ const FontSize = () => {
               "cursor-pointer rounded px-2",
               fontSize === size ? "border border-check" : ""
             )}
+            key={size}
           >
             {size}
           </div>
@@ -95,6 +96,7 @@ const FontWeight = () => {
               "cursor-pointer rounded px-2",
               fontWeight === weight ? "border border-check" : ""
             )}
+            key={weight}
           >
             {weight}
           </div>
@@ -105,8 +107,7 @@ const FontWeight = () => {
 };
 
 const Margins = () => {
-
-  const margins = [0, 40, 80]
+  const margins = [0, 40, 80];
 
   return (
     <section>

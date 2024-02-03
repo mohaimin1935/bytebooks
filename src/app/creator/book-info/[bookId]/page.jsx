@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 
-const page = () => {
+const AddBookPage = () => {
   const { bookId } = useParams();
 
   const { data, isLoading } = useSWR(`/api/book-info/${bookId}`, fetcher);
@@ -22,4 +22,4 @@ const page = () => {
   if (isLoading) return <Loader className="h-96" />;
 };
 
-export default page;
+export default AddBookPage;
