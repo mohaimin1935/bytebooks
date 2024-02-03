@@ -167,9 +167,9 @@ const AddBook = ({ bookInfo }) => {
       }
       mutate(`/api/book-info/${bookId}`);
       setSaved(true);
-      setModal(true);
+      // setModal(true);
       router.refresh();
-      setShowModal("save-action");
+      // setShowModal("save-action");
     } catch (error) {
       toast.error(
         error?.response?.data?.message ||
@@ -231,7 +231,7 @@ const AddBook = ({ bookInfo }) => {
         />
       )}
 
-      {showModal === "save-action" && (
+      {/* {showModal === "save-action" && (
         <Modal className={"h-[180px]"}>
           <div className="">
             <div className="flex items-center gap-x-2">
@@ -266,7 +266,7 @@ const AddBook = ({ bookInfo }) => {
             </div>
           </div>
         </Modal>
-      )}
+      )} */}
 
       <div className="flex gap-x-16 ml-12 relative">
         {(!saved || book) && (
@@ -301,7 +301,7 @@ const AddBook = ({ bookInfo }) => {
             setURL={setBookImage}
             initialImage={book?.image || ""}
             previousUrl={book?.image}
-            recommendedSize={"2:3"}
+            recommendedSize={"4:3"}
           />
         </div>
 

@@ -28,13 +28,19 @@ const BookEditCard = ({ book = {} }) => {
   };
 
   return (
-    <div className="border border-bkg-2 shadow rounded-md flex gap-x-4 px-4 pt-4 my-4 h-40 overflow-scroll">
+    <div className="border border-bkg-2 shadow rounded-md flex gap-x-4 px-4 py-4 my-4">
       {/* LEFT */}
-      <img
-        src={book.image || "/bookImage.jpg"}
-        alt="book"
-        className="w-1/4 h-full rounded"
-      />
+      <div className="w-1/5">
+        <div
+          className="pb-[133%] bg2"
+          style={{
+            backgroundImage: `url(${book.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        ></div>
+      </div>
 
       {/* RIGHT */}
       <div className="w-full">

@@ -1,5 +1,7 @@
+"use client";
+
 import { cn } from "@/utils/cn";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { IoPause, IoVolumeMediumOutline } from "react-icons/io5";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import {
@@ -9,9 +11,25 @@ import {
   TbVolume2,
 } from "react-icons/tb";
 
+const Book = {};
+const chapter = {
+  audioLink:
+    "https://firebasestorage.googleapis.com/v0/b/bytebooks-1574e.appspot.com/o/1706426970550business-168341.mp3?alt=media&token=5e3145c9-a284-43d8-a085-00d21f11a34b",
+};
+
 const AudioBar = () => {
+  const audioRef = useRef();
+  const [duration, setDuration] = useState(0);
+
   return (
     <div className="bg2 px-4 h-20 py-2 sm:px-4 xl:px-8 m-2 rounded ">
+      <audio
+        ref={audioRef}
+        preload="metadata"
+        onDurationChange={(e) => setDuration(e.currentTarget.duration)}
+      >
+        <source type="audio/mpeg" src={chapter.audioLink} />
+      </audio>
       {/* large screen */}
       <div className="hidden lg:flex items-center justify-between">
         <div className="flex items-center gap-x-4 w-32 text-sm">

@@ -39,7 +39,7 @@ const ReaderLayout = ({ children }) => {
           </div>
 
           <div className="-mx-4 sm:-mx-12 xl:-mx-16 ">
-            <AudioBar />
+            <AudioBar  />
           </div>
         </div>
       </div>

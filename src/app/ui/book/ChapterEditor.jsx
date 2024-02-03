@@ -10,8 +10,18 @@ import Link from "next/link";
 import { BookEditContext } from "@/contexts/BookEditContext";
 
 const ChapterEditor = ({}) => {
-  const { chapters, bookId, book, addLoading, addChapter, handleReorder } =
-    useContext(BookEditContext);
+  const {
+    chapters,
+    bookId,
+    book,
+    addLoading,
+    addChapter,
+    handleReorder,
+    isLoading,
+    unsavedOrder,
+    handleOrderSave,
+    reorderLoading,
+  } = useContext(BookEditContext);
 
   return (
     <div className="px-8 mt-20 capitalize">
@@ -25,25 +35,38 @@ const ChapterEditor = ({}) => {
       >
         <FiBookOpen className="" /> <h3 className="">{book?.title}</h3>
       </Link>
-      <div className="pl-4">
-        <Reorder.Group
-          axis="y"
-          onReorder={(values) => handleReorder(values)}
-          values={chapters || []}
-          className="mb-8"
-        >
-          {chapters?.map((chapter) => (
-            <Item key={chapter.id} item={chapter} />
-          ))}
-        </Reorder.Group>
+      {isLoading ? (
+        <Loader className="h-32" />
+      ) : (
+        <div className="pl-4">
+          <Reorder.Group
+            axis="y"
+            onReorder={(values) => handleReorder(values)}
+            values={chapters || []}
+            className="mb-8"
+          >
+            {chapters?.map((chapter) => (
+              <Item key={chapter.id} item={chapter} />
+            ))}
+          </Reorder.Group>
 
-        <button
-          className="rounded-md center secondary-btn w-full py-2 block"
-          onClick={addChapter}
-        >
-          {!addLoading ? <FiPlus /> : <Loader />}
-        </button>
-      </div>
+          {unsavedOrder && (
+            <button
+              className="accent1 text-sm w-full mb-2 px-3 py-1 rounded"
+              onClick={handleOrderSave}
+            >
+              {reorderLoading ? <Loader /> : <>Save Order</>}
+            </button>
+          )}
+
+          <button
+            className="rounded-md center secondary-btn w-full py-2 block"
+            onClick={addChapter}
+          >
+            {!addLoading ? <FiPlus /> : <Loader />}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

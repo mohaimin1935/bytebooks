@@ -14,7 +14,10 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
   const { mutate } = useSWRConfig();
   const { setModal } = useContext(ThemeContext);
 
-  const { data } = useSWR(`/api/book-info/${bookId}/${type}s`, fetcher);
+  const { data, isLoading } = useSWR(
+    `/api/book-info/${bookId}/${type}s`,
+    fetcher
+  );
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
 
   const [chapters, setChapters] = useState([]);
@@ -26,10 +29,13 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
   const [audioUrl, setAudioUrl] = useState();
   const [saved, setSaved] = useState();
 
+  const [unsavedOrder, setUnsavedOrder] = useState(false);
+
   const [addLoading, setAddLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [switchLoading, setSwitchLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const [reorderLoading, setReorderLoading] = useState(false);
 
   const addChapter = async () => {
     if (addLoading) return;
@@ -41,6 +47,7 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
         title: `${type} ${chapters.length + 1}`,
       });
       mutate(`/api/book-info/${bookId}/${type}s`);
+      setChapters((prev) => [...prev, res.data]);
       setActiveId(res.data.id);
       toast.success("Chapter Added");
     } catch (error) {
@@ -68,6 +75,7 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
       setDeleteLoading(true);
       await axios.delete(`/api/book-info/${bookId}/${type}s/${activeId}`);
       mutate(`/api/book-info/${bookId}/${type}s`);
+      setChapters((prev) => prev.filter((item) => item.id !== activeId));
       toast.success("Deleted successfully");
       setActiveId();
     } catch (error) {
@@ -81,15 +89,15 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
   };
 
   const switchActiveId = async (id) => {
-    try {
-      setSwitchLoading(true);
-      await handleSave();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSwitchLoading(false);
-      setActiveId(id);
-    }
+    // try {
+    //   setSwitchLoading(true);
+    //   await handleSave();
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   setSwitchLoading(false);
+    // }
+    setActiveId(id);
   };
 
   const handleSave = async () => {
@@ -114,17 +122,28 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
     }
   };
 
-  const handleReorder = async (values) => {
+  const handleReorder = (values) => {
+    setUnsavedOrder(true);
     setChapters(values);
-    values.forEach(async (value, index) => {
+  };
+
+  const handleOrderSave = async () => {
+    setReorderLoading(true);
+    chapters.forEach(async (value, index) => {
       try {
         await axios.patch(`/api/book-info/${bookId}/${type}s/${value.id}`, {
           serial: index,
         });
       } catch (error) {
         console.log(error);
+        toast.error("Order update failed");
+        setReorderLoading(false);
+        return;
       }
     });
+    toast.success("Order updated");
+    setReorderLoading(false);
+    setUnsavedOrder(false);
   };
 
   useEffect(() => {
@@ -185,6 +204,10 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
         saveLoading,
         saved,
         handleReorder,
+        isLoading,
+        unsavedOrder,
+        handleOrderSave,
+        reorderLoading,
       }}
     >
       {showModal === "delete" && (

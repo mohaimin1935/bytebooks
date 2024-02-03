@@ -60,7 +60,6 @@ const UploadFile = ({
               console.log("paused");
               break;
             case "running":
-              console.log("running");
               setIsUploading(true);
               break;
           }
@@ -76,7 +75,9 @@ const UploadFile = ({
             if (previousUrl) {
               const prevRef = ref(storage, previousUrl);
               deleteObject(prevRef)
-                .then(() => {})
+                .then(() => {
+                  console.log("deleted");
+                })
                 .catch((err) => console.log(err));
             }
             setImageURL(downloadURL);
