@@ -63,6 +63,7 @@ const AddBook = ({ bookInfo }) => {
 
   useEffect(() => {
     if (book) {
+      console.log(book);
       setBookTitle(book.title);
       setBookImage(book.image);
       setAuthors(book.authors?.map((a) => a.author) || []);
@@ -157,16 +158,17 @@ const AddBook = ({ bookInfo }) => {
 
       if (book) {
         const res = await axios.patch(`/api/book-info/${bookId}`, bookInfo);
-        setBook(res.data);
+        // setBook(res.data);
       } else {
         const res = await axios.post("/api/book-info", bookInfo);
         console.log(res.data);
-        setBook(res.data);
+        // setBook(res.data);
         setBookId(res.data.id);
       }
       mutate(`/api/book-info/${bookId}`);
       setSaved(true);
       setModal(true);
+      router.refresh();
       setShowModal("save-action");
     } catch (error) {
       toast.error(
@@ -299,6 +301,7 @@ const AddBook = ({ bookInfo }) => {
             setURL={setBookImage}
             initialImage={book?.image || ""}
             previousUrl={book?.image}
+            recommendedSize={"2:3"}
           />
         </div>
 

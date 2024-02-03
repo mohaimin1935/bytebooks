@@ -20,6 +20,7 @@ const TopBar = ({ role }) => {
   const handleSwitch = (mode) => {
     if (data?.user?.role !== "reader") {
       setMode(mode);
+      setOpenSwitch(false);
       toast.success(`Switched to ${mode} mode.`);
       router.push(`/${mode}/home`);
     }

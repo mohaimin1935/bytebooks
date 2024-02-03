@@ -21,6 +21,7 @@ const UploadFile = ({
   type = "image",
   showImage = false,
   previousUrl,
+  recommendedSize,
 }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
@@ -129,6 +130,11 @@ const UploadFile = ({
           accept={acceptType}
         />
       </div>
+      {recommendedSize && (
+        <div className="absolute -bottom-4 content2 text-xs left-0 right-0 text-center">
+          Recommended Size- {recommendedSize}
+        </div>
+      )}
       {isUploading && (
         <div
           className={
