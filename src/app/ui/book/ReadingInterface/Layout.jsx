@@ -105,6 +105,9 @@ const FontWeight = () => {
 };
 
 const Margins = () => {
+
+  const margins = [0, 40, 80]
+
   return (
     <section>
       <p className="mb-2 mt-6">Margins</p>

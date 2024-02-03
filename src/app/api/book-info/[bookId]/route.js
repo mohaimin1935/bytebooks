@@ -24,8 +24,8 @@ export const GET = async (req, { params }) => {
         tags: {
           include: {
             tag: true,
-          }
-        }
+          },
+        },
       },
     });
 
@@ -44,6 +44,40 @@ export const GET = async (req, { params }) => {
 // TODO: PATCH
 // TODO: DELETE
 
+export const PUT = async (req, { params }) => {
+  const { bookId } = params;
+
+  const body = await req.json(); // Parse the request body
+
+  // Check if the book exists
+  const existingBook = await prisma.bookInfo.findUnique({
+    where: {
+      id: bookId,
+    },
+  });
+
+  // If the book does not exist, return a 404 status with a message
+  if (!existingBook) {
+    return NextResponse.json({ message: "Book not found" }, { status: 404 });
+  }
+
+  try {
+    const updatedBook = await prisma.bookInfo.update({
+      where: {
+        id: bookId,
+      },
+      data: body,
+    });
+    return NextResponse.json(updatedBook);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Something went wrong", error: err.message },
+      { status: 500 }
+    );
+  }
+};
+
 export const PATCH = async (req, { params }) => {
   const { bookId } = params;
   try {
@@ -61,49 +95,69 @@ export const PATCH = async (req, { params }) => {
       return NextResponse.json({ message: "Book not found" }, { status: 404 });
     }
 
-
     //author filtering
     //console.log(body);
     const existingBookAuthors = await prisma.bookAuthor.findMany({
-        where: {
-          bookId: bookId,
-        },
-      });
-    const existingAuthorIds = existingBookAuthors.map((connection) => connection.authorId);
-    const newAuthors = body.authorIds.filter((authorId) => !existingAuthorIds.includes(authorId));
-    const deletedAuthors = existingAuthorIds.filter((authorId) => !body.authorIds.includes(authorId));
-    
+      where: {
+        bookId: bookId,
+      },
+    });
+    const existingAuthorIds = existingBookAuthors.map(
+      (connection) => connection.authorId
+    );
+    const newAuthors = body.authorIds.filter(
+      (authorId) => !existingAuthorIds.includes(authorId)
+    );
+    const deletedAuthors = existingAuthorIds.filter(
+      (authorId) => !body.authorIds.includes(authorId)
+    );
+
     //genre and tag filtering
     const existingBookTags = await prisma.bookTag.findMany({
       where: {
         bookId: bookId,
       },
     });
-    const existingTagIds = existingBookTags.map((connection) => connection.tagId);
-    const newTags = body.tagIds.filter((tagId) => !existingTagIds.includes(tagId));
-    const deletedTags = existingTagIds.filter((tagId) => !body.tagIds.includes(tagId));
-
+    const existingTagIds = existingBookTags.map(
+      (connection) => connection.tagId
+    );
+    const newTags = body.tagIds.filter(
+      (tagId) => !existingTagIds.includes(tagId)
+    );
+    const deletedTags = existingTagIds.filter(
+      (tagId) => !body.tagIds.includes(tagId)
+    );
 
     const existingBookGenres = await prisma.bookGenre.findMany({
       where: {
         bookId: bookId,
       },
     });
-    const existingGenreIds = existingBookGenres.map((connection) => connection.genreId);
-    const newGenres = body.genreIds.filter((genreId) => !existingGenreIds.includes(genreId));
-    const deletedGenres = existingGenreIds.filter((genreId) => !body.genreIds.includes(genreId));
-    
+    const existingGenreIds = existingBookGenres.map(
+      (connection) => connection.genreId
+    );
+    const newGenres = body.genreIds.filter(
+      (genreId) => !existingGenreIds.includes(genreId)
+    );
+    const deletedGenres = existingGenreIds.filter(
+      (genreId) => !body.genreIds.includes(genreId)
+    );
 
     const existingCreators = await prisma.bookCreator.findMany({
       where: {
         bookId: bookId,
       },
     });
-    const existingCreatorIds = existingCreators.map((connection) => connection.creatorId);
-    const newCreators = body.creatorIds.filter((creatorId) => !existingCreatorIds.includes(creatorId));
-    const deletedCreators = existingCreatorIds.filter((creatorId) => !body.creatorIds.includes(creatorId));
+    const existingCreatorIds = existingCreators.map(
+      (connection) => connection.creatorId
+    );
+    const newCreators = body.creatorIds.filter(
+      (creatorId) => !existingCreatorIds.includes(creatorId)
+    );
+    const deletedCreators = existingCreatorIds.filter(
+      (creatorId) => !body.creatorIds.includes(creatorId)
+    );
 
-    
     // Update the book with the new data
     const updatedBook = await prisma.bookInfo.update({
       where: {

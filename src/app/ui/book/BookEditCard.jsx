@@ -13,7 +13,7 @@ const BookEditCard = ({ book = {} }) => {
   const handlePublish = async () => {
     try {
       setLoading(true);
-      const res = await axios.patch(`/api/book-info/${book.id}`, {
+      const res = await axios.put(`/api/book-info/${book.id}`, {
         isPublished: !book.isPublished,
       });
       mutate(`/api/book-info`);
@@ -33,7 +33,7 @@ const BookEditCard = ({ book = {} }) => {
       <img
         src={book.image || "/bookImage.jpg"}
         alt="book"
-        className="h-full rounded"
+        className="w-1/4 h-full rounded"
       />
 
       {/* RIGHT */}
@@ -42,10 +42,10 @@ const BookEditCard = ({ book = {} }) => {
           {/* TOP */}
           <div className="w-full">
             <h3 className="font-semibold capitalize">{book.title}</h3>
-            <p className="text-xs content2 my-1">
-              By{" "}
+            <p className="text-xs content2 my-1 w-full overflow-hidden flex flex-wrap items-center gap-1">
+              <span>By </span>
               {book.authors?.map(({ author }) => (
-                <span key={author.id} className="mr-2 bg2 px-2 py-1 rounded">
+                <span key={author.id} className="bg2 px-2 py-1 rounded">
                   {author.name}
                 </span>
               ))}
@@ -59,7 +59,7 @@ const BookEditCard = ({ book = {} }) => {
               onClick={handlePublish}
             >
               {!loading ? (
-                <p>{book.isPublished ? "Draft" : "Publish"}</p>
+                <p>{book.isPublished ? "Unpublish" : "Publish"}</p>
               ) : (
                 <Loader />
               )}
