@@ -115,7 +115,16 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
   };
 
   const handleReorder = async (values) => {
-    console.log(values);
+    setChapters(values);
+    values.forEach(async (value, index) => {
+      try {
+        await axios.patch(`/api/book-info/${bookId}/${type}s/${value.id}`, {
+          serial: index,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   useEffect(() => {
