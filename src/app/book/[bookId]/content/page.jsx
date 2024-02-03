@@ -1,11 +1,16 @@
+"use client";
+
 import ReadingInterface from "@/app/ui/book/ReadingInterface/Interface";
 import { BookReadContextProvider } from "@/contexts/BookReadContext";
 import BookReadProvider from "@/providers/BookReadProvider";
 import React from "react";
 
-const Chapter = () => {
+const Chapter = ({ params, searchParams }) => {
+  const { bookId } = params;
+  const { type } = searchParams;
+
   return (
-    <BookReadContextProvider>
+    <BookReadContextProvider bookId={bookId} type={type}>
       <BookReadProvider>
         <ReadingInterface />
       </BookReadProvider>

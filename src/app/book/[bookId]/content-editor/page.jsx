@@ -15,11 +15,6 @@ const ContentEditorPage = () => {
   const { bookId } = useParams();
   const { setModal } = useContext(ThemeContext);
 
-  const { data: chapters } = useSWR(
-    `/api/book-info/${bookId}/${type}s`,
-    fetcher
-  );
-
   useEffect(() => {
     setModal(false);
   }, []);

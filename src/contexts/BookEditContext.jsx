@@ -1,6 +1,6 @@
 "use client";
 
-import { baseApi, fetcher } from "@/utils/util";
+import { fetcher } from "@/utils/util";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";

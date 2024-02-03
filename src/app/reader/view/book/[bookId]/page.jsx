@@ -25,14 +25,14 @@ const ViewBook = async ({ params }) => {
         <div className="flex gap-x-16 ml-12 relative">
           <div className="absolute right-0 top-0 gap-y-4 flex flex-col items-end">
             <Link
-              href={`/book/bookId/byte`}
+              href={`/book/${bookId}/content?type=byte`}
               className="flex gap-x-2 transition duration-300 items-center primary-btn py-1.5 px-6 text-sm"
             >
               <p>Summary</p>
               <FiArrowRight />
             </Link>
             <Link
-              href={`/book/bookId/chapter`}
+              href={`/book/${bookId}/content?type=chapter`}
               className="flex gap-x-2 transition duration-300 items-center secondary-btn py-1.5 px-6 text-sm"
             >
               <p>Full Book</p>
