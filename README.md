@@ -43,16 +43,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Todo FRONTEND
 
 - [x] delete prev file from firebase
-- [ ] remove your books from creator
-- [ ] add search functionality in book list for content
-- [ ] audio player
+- [x] remove your books from creator
+- [ ] book delete for creator
+- [ ] add search functionality in book list for creator
+- [x] audio player
+- [ ] report book reader in chapter
+- [ ] design search bookcard
+- [ ] search book modal reader
+- [ ] settings for user
+- [ ] create collection for creator
+- [ ] explore page reader
+- [ ] highlights, library reader
+- [ ] admin
 
 ### Todo BACKEND
 
 - [x] `/book-info/`: get by creatorId and isPublished
 - [x] `/book-info/[bookId]`: modify patch request
 - [x] `/book-info/[bookId]/bytes`: sort by serial in get request
-- [ ] `/users/[userId]`: get patch delete
+- [x] `/users/[userId]`: get patch delete
+- [ ] book progress
+- [ ] `/users/[userId]/books`
 
 ---
 

@@ -1,27 +1,80 @@
+"use client";
+
 import AuthorCard from "@/app/ui/author/AuthorCard";
-import { baseApi } from "@/utils/util";
+import Loader from "@/app/ui/common/Loader";
+import Modal from "@/app/ui/common/Modal";
+import CustomTextArea from "@/app/ui/common/TextArea";
+import { ThemeContext } from "@/contexts/ThemeContext";
+import { baseApi, fetcher } from "@/utils/util";
 import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { AiFillAudio } from "react-icons/ai";
 import { FiArrowRight, FiBookmark, FiShare2, FiStar } from "react-icons/fi";
+import { TbMessageReport } from "react-icons/tb";
+import useSWR from "swr";
 
-const getData = async (bookId) => {
-  try {
-    const res = await axios.get(`${baseApi}/book-info/${bookId}`);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+const ViewBook = () => {
+  const { bookId } = useParams();
+  const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
 
-const ViewBook = async ({ params }) => {
-  const { bookId } = params;
-  const book = await getData(bookId);
+  const [reportText, setReportText] = useState();
+  const [showModal, setShowModal] = useState();
+  const [reportLoading, setReportLoading] = useState(false);
+
+  const { setModal } = useContext(ThemeContext);
+
+  const handleReport = () => {
+    setModal(true);
+    setShowModal("report");
+  };
+
+  const handleCancel = () => {
+    setModal(false);
+    setShowModal("");
+  };
+
+  const saveReport = async () => {
+    try {
+      setReportLoading(true);
+      // TODO: await axios.post
+      toast.success("Reported successfully");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error);
+    } finally {
+      setReportLoading(false);
+    }
+  };
 
   if (book)
     return (
       <div>
+        {showModal === "report" && (
+          <Modal className={"h-96"}>
+            <CustomTextArea
+              maxLength={400}
+              maxHeight={400}
+              placeholder={"Details..."}
+              value={reportText}
+              setValue={setReportText}
+            />
+            <div className="flex items-center justify-between mt-24">
+              <button
+                className="secondary-btn py-1 rounded"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+              <button className="primary-btn py-1 rounded" onClick={saveReport}>
+                {reportLoading ? <Loader /> : <>Report</>}
+              </button>
+            </div>
+          </Modal>
+        )}
+
         <div className="flex gap-x-16 ml-12 relative">
           <div className="absolute right-0 top-0 gap-y-4 flex flex-col items-end">
             <Link
@@ -87,6 +140,9 @@ const ViewBook = async ({ params }) => {
             </button>
             <button className="bg2 rounded-full p-4">
               <FiShare2 />
+            </button>
+            <button className="bg2 rounded-full p-4" onClick={handleReport}>
+              <TbMessageReport />
             </button>
           </div>
 
