@@ -11,12 +11,18 @@ const AuthorCard = ({ author }) => {
           alt="author"
           className="w-12 h-12 rounded-full p-[1px] border-check border"
         />
-        <Link href={"/"} className="secondary-btn py-1 px-3 border text-xs">
+        <Link
+          href={`/reader/author/${author.id}`}
+          className="secondary-btn py-1 px-3 border text-xs"
+        >
           View
         </Link>
       </div>
       <div className="w-5/6">
-        <Link href="/" className="capitalize font-semibold mb-2">
+        <Link
+          href={`/reader/author/${author.id}`}
+          className="capitalize font-semibold mb-2 hover"
+        >
           {author.name}
         </Link>
         <p className="text-sm">{truncateText(author.desc, 80)}</p>

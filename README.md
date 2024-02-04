@@ -48,13 +48,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] add search functionality in book list for creator
 - [x] audio player
 - [ ] report book reader in chapter
-- [ ] design search bookcard
-- [ ] search book modal reader
+- [x] design search bookcard
+- [x] search book modal reader
 - [ ] settings for user
 - [ ] create collection for creator
 - [ ] explore page reader
 - [ ] highlights, library reader
 - [ ] admin
+- [x] author page
 
 ### Todo BACKEND
 

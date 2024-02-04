@@ -11,6 +11,7 @@ import Link from "next/link";
 import ToggleTheme from "./ToggleTheme";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import SearchModal from "./SearchModal";
+import Search from "./Search";
 
 const TopBar = ({ role }) => {
   const [openSwitch, setOpenSwitch] = useState(false);
@@ -41,15 +42,8 @@ const TopBar = ({ role }) => {
       {searchModal && <SearchModal />}
       <div className="mt-6 flex items-center justify-between relative">
         {/* search */}
-        <div className="flex items-center gap-x-3" onClick={handleSearchModal}>
-          <div className="text-xl">
-            <FiSearch />
-          </div>
-          <input
-            type="text"
-            className="px-1 py-1 bg1 outline-none content2 border-b text-sm w-64 hidden sm:block"
-            placeholder="eg, harry potter"
-          />
+        <div className="" onClick={handleSearchModal}>
+          <Search />
         </div>
 
         <div className="flex items-center gap-x-4">
