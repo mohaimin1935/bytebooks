@@ -15,11 +15,11 @@ const options = [
     link: "home",
     icon: () => <FiHome />,
   },
-  {
-    name: "Your Books",
-    link: "your-books",
-    icon: () => <FiBookOpen />,
-  },
+  // {
+  //   name: "Your Books",
+  //   link: "your-books",
+  //   icon: () => <FiBookOpen />,
+  // },
   {
     name: "Analytics",
     link: "analytics",

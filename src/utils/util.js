@@ -48,3 +48,17 @@ export const truncateText = (text, cutLength) => {
   if (text.length <= cutLength) return text;
   else return text.substring(0, cutLength) + "...";
 };
+
+export const convertMsToHMS = (ms) => {
+  if (!ms) return "-:-";
+
+  const h = Math.floor(ms / (1000 * 60 * 60));
+  const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+  const s = Math.floor((ms % (1000 * 60)) / 1000);
+
+  let str = "";
+  if (h > 0) str += `${h}:`;
+  str += `${m}:${s}`;
+
+  return str;
+};

@@ -9,7 +9,7 @@ import { FiLogOut } from "react-icons/fi";
 
 const LeftPanel = ({ options, active }) => {
   return (
-    <div className="flex flex-col items-center md:items-start mt-6">
+    <div className="flex flex-col items-center md:items-start mt-16">
       {/* logo */}
       {/* flex items-center md:items-start hover:content-highlight transition duration-300 w-full relative py-3 || mb-12 font-semibold text-xl pl-0 md:pl-10 flex items-center gap-x-4 */}
       <div className="mb-12 font-semibold text-xl pl-0 md:pl-8 flex items-center gap-x-4">

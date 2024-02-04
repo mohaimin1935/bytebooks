@@ -7,12 +7,14 @@ const RangeSlider = ({
   className = "[&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4",
   max = 100,
   min = 0,
+  value,
+  setValue,
 }) => {
-  const [value, setValue] = useState(40);
   const [width, setWidth] = useState();
 
   useEffect(() => {
-    setWidth(parseInt(((value - min) / (max - min)) * 50));
+    setWidth(parseInt(((value - min) / (max - min)) * 100));
+    console.log(value, min, max);
   }, [value]);
 
   return (
@@ -23,8 +25,9 @@ const RangeSlider = ({
           className
         )}
         type="range"
-        min={0}
-        max={200}
+        min={min}
+        max={max}
+        step={(max - min) / 100}
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
