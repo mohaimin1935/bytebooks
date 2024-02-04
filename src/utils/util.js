@@ -50,7 +50,7 @@ export const truncateText = (text, cutLength) => {
 };
 
 export const convertMsToHMS = (ms) => {
-  if (!ms) return "-:-";
+  if (!ms) return "0:00";
 
   const h = Math.floor(ms / (1000 * 60 * 60));
   const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));

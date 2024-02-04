@@ -185,7 +185,7 @@ const AddBook = ({ bookInfo }) => {
   return (
     <div>
       {showModal === "author" && (
-        <Selector
+      <Selector
           options={authorList}
           addLink={"/author/add"}
           selected={authors}

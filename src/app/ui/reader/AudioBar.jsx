@@ -1,9 +1,14 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoPause, IoPlay, IoVolumeMediumOutline } from "react-icons/io5";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdSkipNext,
+  MdSkipPrevious,
+} from "react-icons/md";
 import {
   TbBrandSpeedtest,
   TbRewindBackward10,
@@ -12,9 +17,10 @@ import {
   TbVolume2,
   TbVolume3,
 } from "react-icons/tb";
-import useSound from "use-sound";
+import { useAudioPlayer } from "react-use-audio-player";
 import RangeSlider from "../common/RangeSlider";
 import { convertMsToHMS } from "@/utils/util";
+import Loader from "../common/Loader";
 
 const Book = {};
 const chapter = {
@@ -22,34 +28,55 @@ const chapter = {
     "https://firebasestorage.googleapis.com/v0/b/bytebooks-1574e.appspot.com/o/1706426970550business-168341.mp3?alt=media&token=5e3145c9-a284-43d8-a085-00d21f11a34b",
 };
 
-const playBackSpeeds = [1, 1.25, 1.5, 1.75, 2, 0.75];
-
 const AudioBar = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [pos, setPos] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(0);
-  const [volume, setVolume] = useState(0.5);
+  const [audioLoading, setAudioLoading] = useState(true);
 
-  const [play, { stop, duration, sound }] = useSound(chapter.audioLink, {
-    playbackRate: playBackSpeeds[playbackRate],
+  const {
+    load,
+    togglePlayPause,
     volume,
-    interrupt: true,
-  });
+    setVolume,
+    duration,
+    playing,
+    rate,
+    setRate,
+    seek,
+    getPosition,
+    isReady,
+  } = useAudioPlayer();
 
-  console.log(sound);
+  useEffect(() => {
+    load(chapter.audioLink, {
+      html5: true,
+      autoplay: false,
+      initialVolume: 0.5,
+      initialRate: 1.0,
+      onload: () => setAudioLoading(false),
+    });
+  }, [chapter.audioLink]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPos(getPosition());
+    }, 100);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const handlePlayPause = () => {
-    if (!isPlaying) {
-      setIsPlaying(true);
-      play();
-    } else {
-      setIsPlaying(false);
-      stop();
-    }
+    togglePlayPause();
   };
 
-  const handleSpeed = () => {
-    console.log(playbackRate, playBackSpeeds[playbackRate]);
-    setPlaybackRate((prev) => (prev + 1) % playBackSpeeds.length);
+  const handleSpeed = (val) => {
+    if (rate + val > 2 || rate + val < 0.5) return;
+    setRate(rate + val);
+  };
+
+  const goTo = (advance) => {
+    seek(pos + advance);
   };
 
   return (
@@ -67,39 +94,57 @@ const AudioBar = () => {
         <div className="flex-1 px-12">
           <div className="flex items-center gap-x-6 justify-center text-xl my-2">
             {/* prev */}
-            <button>
+            {/* <button>
               <MdSkipPrevious />
-            </button>
+            </button> */}
             {/* rewind */}
-            <button>
+            <button onClick={() => goTo(-10)}>
               <TbRewindBackward10 />
             </button>
             {/* play */}
             <button className="text-2xl" onClick={handlePlayPause}>
-              {isPlaying ? <IoPause /> : <IoPlay />}
+              {audioLoading && playing ? (
+                <Loader />
+              ) : playing ? (
+                <IoPause />
+              ) : (
+                <IoPlay />
+              )}
             </button>
             {/* advance */}
-            <button>
+            <button onClick={() => goTo(10)}>
               <TbRewindForward10 />
             </button>
             {/* next */}
-            <button>
+            {/* <button>
               <MdSkipNext />
-            </button>
+            </button> */}
           </div>
           <div className="flex items-center gap-x-4 content2">
-            <p className="">12:25</p>
-            <div className="relative bg1 h-2 flex-1 rounded-full">
-              <div className="absolute rounded-full w-[30%] left-0 top-0 h-2 accent2"></div>
-              <div className="absolute left-[29%] h-4 w-4 rounded-full -top-1 accent1"></div>
-            </div>
-            <p className="">{convertMsToHMS(duration)}</p>
+            <p className="">{convertMsToHMS(getPosition() * 1000)}</p>
+            {!audioLoading ? (
+              <div className="relative bg1 h-2 flex-1 rounded-full">
+                <div
+                  className="absolute rounded-full left-0 top-0 h-2 accent2"
+                  style={{ width: `${(pos / duration) * 100}%` }}
+                ></div>
+              </div>
+            ) : (
+              // <RangeSlider min={0} max={duration} value={getPosition()} />
+              <div className="bg1 h-2 flex-1 w-4 rounded-full -top-1 animate-pulse"></div>
+            )}
+            <p className="">{convertMsToHMS(duration * 1000)}</p>
           </div>
         </div>
 
         <div className="">
           <div className="flex items-center gap-x-2 my-2">
-            <button onClick={() => setVolume((prev) => (prev > 0 ? 0 : 0.5))}>
+            <button
+              onClick={() => {
+                if (volume > 0) setVolume(0);
+                else setVolume(0.5);
+              }}
+            >
               <>
                 {volume > 0 && volume <= 0.5 && <TbVolume2 />}
                 {volume > 0.5 && <TbVolume />}
@@ -114,14 +159,20 @@ const AudioBar = () => {
               setValue={setVolume}
             />
           </div>
-          <div className="flex items-center gap-x-2">
+          {/* speed */}
+          <div className="flex items-center">
             <TbBrandSpeedtest />
-            <button
-              className="border border-check rounded-full px-2 py-0.5 text-xs"
-              onClick={handleSpeed}
-            >
-              x{playBackSpeeds[playbackRate]}
-            </button>
+            <div className="flex items-center">
+              <button className="p-1" onClick={() => handleSpeed(-0.25)}>
+                <MdKeyboardArrowLeft />
+              </button>
+              <div className="border border-check rounded-full w-12 text-center py-0.5 text-xs">
+                x{rate.toFixed(2)}
+              </div>
+              <button className="p-1" onClick={() => handleSpeed(0.25)}>
+                <MdKeyboardArrowRight />
+              </button>
+            </div>
           </div>
         </div>
       </div>
