@@ -44,7 +44,7 @@ const Item = ({ option }) => {
   if (data?.user?.role) {
     return (
       <Link
-        href={`/${data.user.role}/${option.link}`}
+        href={option.link}
         className="flex items-center md:items-start hover:content-highlight transition duration-300 w-full relative py-3"
       >
         <div

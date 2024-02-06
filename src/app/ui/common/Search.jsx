@@ -4,12 +4,12 @@ import { cn } from "@/utils/cn";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
 
-const Search = (
+const Search = ({
   value = "",
   setValue = () => {},
   className,
-  placeholder = "eg, Harry Potter"
-) => {
+  placeholder = "eg, Harry Potter",
+}) => {
   return (
     <div className={cn("flex items-center gap-x-3", className)}>
       <div className="text-xl">

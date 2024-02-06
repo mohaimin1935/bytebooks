@@ -132,7 +132,7 @@ const UploadFile = ({
         />
       </div>
       {recommendedSize && (
-        <div className="absolute -bottom-4 content2 text-xs left-0 right-0 text-center">
+        <div className="absolute -bottom-6 content2 text-xs left-0 right-0 text-center">
           Recommended Size- {recommendedSize}
         </div>
       )}

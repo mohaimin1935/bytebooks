@@ -1,7 +1,8 @@
+import UpdateProfile from "@/app/ui/common/UpdateProfile";
 import React from "react";
 
 const Settings = () => {
-  return <div>Settings</div>;
+  return <UpdateProfile />;
 };
 
 export default Settings;

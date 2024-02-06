@@ -50,10 +50,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] report book reader in chapter
 - [x] design search bookcard
 - [x] search book modal reader
-- [ ] settings for user
+- [x] settings for user
 - [ ] create collection for creator
-- [ ] explore page reader
-- [ ] highlights, library reader
+- [x] explore page reader
+- [x] highlights, library reader
 - [ ] admin
 - [x] author page
 

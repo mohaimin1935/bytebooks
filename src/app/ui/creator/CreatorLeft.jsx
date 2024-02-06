@@ -12,7 +12,7 @@ const CreatorLeft = ({ active }) => {
 const options = [
   {
     name: "Home",
-    link: "home",
+    link: "/creator/home",
     icon: () => <FiHome />,
   },
   // {
@@ -22,18 +22,18 @@ const options = [
   // },
   {
     name: "Analytics",
-    link: "analytics",
+    link: "/creator/analytics",
     icon: () => <IoAnalyticsOutline />,
   },
 
   {
     name: "Data Manager",
-    link: "data-manager",
+    link: "/creator/data-manager",
     icon: () => <FiDatabase />,
   },
   {
     name: "Settings",
-    link: "settings",
+    link: "/creator/settings",
     icon: () => <FiSettings />,
   },
 ];
