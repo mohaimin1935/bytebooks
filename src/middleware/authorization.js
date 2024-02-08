@@ -35,7 +35,6 @@ export const selfValidationOnlyFailed = async (userId) => {
   }
 };
 
-
 export const adminOnlyFailed = async () => {
   const session = await getAuthSession();
 

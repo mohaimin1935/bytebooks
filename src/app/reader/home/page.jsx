@@ -3,20 +3,36 @@
 import BookFlip from "@/app/ui/book/cards/BookFlip";
 import Carousel from "@/app/ui/common/Carousel";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Calender from "@/app/ui/reader/Calendar";
 import CollectionCard from "@/app/ui/book/cards/CollectionCard";
 import AuthorCard from "@/app/ui/author/AuthorCard";
 import NotificationCard from "@/app/ui/common/NotificationCard";
+import useSWR from "swr";
+import { fetcher } from "@/utils/util";
+import Loader from "@/app/ui/common/Loader";
 
 const ReaderHome = () => {
   const { data } = useSession();
+
+  const { data: continueBooks, isLoading: continueLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=continue`,
+    fetcher
+  );
+
+  const { data: recommendedBooks, isLoading: recommendedLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=continue`,
+    fetcher
+  );
 
   return (
     <div className="flex flex-col xl:flex-row gap-8 md:gap-16">
       <div className="order-1 xl:order-2 w-full xl:w-2/5">
         {/* right | top */}
-        <ContinueCarouselSection />
+        <ContinueCarouselSection
+          isLoading={continueLoading}
+          books={continueBooks}
+        />
         <CalenderSection />
         <AuthorSection />
         <NotificationSection />
@@ -25,26 +41,51 @@ const ReaderHome = () => {
       <div className="order-2 xl:order-1 w-full xl:w-3/5">
         {/* left | bottom */}
         <WelcomeSection user={data?.user} />
-        <RecommendationSection />
+        <RecommendationSection
+          isLoading={recommendedLoading}
+          books={recommendedBooks}
+        />
         <CollectionSection />
       </div>
     </div>
   );
 };
 
-const ContinueCarouselSection = () => {
+const ContinueCarouselSection = ({ isLoading, books = [] }) => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const b = [1];
+    const temp = [];
+    books.forEach((book) => {
+      temp.push(() => (
+        <BookFlip
+          book={book}
+          audio={true}
+          details={true}
+          ratio={1.6}
+          key={book.id}
+        />
+      ));
+    });
+    console.log(temp);
+    setItems(temp);
+  }, [books]);
+
   return (
     <section>
       <h3 className="section-header">Continue</h3>
-      <Carousel
-        className={"w-[240px] my-4"}
-        items={[
-          () => <BookFlip audio={true} details={true} ratio={1.6} />,
-          () => <BookFlip audio={true} details={true} ratio={1.6} />,
-          () => <BookFlip audio={true} details={true} ratio={1.6} />,
-          () => <BookFlip audio={true} details={true} ratio={1.6} />,
-        ]}
-      />
+      {!isLoading ? (
+        <>
+          {items?.length > 1 && (
+            <Carousel className={"w-[240px] my-4"} items={items} />
+          )}
+          {items.length === 1 && <div className="w-[240px]">{items[0]()}</div>}
+          {items.length === 0 && <>No bool to continue</>}
+        </>
+      ) : (
+        <div className="animate-pulse w-[240px] h-[360px] bg2 rounded-md my-4"></div>
+      )}
     </section>
   );
 };
@@ -100,16 +141,30 @@ const WelcomeSection = ({ user }) => {
   );
 };
 
-const RecommendationSection = () => {
+const RecommendationSection = ({ books, isLoading }) => {
   return (
     <section>
       <div className="flex items-center gap-x-8 w-full mt-16 mb-8">
         <h2 className="section-header">Recommended</h2>
       </div>
       <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
-        <BookFlip width={140} details={true} audio={false} />
-        <BookFlip width={140} details={true} audio={false} />
-        <BookFlip width={140} details={true} audio={false} />
+        {isLoading ? (
+          <Loader className="h-64" />
+        ) : (
+          <>
+            {books?.map((book) => (
+              <BookFlip
+                width={180}
+                details={true}
+                audio={false}
+                book={book}
+                key={book.id}
+                ratio={1.4}
+                className={""}
+              />
+            ))}
+          </>
+        )}
       </div>
     </section>
   );

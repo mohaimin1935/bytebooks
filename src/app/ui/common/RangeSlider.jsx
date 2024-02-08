@@ -14,7 +14,6 @@ const RangeSlider = ({
 
   useEffect(() => {
     setWidth(parseInt(((value - min) / (max - min)) * 100));
-    console.log(value, min, max);
   }, [value]);
 
   return (
