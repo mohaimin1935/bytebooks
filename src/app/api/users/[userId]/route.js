@@ -44,8 +44,7 @@ export const GET = async (req,{params}) => {
   }
 };
 
-// need to add mandatory field check aka bad request
-export const PUT = async (req,{params}) => {
+export const PATCH = async (req,{params}) => {
   // self validation checks both login status and userid match
   const authError = await selfValidationOnlyFailed();
   if (authError) {
