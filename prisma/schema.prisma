@@ -49,8 +49,9 @@ model User {
   books BookCreator[]
   shelf Shelf[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  BookUser  BookUser[]
 }
 
 model VerificationToken {
@@ -91,7 +92,7 @@ model BookInfo {
   title          String
   image          String?
   desc           String?
-  isPublished Boolean @default(false)
+  isPublished    Boolean @default(false)
 
   authors  BookAuthor[]
   tags     BookTag[]
@@ -99,10 +100,11 @@ model BookInfo {
   creators BookCreator[]
   chapters Chapter[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   byte      Byte[]
   shelf     Shelf[]
+  BookUser  BookUser[]
 }
 
 model BookAuthor {
@@ -154,8 +156,9 @@ model Chapter {
 
   book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  BookUser  BookUser[]
 }
 
 model Byte {
@@ -169,20 +172,42 @@ model Byte {
 
   book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  BookUser  BookUser[]
 }
 
 model Shelf {
-  id        String  @id @default(cuid()) @map("_id")
-  status    String?
-  bookId    String
-  userId    String
+  id     String  @id @default(cuid()) @map("_id")
+  status String?
+  bookId String
+  userId String
 
   book BookInfo @relation(fields: [bookId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  user User     @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model BookUser {
+  id             String   @id @default(cuid()) @map("_id")
+  userId         String
+  bookId         String
+  status         String // To categorize the interaction (e.g., "reading", "completed")
+  chapterId      String // The current or last chapter the user interacted with
+  byteId         String? // Optional, to reference a specific byte the user interacted with
+  audioTimeStamp Float? // Optional, in case of audio content, to save the last listened position
+  notes          String? // Optional, for user to take notes related to the book or chapter
+  rating         Int? // Optional, allowing users to rate the book
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book    BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  chapter Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull) // Adjust onDelete behavior as needed
+
+  @@unique([userId, bookId])
+}
