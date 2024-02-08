@@ -190,24 +190,47 @@ model Shelf {
   updatedAt DateTime @updatedAt
 }
 
+// model BookUser {
+//   id             String   @id @default(cuid()) @map("_id")
+//   userId         String
+//   bookId         String
+//   status         String // To categorize the interaction (e.g., "reading", "completed")
+//   chapterId      String // The current or last chapter the user interacted with
+//   byteId         String? // Optional, to reference a specific byte the user interacted with
+//   audioTimeStamp Float? // Optional, in case of audio content, to save the last listened position
+//   notes          String? // Optional, for user to take notes related to the book or chapter
+//   rating         Int? // Optional, allowing users to rate the book
+//   createdAt      DateTime @default(now())
+//   updatedAt      DateTime @updatedAt
+
+//   // Relations
+//   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   book    BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+//   chapter Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+//   byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull) // Adjust onDelete behavior as needed
+
+//   @@unique([userId, bookId])
+// }
+
 model BookUser {
-  id             String   @id @default(cuid()) @map("_id")
-  userId         String
-  bookId         String
-  status         String // To categorize the interaction (e.g., "reading", "completed")
-  chapterId      String // The current or last chapter the user interacted with
-  byteId         String? // Optional, to reference a specific byte the user interacted with
-  audioTimeStamp Float? // Optional, in case of audio content, to save the last listened position
-  notes          String? // Optional, for user to take notes related to the book or chapter
-  rating         Int? // Optional, allowing users to rate the book
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                    String   @id @default(cuid()) @map("_id")
+  userId                String
+  bookId                String
+  status                String // To categorize the interaction (e.g., "reading", "completed")
+  chapterId             String? // Optional, the current or last chapter the user interacted with
+  byteId                String? // Optional, to reference a specific byte (summary) the user interacted with
+  audioTimeStampChapter Float? // Optional, in case of audio content, to save the last listened position
+  audioTimeStampBytes   Float? // Optional, in case of audio content, to save the last listened position
+  notes                 String? // Optional, for user to take notes related to the book or chapter/byte
+  rating                Int? // Optional, allowing users to rate the book
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   // Relations
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   book    BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  chapter Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull) // Adjust onDelete behavior as needed
+  chapter Chapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
+  byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull)
 
   @@unique([userId, bookId])
 }
