@@ -56,6 +56,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] highlights, library reader
 - [ ] admin
 - [x] author page
+- [ ] profile page
 
 ### Todo BACKEND
 

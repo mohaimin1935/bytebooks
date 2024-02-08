@@ -92,7 +92,7 @@ const UploadFile = ({
   }, [image]);
 
   return (
-    <div className={cn("relative rounded-md accent1 shadow-lg", className)}>
+    <div className={cn("relative rounded-md accent1 overflow-hidden shadow-lg", className)}>
       <div
         className={cn("absolute inset-0 center content2 m-auto bg2 rounded")}
       >

@@ -7,7 +7,7 @@ const Calendar = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-x-4">
+      <div className="flex flex-wrap gap-y-4 items-center gap-x-4">
         {currentWeek.map(({ day, date }) => (
           <div
             key={date}

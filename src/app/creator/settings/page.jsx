@@ -1,8 +1,8 @@
-import UpdateProfile from "@/app/ui/common/UpdateProfile";
+import Profile from "@/app/ui/common/Profile";
 import React from "react";
 
 const CreatorSettings = () => {
-  return <UpdateProfile />;
+  return <Profile />;
 };
 
 export default CreatorSettings;

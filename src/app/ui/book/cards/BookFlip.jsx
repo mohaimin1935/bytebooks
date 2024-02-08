@@ -7,6 +7,7 @@ import { FiPlayCircle, FiStar } from "react-icons/fi";
 import { LuHeadphones } from "react-icons/lu";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
+import { textColorOnBg } from "@/utils/util";
 
 const BookFlip = ({
   audio = false,
@@ -46,7 +47,10 @@ const BookFlip = ({
             style={{ background: bgColor && bgColor[3] }}
           >
             <h2
-              style={{ width: `${width * ratio}px` }}
+              style={{
+                width: `${width * ratio}px`,
+                color: bgColor && textColorOnBg(bgColor[3]),
+              }}
               className="overflow-hidden"
             >
               <span>{"Book title".substring(0, 24)}</span>
