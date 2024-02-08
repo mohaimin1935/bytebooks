@@ -27,13 +27,13 @@ const ReaderProfile = () => {
 const GenreStat = () => {
   return (
     <section className="mt-24 flex w-full">
-      <div className="w-2/5 flex items-center flex-col text-center">
+      <div className="w-1/3 flex items-center flex-col text-center ">
         <h2 className="section-header">Top Genres</h2>
         <PieChartCustom />
       </div>
-      <div className="w-3/5">
+      <div className="w-2/3">
         <section>
-          <div className="flex items-center justify-between gap-x-8 w-full">
+          <div className="flex items-start justify-between gap-x-8 w-full">
             <h2 className="section-header">Recent Reads</h2>
             <PrevNext />
           </div>

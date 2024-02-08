@@ -5,8 +5,8 @@ import { textColorOnBg } from "@/utils/util";
 
 const Bookshelf = () => {
   return (
-    <div>
-      <button className="absolute bg2 z-10 block right-24 px-4 py-1.5 text-sm rounded top-28">
+    <div className="relative">
+      <button className="bg2 z-10 block absolute px-4 py-1.5 text-sm rounded -bottom-0 right-0">
         Organize
       </button>
       <div

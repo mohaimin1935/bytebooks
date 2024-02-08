@@ -92,8 +92,8 @@ const PieChartCustom = () => {
   const onPieEnter = (_, index) => setActiveIndex(index);
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={400} height={400}>
+    <ResponsiveContainer width="100%" height="100%" className={""}>
+      <PieChart width={200} height={200}>
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}

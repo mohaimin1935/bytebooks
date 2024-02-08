@@ -67,7 +67,7 @@ const BookFlip = ({
           >
             Book Title
           </Link>
-          <p className="text-sm font-light ">By Zulkar Naim, Tanmoy</p>
+          <p className="text-sm font-light">By Zulkar Naim</p>
           <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar /> <p className="">4.7</p>

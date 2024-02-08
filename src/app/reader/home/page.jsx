@@ -120,9 +120,6 @@ const CollectionSection = () => {
     <section>
       <div className="flex items-center gap-x-8 w-full mt-16 mb-8">
         <h2 className="section-header">collections for you</h2>
-        <button className="bg1 py-1.5 px-4 secondary-btn text-sm sm:text-base">
-          View All
-        </button>
       </div>
       <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
         <CollectionCard />
