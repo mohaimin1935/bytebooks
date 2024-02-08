@@ -223,6 +223,7 @@ model BookUser {
   audioTimeStampBytes   Float? // Optional, in case of audio content, to save the last listened position
   notes                 String? // Optional, for user to take notes related to the book or chapter/byte
   rating                Int? // Optional, allowing users to rate the book
+  isBookmarked          Boolean @default(false)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
