@@ -1,6 +1,7 @@
 "use client";
 
 import { fetcher } from "@/utils/util";
+import { useSession } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
 import useSWR from "swr";
 
@@ -21,24 +22,42 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
   const [activeId, setActiveId] = useState();
   const [activeChapter, setActiveChapter] = useState();
 
+  const { data: user } = useSession();
+
   const { data, isLoading } = useSWR(
     `/api/book-info/${bookId}/${type}s`,
     fetcher
   );
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
 
+  const { data: progress } = useSWR(
+    `/api/users/${user?.user?.id}/books/${bookId}`,
+    fetcher
+  );
+
   useEffect(() => {
     if (data) {
+      console.log(progress);
       if (type === "byte") {
         setChapters(data?.byte);
-        setActiveId(data?.byte?.at(0)?.id);
+        if (progress?.byteId) {
+          setActiveId(progress?.byteId);
+        } else {
+          setActiveId(data?.byte?.at(0)?.id);
+        }
       } else if (type === "chapter") {
         setChapters(data?.chapters);
         setActiveId(data?.chapters?.at(0)?.id);
       }
       // TODO: progress
     }
-  }, [bookId, data]);
+  }, [bookId, data, progress]);
+
+  useEffect(() => {
+    if (type === "byte") {
+      
+    }
+  }, [activeId])
 
   useEffect(() => {
     if (!activeId) return;
