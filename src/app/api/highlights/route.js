@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 
 // create a new highlight
 export const POST = async (req) => {
-//   const authError = await selfValidationOnlyFailed(params.userId);
-//   if (authError) {
-//     return authError;
-//   }
+  const authError = await selfValidationOnlyFailed(params.userId);
+  if (authError) {
+    return authError;
+  }
   
 
   try {
