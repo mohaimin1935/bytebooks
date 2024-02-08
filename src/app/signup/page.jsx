@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -21,10 +21,12 @@ const Signup = () => {
   const { data, status } = useSession();
   const router = useRouter();
 
-  if (status === "authenticated") {
-    const role = data?.user?.role ?? reader;
-    router.push(`/${role}/home`);
-  }
+  useEffect(() => {
+    if (status === "authenticated") {
+      const role = data?.user?.role ?? reader;
+      router.push(`/${role}/home`);
+    }
+  }, [status]);
 
   const signup = () => {
     if (loading) return;
