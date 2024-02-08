@@ -5,12 +5,16 @@ import { NextResponse } from "next/server";
 // CREATE A BOOKUSER ENTRY
 export const POST = async (req, { params }) => {
   const { userId, bookId } = params;
+
+
   // Adjusting to the updated model fields
-  const { status, chapterId, byteId, audioTimeStampChapter, audioTimeStampBytes, notes, rating } = req.body;
-    
+  const body = await req.json(); 
+  const { status, chapterId, byteId, audioTimeStampChapter, audioTimeStampBytes, notes, rating } = body;
+  console.log(userId, bookId, status, chapterId, byteId, audioTimeStampChapter, audioTimeStampBytes, notes, rating);
   if (!userId || !bookId || !status) {
-    // Return an error response if any mandatory field is missing
-    return { status: 400, body: { error: 'Missing mandatory fields' } };
+    
+    
+    return new NextResponse(JSON.stringify({ error: 'Missing mandatory fields' }), { status: 400 });
   }
 
   try {
@@ -56,9 +60,12 @@ export const POST = async (req, { params }) => {
       });
     }
 
-    return { status: 200, body: bookUser };
+    return new NextResponse(JSON.stringify(bookUser), { status: 200 });
   } catch (error) {
     console.error('Request error:', error);
-    return { status: 500, body: { error: 'Error creating or updating BookUser entry', errorMessage: error.message } };
+    // Ensure an error response is returned
+    return new NextResponse(JSON.stringify({ error: 'Error creating or updating BookUser entry', errorMessage: error.message }), { status: 500 });
   }
 };
+
+
