@@ -52,6 +52,7 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   BookUser  BookUser[]
+  highlights Highlights[]
 }
 
 model VerificationToken {
@@ -105,6 +106,7 @@ model BookInfo {
   byte      Byte[]
   shelf     Shelf[]
   BookUser  BookUser[]
+  highlights Highlights[]
 }
 
 model BookAuthor {
@@ -159,6 +161,7 @@ model Chapter {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   BookUser  BookUser[]
+  highlights Highlights[]
 }
 
 model Byte {
@@ -175,6 +178,7 @@ model Byte {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   BookUser  BookUser[]
+  highlights Highlights[]
 }
 
 model Shelf {
@@ -224,6 +228,26 @@ model BookUser {
   notes                 String? // Optional, for user to take notes related to the book or chapter/byte
   rating                Int? // Optional, allowing users to rate the book
   isBookmarked          Boolean @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book    BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  chapter Chapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
+  byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, bookId])
+}
+
+model Highlights {
+  id                    String   @id @default(cuid()) @map("_id")
+  userId                String
+  bookId                String
+  chapterId             String? // Optional, the current or last chapter the user interacted with
+  byteId                String? // Optional, to reference a specific byte (summary) the user interacted with
+  startIndex            Int
+  endIndex              Int
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
