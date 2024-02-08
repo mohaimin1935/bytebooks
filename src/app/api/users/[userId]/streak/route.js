@@ -1,6 +1,7 @@
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
+//streak update and login record creation
 export const POST = async (req, { params }) => {
   const { userId } = params;
 
@@ -68,7 +69,7 @@ export const POST = async (req, { params }) => {
 };
 
 
-
+//sreak number and login dates retrieval
 export const GET = async (req, { params }) => {
   const { userId } = params;
 
