@@ -3,13 +3,11 @@
 import BookFlip from "@/app/ui/book/cards/BookFlip";
 import Carousel from "@/app/ui/common/Carousel";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import React from "react";
 import Calender from "@/app/ui/reader/Calendar";
 import CollectionCard from "@/app/ui/book/cards/CollectionCard";
 import AuthorCard from "@/app/ui/author/AuthorCard";
 import NotificationCard from "@/app/ui/common/NotificationCard";
-import RangeSlider from "@/app/ui/common/RangeSlider";
 
 const ReaderHome = () => {
   const { data } = useSession();
@@ -107,9 +105,6 @@ const RecommendationSection = () => {
     <section>
       <div className="flex items-center gap-x-8 w-full mt-16 mb-8">
         <h2 className="section-header">Recommended</h2>
-        <button className="bg1 py-1.5 px-4 secondary-btn text-sm sm:text-base">
-          View All
-        </button>
       </div>
       <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
         <BookFlip width={140} details={true} audio={false} />

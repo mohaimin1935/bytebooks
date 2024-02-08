@@ -87,7 +87,7 @@ const TopBar = ({ role }) => {
           <div className="text-xl">
             <IoNotificationsOutline />
           </div>
-          <Link href="settings">
+          <Link href={`/${data?.user?.role}/profile`}>
             <img
               src={data?.user?.image || "/profile.png"}
               alt="profile"

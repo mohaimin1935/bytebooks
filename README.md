@@ -60,12 +60,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo BACKEND
 
-- [x] `/book-info/`: get by creatorId and isPublished
-- [x] `/book-info/[bookId]`: modify patch request
-- [x] `/book-info/[bookId]/bytes`: sort by serial in get request
-- [x] `/users/[userId]`: get patch delete
-- [ ] book progress
-- [ ] `/users/[userId]/books`
+- [ ] /api/users/userId/books?type=[recommended, continue, trending, latest]&count=[int]&page=[pageIndex] -> bookList
+- [ ] book -> bookProgress[userid, bookid, type, chapterid, audioTimeStamp] <- user
+- [ ] bookmark -> userId, bookId
+- [ ] streak ???
+- [ ] notification [sub, author, creator, sched, streak]
+- [ ] highlights [startInd, endInd, bookId, type, chapterId]
+- [ ] userId -> top genre
 
 ---
 
