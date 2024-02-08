@@ -3,11 +3,11 @@ import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
 // create a new highlight
-export const POST = async (req) => {
-  const authError = await selfValidationOnlyFailed(params.userId);
-  if (authError) {
-    return authError;
-  }
+export const POST = async (req,{params}) => {
+//   const authError = await selfValidationOnlyFailed(params.userId);
+//   if (authError) {
+//     return authError;
+//   }
   
 
   try {
