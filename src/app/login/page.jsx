@@ -43,7 +43,10 @@ const Login = () => {
     setLoading(true);
     signIn("credentials", { email, password, redirect: false }).then((res) => {
       setLoading(false);
-      if (res?.error) toast.error("Login failed.");
+      if (res?.error) {
+        toast.error("Login failed.");
+        console.log(res?.error);
+      }
       if (res?.ok && !res?.error) toast.success("Logged in successfully!");
     });
   };

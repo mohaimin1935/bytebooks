@@ -41,6 +41,9 @@ export const authOptions = {
           throw new Error("No user found");
         }
 
+        const credHash = await bcrypt.hash(credentials.password, 10);
+        console.log(credentials.password, credHash, foundUser.hashedPassword);
+
         const passwordMatch = await bcrypt.compare(
           credentials.password,
           foundUser.hashedPassword
