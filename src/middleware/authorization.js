@@ -29,6 +29,7 @@ export const selfValidationOnlyFailed = async (userId) => {
   if (!session) {
     return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
   } else if (session.user.id !== userId) {
+    console.log(userId, session.user.id);
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   } else {
     return null;

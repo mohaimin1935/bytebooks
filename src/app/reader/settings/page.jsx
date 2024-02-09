@@ -4,18 +4,27 @@ import Loader from "@/app/ui/common/Loader";
 import Modal from "@/app/ui/common/Modal";
 import UploadFile from "@/app/ui/common/UploadFile";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { fetcher } from "@/utils/util";
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useSWR from "swr";
 
 const Settings = () => {
   const [image, setImage] = useState();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [showModal, setShowModal] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { setModal } = useContext(ThemeContext);
+  const { data } = useSession();
+  const {
+    data: userData,
+    isLoading,
+    error,
+  } = useSWR(`/api/users/${data?.user?.id}`, fetcher);
 
   const handlePassword = () => {
     setModal(true);
@@ -35,6 +44,11 @@ const Settings = () => {
   const handleSave = async () => {
     try {
       setLoading(true);
+      const res = await axios.patch(`/api/users/${data?.user?.id}`, {
+        name,
+        image: image,
+      });
+      toast.success("Updated Successfully");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -42,6 +56,15 @@ const Settings = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (userData) {
+      console.log(userData);
+      setName(userData.name);
+      setEmail(userData.email);
+      setImage(userData.image);
+    }
+  }, [isLoading]);
 
   return (
     <div className="center w-full h-full">
@@ -78,7 +101,7 @@ const Settings = () => {
           className="auth-input w-56 mb-4 text-left"
           onClick={handleEmail}
         >
-          test@test.com
+          {email}
         </button>
 
         <button
@@ -88,7 +111,9 @@ const Settings = () => {
           Update Password
         </button>
 
-        <button className="w-56 primary-btn py-2 mt-2">Save</button>
+        <button className="w-56 primary-btn py-2 mt-2" onClick={handleSave}>
+          {loading ? <Loader /> : <>Save</>}
+        </button>
 
         <button className="w-56 secondary-btn py-2 mt-4">
           Apply to be Creator

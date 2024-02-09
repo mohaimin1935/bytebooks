@@ -92,7 +92,12 @@ const UploadFile = ({
   }, [image]);
 
   return (
-    <div className={cn("relative rounded-md accent1 overflow-hidden shadow-lg", className)}>
+    <div
+      className={cn(
+        "relative rounded-md accent1 overflow-hidden shadow-lg",
+        className
+      )}
+    >
       <div
         className={cn("absolute inset-0 center content2 m-auto bg2 rounded")}
       >
@@ -111,7 +116,7 @@ const UploadFile = ({
           paddingBottom: `${(1 / aspectRatio) * 100}%`,
           backgroundImage:
             type === "image"
-              ? `url(${imageURL})`
+              ? `url(${imageURL || previousUrl})`
               : type === "audio" && showImage
               ? `url(/audio.avif)`
               : "",
