@@ -1,7 +1,7 @@
 // file-status: done 
 
 
-import { creatorOnlyFailed } from "@/middleware/authorization";
+import { creatorOnlyFailed, selfValidationOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
@@ -10,10 +10,10 @@ import bcrypt from "bcrypt";
 // need to check for invalid userId
 export const POST = async (req,{params}) => {
     // self validation checks both login status and userid match
-    const authError = await selfValidationOnlyFailed(params.userId);
-    if (authError) {
-        return authError;
-    }
+    // const authError = await selfValidationOnlyFailed(params.userId);
+    // if (authError) {
+    //     return authError;
+    // }
     try {
         const body = await req.json();
         //console.log(body.old_password);
