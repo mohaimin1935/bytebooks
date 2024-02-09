@@ -282,6 +282,7 @@ model ContentReport {
   id        String   @id @default(cuid()) @map("_id")
 
   userId    String
+  checkerId String?   //checker id is not relationed with user(admin)
   bookId    String
   chapterId  String?
   byteId     String?
@@ -296,6 +297,7 @@ model ContentReport {
   book    BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
   chapter Chapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
   byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull)
+  //checkedBy    User?     @relation(fields: [checkerId], references: [id], onDelete: Cascade)
 
   @@unique([userId, bookId])
 
