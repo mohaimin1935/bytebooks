@@ -56,6 +56,7 @@ model User {
   BookUser   BookUser[]
   highlights Highlights[]
   UserLogin  UserLogin[]
+  contentReport ContentReport[]
 }
 
 model VerificationToken {
@@ -110,6 +111,7 @@ model BookInfo {
   shelf      Shelf[]
   BookUser   BookUser[]
   highlights Highlights[]
+  contentReport ContentReport[]
 }
 
 model BookAuthor {
@@ -165,6 +167,7 @@ model Chapter {
   updatedAt  DateTime     @updatedAt
   BookUser   BookUser[]
   highlights Highlights[]
+  contentReport ContentReport[]
 }
 
 model Byte {
@@ -182,6 +185,7 @@ model Byte {
   updatedAt  DateTime     @updatedAt
   BookUser   BookUser[]
   highlights Highlights[]
+  contentReport ContentReport[]
 }
 
 model Shelf {
@@ -271,4 +275,28 @@ model UserLogin {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, loginDate])
+}
+
+model ContentReport {
+
+  id        String   @id @default(cuid()) @map("_id")
+
+  userId    String
+  bookId    String
+  chapterId  String?
+  byteId     String?
+  comment    String?
+  status     String @default("pending")       // pending, positive, negative
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book    BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  chapter Chapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
+  byte    Byte?    @relation(fields: [byteId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, bookId])
+
 }
