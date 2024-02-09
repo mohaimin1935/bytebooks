@@ -52,9 +52,7 @@ const BookEditCard = ({ book = {} }) => {
       });
       mutate(`/api/book-info`);
       console.log(res.data);
-      toast.success("Published successfully.");
     } catch (error) {
-      toast.error("Something went wrong.");
       console.log(error);
     } finally {
       setLoading(false);

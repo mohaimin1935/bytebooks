@@ -46,6 +46,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] report book reader in chapter
 - [ ] profile page
 - [ ] bookmark, report
+- [ ] author get data
+- [ ] bookshelf profile image
+- [ ] streak
+- [ ] consecutive 2 image upload in creator
 
 ### Todo BACKEND
 

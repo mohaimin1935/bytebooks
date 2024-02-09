@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useContext } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import Loader from "@/app/ui/common/Loader";
 import "react-quill/dist/quill.snow.css";
@@ -10,6 +10,8 @@ import { BookEditContext } from "@/contexts/BookEditContext";
 import { FiArrowLeft } from "react-icons/fi";
 
 const ContentEditor = () => {
+  const [uploaded, setUploaded] = useState(false);
+
   const {
     body,
     setBody,
@@ -24,6 +26,13 @@ const ContentEditor = () => {
     type,
     saved,
   } = useContext(BookEditContext);
+
+  useEffect(() => {
+    console.log(audioUrl);
+    if (uploaded) handleSave();
+  }, [uploaded]);
+
+  console.log(audioUrl);
 
   if (!activeId)
     return (
@@ -57,6 +66,7 @@ const ContentEditor = () => {
             className="w-32 border-2 border-check"
             type="audio"
             showImage={audioUrl}
+            setUploaded={setUploaded}
           />
         </div>
       </div>

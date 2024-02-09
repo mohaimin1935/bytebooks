@@ -112,6 +112,7 @@ const UploadFile = ({
         )}
         onClick={() => {
           if (inputFileRef.current) {
+            console.log("first");
             inputFileRef.current.click();
           }
         }}
@@ -134,6 +135,7 @@ const UploadFile = ({
           id=""
           className="hidden"
           onChange={(e) => {
+            console.log(e.target.files);
             setImage(e.target.files[0]);
           }}
           accept={acceptType}

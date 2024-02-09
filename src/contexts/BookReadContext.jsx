@@ -37,7 +37,6 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
   );
 
   const updateProgress = async (type, contentId) => {
-    console.log(user);
     let progress = {
       status: "reading",
     };
@@ -47,12 +46,10 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
       progress.chapterId = contentId;
     }
     try {
-      console.log(`/api/users/${user.user.id}/books/${bookId}`);
       const res = await axios.post(
         `/api/users/${user?.user?.id}/books/${bookId}`,
         progress
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -60,20 +57,17 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
 
   useEffect(() => {
     if (data) {
-      console.log(progress);
       if (type === "byte") {
         setChapters(data?.byte);
         if (progress?.byteId) {
           setActiveId(progress?.byteId);
         } else {
           setActiveId(data?.byte?.at(0)?.id);
-          updateProgress(type, data?.byte?.at(0)?.id);
         }
       } else if (type === "chapter") {
         setChapters(data?.chapters);
         setActiveId(data?.chapters?.at(0)?.id);
       }
-      // TODO: progress
     }
   }, [bookId, data, progress]);
 
@@ -81,6 +75,20 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
     if (!activeId) return;
     setActiveChapter(chapters.filter((c) => c.id === activeId));
   }, [activeId, chapters]);
+
+  useEffect(() => {
+    if (!progress) {
+      updateProgress(type, activeId);
+    } else {
+      if (type === "chapter") {
+        if (progress.chapterId !== activeId) {
+          updateProgress(type, activeId);
+        }
+      } else if (progress.byteId !== activeId) {
+        updateProgress(type, activeId);
+      }
+    }
+  }, [activeId, bookId, type]);
 
   return (
     <BookReadContext.Provider

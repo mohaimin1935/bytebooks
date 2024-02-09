@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import TopBar from "../../common/TopBar";
 import BookLeft from "./BookLeft";
 import AudioBar from "../../reader/AudioBar";
+import { BookReadContext } from "@/contexts/BookReadContext";
 
 const InterfaceLayout = ({ children }) => {
+  const { activeChapter } = useContext(BookReadContext);
+
   return (
     <div className="flex h-screen bg1">
       {/* left panel */}
@@ -24,7 +27,13 @@ const InterfaceLayout = ({ children }) => {
         </div>
 
         <div className="-mx-4 sm:-mx-12 xl:-mx-16 ">
-          <AudioBar />
+          {activeChapter?.audioLink ? (
+            <AudioBar audioUrl={activeChapter?.audioLink} />
+          ) : (
+            <p className="text-center py-4 bg2 m-2 rounded">
+              No audio available.
+            </p>
+          )}
         </div>
       </div>
     </div>
