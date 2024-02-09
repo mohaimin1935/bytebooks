@@ -52,7 +52,7 @@ const Library = () => {
         </div>
         <div className="flex flex-wrap justify-start items-end gap-x-0 border-b-4 border-check px-4 h-[200px]">
           {finishedBooks?.map((book) => (
-            <BookBack book={book} />
+            <BookBack book={book} key={book.id} />
           ))}
         </div>
       </section>

@@ -57,7 +57,7 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
   useEffect(() => {
     setItems(() =>
       books?.map((book) => {
-        return () => (
+        return (
           <BookFlip
             book={book}
             audio={true}
@@ -76,7 +76,17 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
       {!isLoading ? (
         <>
           {items?.length > 1 && (
-            <Carousel className={"w-[240px] my-4"} items={items} />
+            <Carousel className={"w-[240px] my-4"}>
+              {books?.map((book) => (
+                <BookFlip
+                  book={book}
+                  audio={true}
+                  details={true}
+                  ratio={1.3}
+                  key={book.id}
+                />
+              ))}
+            </Carousel>
           )}
           {items.length === 1 && <div className="w-[240px]">{items[0]()}</div>}
           {items.length === 0 && <>No book to continue</>}
