@@ -51,12 +51,14 @@ model User {
   books BookCreator[]
   shelf Shelf[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  BookUser   BookUser[]
-  highlights Highlights[]
-  UserLogin  UserLogin[]
-  contentReport ContentReport[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  BookUser       BookUser[]
+  highlights     Highlights[]
+  UserLogin      UserLogin[]
+  contentReport  ContentReport[]
+  Notification   Notification[]
+  UserPreference UserPreference?
 }
 
 model VerificationToken {
@@ -105,12 +107,12 @@ model BookInfo {
   creators BookCreator[]
   chapters Chapter[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  byte       Byte[]
-  shelf      Shelf[]
-  BookUser   BookUser[]
-  highlights Highlights[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  byte          Byte[]
+  shelf         Shelf[]
+  BookUser      BookUser[]
+  highlights    Highlights[]
   contentReport ContentReport[]
 }
 
@@ -163,10 +165,10 @@ model Chapter {
 
   book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  BookUser   BookUser[]
-  highlights Highlights[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  BookUser      BookUser[]
+  highlights    Highlights[]
   contentReport ContentReport[]
 }
 
@@ -181,10 +183,10 @@ model Byte {
 
   book BookInfo @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  BookUser   BookUser[]
-  highlights Highlights[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  BookUser      BookUser[]
+  highlights    Highlights[]
   contentReport ContentReport[]
 }
 
@@ -278,19 +280,18 @@ model UserLogin {
 }
 
 model ContentReport {
-
-  id        String   @id @default(cuid()) @map("_id")
+  id String @id @default(cuid()) @map("_id")
 
   userId    String
-  checkerId String?   //checker id is not relationed with user(admin)
+  checkerId String? //checker id is not relationed with user(admin)
   bookId    String
-  chapterId  String?
-  byteId     String?
-  comment    String?
-  status     String @default("pending")       // pending, positive, negative
+  chapterId String?
+  byteId    String?
+  comment   String?
+  status    String  @default("pending") // pending, positive, negative
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -300,5 +301,31 @@ model ContentReport {
   //checkedBy    User?     @relation(fields: [checkerId], references: [id], onDelete: Cascade)
 
   @@unique([userId, bookId])
+}
 
+model Notification {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  type      String // e.g., "new_book", "system_update", etc.
+  bookId    String? // Optional: ID of the related entity, like a BookId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model UserPreference {
+  id                  String   @id @default(cuid()) @map("_id")
+  userId              String
+  preferredGenreIds   String[]
+  preferredAuthorIds  String[]
+  preferredCreatorIds String[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
 }
