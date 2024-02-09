@@ -18,7 +18,7 @@ const CustomTextArea = ({
 
   return (
     <div className="relative z-10">
-      <textArea
+      <textarea
         ref={textAreaRef}
         className={cn(
           "resize-none bg1 outline-none content2 my-2 w-full bg-transparent",
@@ -30,7 +30,7 @@ const CustomTextArea = ({
         placeholder={placeholder}
       >
         {value}
-      </textArea>
+      </textarea>
       <div className="absolute content3 text-sm">
         {value?.length ?? 0} / {maxLength}
       </div>

@@ -12,6 +12,8 @@ import ToggleTheme from "./ToggleTheme";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import SearchModal from "./SearchModal";
 import Search from "./Search";
+import useSWR from "swr";
+import { fetcher } from "@/utils/util";
 
 const TopBar = ({ role }) => {
   const [openSwitch, setOpenSwitch] = useState(false);
@@ -22,6 +24,11 @@ const TopBar = ({ role }) => {
 
   const { data } = useSession();
   const router = useRouter();
+
+  const { data: userData } = useSWR(
+    `/api/users/${data?.user?.id}`,
+    fetcher
+  );
 
   const handleSwitch = (mode) => {
     if (data?.user?.role !== "reader") {
@@ -89,7 +96,7 @@ const TopBar = ({ role }) => {
           </div>
           <Link href={`/${data?.user?.role}/profile`}>
             <img
-              src={data?.user?.image || "/profile.png"}
+              src={userData?.image || "/profile.png"}
               alt="profile"
               className="w-12 h-12 p-[2px] border border-check rounded-full left-4"
             />

@@ -63,9 +63,9 @@ export const PATCH = async (req, { params }) => {
         },
         data: body,
       });
+      console.log(user);
+      return NextResponse.json(user);
     }
-    console.log(user);
-    return NextResponse.json(user);
   } catch (err) {
     console.log(err);
 

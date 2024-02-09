@@ -22,6 +22,7 @@ const UploadFile = ({
   showImage = false,
   previousUrl,
   recommendedSize,
+  setUploaded = () => {},
 }) => {
   const [image, setImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
@@ -43,6 +44,7 @@ const UploadFile = ({
     const storage = getStorage(app);
 
     const upload = () => {
+      setUploaded(false);
       const name = new Date().getTime() + image.name;
       const storageRef = ref(storage, name);
 
@@ -83,6 +85,7 @@ const UploadFile = ({
             setImageURL(downloadURL);
             setURL(downloadURL);
             console.log(downloadURL);
+            setUploaded(true);
           });
         }
       );

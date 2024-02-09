@@ -36,14 +36,14 @@ const AddBook = ({ bookInfo }) => {
 
   const [book, setBook] = useState(bookInfo);
 
-  const [bookImage, setBookImage] = useState();
-  const [bookTitle, setBookTitle] = useState();
+  const [bookImage, setBookImage] = useState("");
+  const [bookTitle, setBookTitle] = useState("");
   const [authors, setAuthors] = useState([]);
   const [genres, setGenres] = useState([]);
   const [tags, setTags] = useState([]);
-  const [desc, setDesc] = useState();
-  const [isbn, setIsbn] = useState();
-  const [publishingYear, setPublishingYear] = useState();
+  const [desc, setDesc] = useState("");
+  const [isbn, setIsbn] = useState("");
+  const [publishingYear, setPublishingYear] = useState("");
 
   const [bookId, setBookId] = useState("");
   const [allAuthors, setAllAuthors] = useState([]);
@@ -51,8 +51,9 @@ const AddBook = ({ bookInfo }) => {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const [actionProgressing, setActionProgressing] = useState(false);
+  const [uploaded, setUploaded] = useState(false);
 
-  const [showModal, setShowModal] = useState();
+  const [showModal, setShowModal] = useState("");
 
   const router = useRouter();
   const { modal, setModal } = useContext(ThemeContext);
@@ -94,6 +95,31 @@ const AddBook = ({ bookInfo }) => {
   useEffect(() => {
     if (authorList) setAllAuthors(authorList);
   }, [authorLoading]);
+
+  useEffect(() => {
+    if (uploaded) handleUpload();
+  }, [uploaded]);
+
+  const handleUpload = async () => {
+    try {
+      if (bookId) {
+        const res = await axios.put(`/api/book-info/${bookId}`, {
+          image: bookImage,
+        });
+        // setBook(res.data);
+      } else {
+        const res = await axios.post("/api/book-info", {
+          image: bookImage,
+          title: "3",
+        });
+        console.log(res.data);
+        // setBook(res.data);
+        setBookId(res.data.id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const removeAuthor = (id) => {
     let temp = authors;
@@ -160,7 +186,7 @@ const AddBook = ({ bookInfo }) => {
     try {
       setLoading(true);
 
-      if (book) {
+      if (bookId) {
         const res = await axios.patch(`/api/book-info/${bookId}`, bookInfo);
         // setBook(res.data);
       } else {
@@ -172,7 +198,7 @@ const AddBook = ({ bookInfo }) => {
       mutate(`/api/book-info/${bookId}`);
       setSaved(true);
       // setModal(true);
-      router.refresh();
+      toast.success("Saved successfully");
       // setShowModal("save-action");
     } catch (error) {
       toast.error(
@@ -310,6 +336,7 @@ const AddBook = ({ bookInfo }) => {
             initialImage={book?.image || ""}
             previousUrl={book?.image}
             recommendedSize={"4:3"}
+            setUploaded={setUploaded}
           />
         </div>
 

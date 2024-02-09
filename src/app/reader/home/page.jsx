@@ -11,6 +11,7 @@ import NotificationCard from "@/app/ui/common/NotificationCard";
 import useSWR from "swr";
 import { fetcher } from "@/utils/util";
 import Loader from "@/app/ui/common/Loader";
+import Link from "next/link";
 
 const ReaderHome = () => {
   const { data } = useSession();
@@ -132,19 +133,22 @@ const NotificationSection = () => {
 };
 
 const WelcomeSection = ({ user }) => {
+  const { data: userData } = useSWR(`/api/users/${user?.id}`, fetcher);
   return (
     <section className="hidden xl:block">
       <div className="flex flex-col gap-y-2 capitalize font-semibold">
         <h2 className="text-xl sm:text-2xl md:text-3xl">Happy Reading,</h2>
         <h2 className="text-2xl sm:text-3xl md:text-4xl">
-          {user?.name || "User"}
+          {userData?.name || "User"}
         </h2>
       </div>
       <p className="my-8 w-full md:w-2/3">
         Welcome to our book sanctuary! Explore captivating stories and diverse
         genres. Immerse yourself in a world of literary delights.
       </p>
-      <button className="primary-btn py-2 px-8">Explore</button>
+      <Link href="/reader/explore" className="primary-btn py-2 px-8">
+        Explore
+      </Link>
     </section>
   );
 };
