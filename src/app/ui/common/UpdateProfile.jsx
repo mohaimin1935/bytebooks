@@ -4,7 +4,7 @@ import Loader from "@/app/ui/common/Loader";
 import Modal from "@/app/ui/common/Modal";
 import UploadFile from "@/app/ui/common/UploadFile";
 import { ThemeContext } from "@/contexts/ThemeContext";
-import { fetcher } from "@/utils/util";
+import { fetcher, validateEmail } from "@/utils/util";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useContext, useEffect, useState } from "react";
@@ -258,7 +258,7 @@ const EmailUpdate = ({ handleCancel }) => {
         placeholder="New Email"
       />
       <input
-        type="text"
+        type="password"
         className="auth-input w-full mb-2"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
