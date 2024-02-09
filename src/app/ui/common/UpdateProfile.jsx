@@ -148,31 +148,55 @@ const UpdateProfile = ({ type = "reader" }) => {
 };
 
 const PasswordUpdate = ({ handleCancel }) => {
-  const [password, setPassword] = useState();
-  const [oldPassword, setOldPassword] = useState();
+  const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleUpdate = () => {
+  const { data } = useSession();
+
+  const handleUpdate = async () => {
+    if (loading) return;
+
+    if (!password || !oldPassword) {
+      toast.error("All fields are reuqired");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password should contain at least 6 characters.");
+      return;
+    }
+
     try {
-      
+      setLoading(true);
+      const res = await axios.post(
+        `/api/users/${data?.user?.id}/change-password`,
+        {
+          old_password: oldPassword,
+          new_password: password,
+        }
+      );
+      console.log(res.data);
+      toast.success("Password updated.");
     } catch (error) {
-      
+      toast.error("Request failed");
+      console.log(error);
     } finally {
-      setLoading={false}
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col">
       <input
-        type="text"
+        type="password"
         className="auth-input w-full mb-4"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="New Password"
       />
       <input
-        type="text"
+        type="password"
         className="auth-input w-full mb-2"
         value={oldPassword}
         onChange={(e) => setOldPassword(e.target.value)}
@@ -194,11 +218,35 @@ const PasswordUpdate = ({ handleCancel }) => {
 };
 
 const EmailUpdate = ({ handleCancel }) => {
-  const [password, setPassword] = useState();
-  const [email, setEmail] = useState();
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleUpdate = () => {};
+  const { data } = useSession();
+  const { setModal } = useContext(ThemeContext);
+
+  const handleUpdate = () => {
+    if (loading) return;
+
+    if (!email || !password) {
+      toast.error("All fields are reuired");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error("Email is not valid.");
+      return;
+    }
+
+    try {
+    } catch (error) {
+      console.log(error);
+      toast.error("Request failed");
+    } finally {
+      setLoading(false);
+      setModal(false);
+    }
+  };
 
   return (
     <div className="flex flex-col">

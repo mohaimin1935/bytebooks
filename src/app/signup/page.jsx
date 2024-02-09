@@ -42,7 +42,7 @@ const Signup = () => {
     }
 
     if (password.length < 6) {
-      toast.error("Password should contain at least 6 chatacters.");
+      toast.error("Password should contain at least 6 characters.");
       return;
     }
 
