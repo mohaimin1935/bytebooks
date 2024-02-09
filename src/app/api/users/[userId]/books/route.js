@@ -7,10 +7,10 @@ import validateMandatoryFields from "@/middleware/mandatoryFieldList";
 
 export const GET = async (req, { params }) => {
   // self validation checks both login status and userid match
-  const authError = await selfValidationOnlyFailed(params.userId);
-  if (authError) {
-    return authError;
-  }
+  // const authError = await selfValidationOnlyFailed(params.userId);
+  // if (authError) {
+  //   return authError;
+  // }
   try {
     const url = req.nextUrl;
     const searchParams = url.searchParams;

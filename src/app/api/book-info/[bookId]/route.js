@@ -61,6 +61,7 @@ export const PUT = async (req, { params }) => {
     return NextResponse.json({ message: "Book not found" }, { status: 404 });
   }
 
+
   try {
     const updatedBook = await prisma.bookInfo.update({
       where: {
@@ -68,6 +69,29 @@ export const PUT = async (req, { params }) => {
       },
       data: body,
     });
+
+     if (body.isPublished === true) {
+      // Fetch all users
+      const users = await prisma.user.findMany({
+        select: { id: true }, // Select only the user IDs as that's what we need
+      });
+
+      // Create a notification for each user
+      const notifications = users.map(user => ({
+        userId: user.id,
+        title: "New Book Published",
+        message: `A new book "${updatedBook.title}" has been published. Check it out!`,
+        type: "new_book",
+        bookId: updatedBook.id,
+      }));
+
+      // Use Prisma to create many notifications in one operation
+      await prisma.notification.createMany({
+        data: notifications,
+        //skipDuplicates: true, // Optional: skip if there's already a similar notification
+      });
+    }
+
     return NextResponse.json(updatedBook);
   } catch (error) {
     console.log(error);

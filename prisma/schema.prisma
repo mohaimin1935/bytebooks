@@ -306,8 +306,8 @@ model ContentReport {
 model Notification {
   id        String   @id @default(cuid()) @map("_id")
   userId    String
-  title     String
-  message   String
+  title     String?
+  message   String?
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
   type      String // e.g., "new_book", "system_update", etc.

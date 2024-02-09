@@ -10,10 +10,10 @@ import { NextResponse } from "next/server";
 import validateMandatoryFields from "@/middleware/mandatoryFieldList";
 
 export const GET = async (req, { params }) => {
-  const authError = await authenticatedOnlyFailed();
-  if (authError) {
-    return authError;
-  }
+  // const authError = await authenticatedOnlyFailed();
+  // if (authError) {
+  //   return authError;
+  // }
   try {
     const user = await prisma.User.findUnique({
       where: {
