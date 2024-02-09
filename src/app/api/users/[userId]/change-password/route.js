@@ -1,4 +1,4 @@
-// file-status: need to work
+// file-status: done
 
 import {
   creatorOnlyFailed,
@@ -7,6 +7,7 @@ import {
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 import validateMandatoryFields from "@/middleware/mandatoryFieldList";
+import bcrypt from "bcrypt";
 
 export const POST = async (req, { params }) => {
   // self validation checks both login status and userid match
@@ -26,6 +27,12 @@ export const POST = async (req, { params }) => {
         hashedPassword: true,
       },
     });
+    if (!user) {
+        return NextResponse.json(
+            { message: "Not found" },
+            { status: 404 }
+        );
+    }
     const passwordMatch = await bcrypt.compare(
       body.old_password,
       user.hashedPassword
