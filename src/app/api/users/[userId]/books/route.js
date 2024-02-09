@@ -41,6 +41,20 @@ export const GET = async (req, { params }) => {
     //need to fix logic #check
     let results = [];
     if (filter.type === "latest") {
+
+      results = await prisma.bookInfo.findMany({
+        skip: filter.count * filter.page,
+        take: filter.count,
+        orderBy: {
+          updatedAt: 'desc', // Assuming 'updatedAt' is a field indicating when the book was added
+        },
+        include: {
+          authors: { include: { author: true } },
+          genres: { include: { genre: true } },
+          // Include other relations as needed
+        },
+      });
+
     } else if (filter.type === "continue") {
     } else if (filter.type === "trending") {
     } else if (filter.type === "recommended") {
