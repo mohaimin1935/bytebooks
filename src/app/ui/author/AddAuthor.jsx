@@ -16,6 +16,7 @@ import Modal from "../common/Modal";
 const AddAuthor = ({
   author,
   setAuthors = () => {},
+  setSelectedAuthors = () => {},
   setShowModal = () => {},
 }) => {
   const [imageURL, setImageURL] = useState(author?.image);
@@ -44,6 +45,7 @@ const AddAuthor = ({
       if (!author) {
         const res = await axios.post("/api/author", newAuthor);
         setAuthors((prev) => [...prev, res.data]);
+        setSelectedAuthors((prev) => [...prev, res.data]);
       } else {
         const res = await axios.patch(`/api/author/${author.id}`, newAuthor);
         setAuthors((prev) =>

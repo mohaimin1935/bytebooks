@@ -46,6 +46,7 @@ const AddBook = ({ bookInfo }) => {
   const [publishingYear, setPublishingYear] = useState();
 
   const [bookId, setBookId] = useState("");
+  const [allAuthors, setAllAuthors] = useState([]);
 
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -63,7 +64,6 @@ const AddBook = ({ bookInfo }) => {
 
   useEffect(() => {
     if (book) {
-      console.log(book);
       setBookTitle(book.title);
       setBookImage(book.image);
       setAuthors(book.authors?.map((a) => a.author) || []);
@@ -90,6 +90,10 @@ const AddBook = ({ bookInfo }) => {
       router?.push("/creator/home");
     }
   }, [saved, modal, router]);
+
+  useEffect(() => {
+    if (authorList) setAllAuthors(authorList);
+  }, [authorLoading]);
 
   const removeAuthor = (id) => {
     let temp = authors;
@@ -185,8 +189,8 @@ const AddBook = ({ bookInfo }) => {
   return (
     <div>
       {showModal === "author" && (
-      <Selector
-          options={authorList}
+        <Selector
+          options={allAuthors}
           addLink={"/author/add"}
           selected={authors}
           setSelected={setAuthors}
@@ -201,7 +205,11 @@ const AddBook = ({ bookInfo }) => {
 
       {showModal === "add-author" && (
         <div className="">
-          <AddAuthor setAuthors={setAuthors} setShowModal={setShowModal} />
+          <AddAuthor
+            setAuthors={setAllAuthors}
+            setSelectedAuthors={setAuthors}
+            setShowModal={setShowModal}
+          />
         </div>
       )}
 

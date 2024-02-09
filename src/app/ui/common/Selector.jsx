@@ -26,7 +26,6 @@ const Selector = ({
   const [suggestions, setSuggestions] = useState(allItems);
   const [loading, setLoading] = useState(false);
 
-  const { setModal } = useContext(ThemeContext);
 
   useEffect(() => {
     setSuggestions(allItems);
