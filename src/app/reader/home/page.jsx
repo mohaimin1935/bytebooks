@@ -43,7 +43,7 @@ const ReaderHome = () => {
         <WelcomeSection user={data?.user} />
         <RecommendationSection
           isLoading={recommendedLoading}
-          books={recommendedBooks}
+          books={recommendedBooks?.slice(0, 3)}
         />
         <CollectionSection />
       </div>
@@ -55,22 +55,20 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const b = [1];
-    const temp = [];
-    books.forEach((book) => {
-      temp.push(() => (
-        <BookFlip
-          book={book}
-          audio={true}
-          details={true}
-          ratio={1.6}
-          key={book.id}
-        />
-      ));
-    });
-    console.log(temp);
-    setItems(temp);
-  }, [books]);
+    setItems(() =>
+      books?.map((book) => {
+        return () => (
+          <BookFlip
+            book={book}
+            audio={true}
+            details={true}
+            ratio={1.3}
+            key={book.id}
+          />
+        );
+      })
+    );
+  }, [isLoading]);
 
   return (
     <section>
@@ -81,7 +79,7 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
             <Carousel className={"w-[240px] my-4"} items={items} />
           )}
           {items.length === 1 && <div className="w-[240px]">{items[0]()}</div>}
-          {items.length === 0 && <>No bool to continue</>}
+          {items.length === 0 && <>No book to continue</>}
         </>
       ) : (
         <div className="animate-pulse w-[240px] h-[360px] bg2 rounded-md my-4"></div>

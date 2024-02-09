@@ -1,6 +1,7 @@
 "use client";
 
 import { fetcher } from "@/utils/util";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
 import useSWR from "swr";
@@ -35,6 +36,27 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
     fetcher
   );
 
+  const updateProgress = async (type, contentId) => {
+    console.log(user);
+    let progress = {
+      status: "reading",
+    };
+    if (type === "byte") {
+      progress.byteId = contentId;
+    } else {
+      progress.chapterId = contentId;
+    }
+    try {
+      const res = await axios.post(
+        `/api/users/${user?.user?.id}/books/${bookId}`,
+        updateProgress
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (data) {
       console.log(progress);
@@ -44,6 +66,7 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
           setActiveId(progress?.byteId);
         } else {
           setActiveId(data?.byte?.at(0)?.id);
+          updateProgress(type, data?.byte?.at(0)?.id);
         }
       } else if (type === "chapter") {
         setChapters(data?.chapters);
@@ -52,12 +75,6 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
       // TODO: progress
     }
   }, [bookId, data, progress]);
-
-  useEffect(() => {
-    if (type === "byte") {
-      
-    }
-  }, [activeId])
 
   useEffect(() => {
     if (!activeId) return;

@@ -20,11 +20,17 @@ const BookFlip = ({
   const [bgColor, setBgColor] = useState();
 
   const getColors = (colors) => {
-    console.log("first", colors);
     if (colors) setBgColor(colors);
   };
 
-  console.log(bgColor);
+  const getAuthors = () => {
+    let str = "";
+    for (let i = 0; i < book?.authors?.length; i++) {
+      str += book.authors[i].author?.name;
+      if (i < book?.authors?.length - 1) str += ", ";
+    }
+    return truncateText(str, 16);
+  };
 
   return (
     <div className={cn(`mr-4 ml-1 block`, className, styles.parent)}>
@@ -35,28 +41,35 @@ const BookFlip = ({
         <div className={cn(styles.book)}>
           <div className={styles.front}>
             <div className={styles.cover}>
-              {book?.image && (
-                <ColorExtractor getColors={getColors}>
-                  <img
-                    src={book?.image || "/bookImage.jpg"}
-                    alt=""
-                    className="w-full h-full z-10"
-                  />
-                </ColorExtractor>
-              )}
+              <ColorExtractor src={book?.image} getColors={getColors}>
+                <img
+                  src={book?.image || "/bookImage.jpg"}
+                  alt=""
+                  className="w-0 h-0 z-10 bg-green-200"
+                  crossOrigin="anonymous"
+                />
+              </ColorExtractor>
+              <div
+                className="h-full bg2 w-full"
+                style={{
+                  backgroundImage: `url(${book.image || "/bookImage.jpg"})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              ></div>
             </div>
           </div>
-          {/* FIXME: update color */}
           <div
             className={styles.leftSide}
             style={{ background: bgColor ? bgColor[3] : "gray" }}
           >
             <h2
+              className={"overflow-hidden"}
               style={{
                 width: `${width * ratio}px`,
                 color: bgColor && textColorOnBg(bgColor[3]),
               }}
-              className="overflow-hidden"
             >
               <span>{truncateText(book?.title, 24)}</span>
             </h2>
@@ -72,7 +85,7 @@ const BookFlip = ({
           >
             {truncateText(book?.title, 36)}
           </Link>
-          <p className="text-sm font-light">By Zulkar Naim</p>
+          <p className="text-sm font-light">By {getAuthors()}</p>
           <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar /> <p className="">4.7</p>

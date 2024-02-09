@@ -48,9 +48,9 @@ export const GET = async (req, { params }) => {
     results = await prisma.BookUser.findMany({
       skip: filter.count * filter.page,
       take: filter.count,
-      where: {
-        userId: params.userId,
-      },
+      // where: {
+      //   userId: params.userId,
+      // },
       // include: {
       //     book: true,
       // }
@@ -63,9 +63,9 @@ export const GET = async (req, { params }) => {
     console.log(res);
     let books = await prisma.bookInfo.findMany({
       where: {
-        id: {
-          in: res,
-        },
+        // id: {
+        //   in: res,
+        // },
       },
       include: {
         authors: { include: { author: true } },

@@ -16,8 +16,6 @@ const Carousel = ({ items = [], className }) => {
     arrows: false,
   };
 
-  console.log(items)
-
   return (
     <div className={cn("", className)}>
       <Slider {...settings} className="bg1 relative">

@@ -1,8 +1,28 @@
+"use client";
+
+import BookList from "@/app/ui/book/BookList";
 import BookFlip from "@/app/ui/book/cards/BookFlip";
 import PrevNext from "@/app/ui/common/PrevNext";
+import { fetcher } from "@/utils/util";
+import { useSession } from "next-auth/react";
 import React from "react";
+import useSWR from "swr";
 
 const Explore = () => {
+  const { data } = useSession();
+  const { data: trendingBooks, isLoading: trendingLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=trending`,
+    fetcher
+  );
+  const { data: latestBooks, isLoading: latestLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=latest`,
+    fetcher
+  );
+  const { data: categories, isLoading: categoriesLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=trending`,
+    fetcher
+  );
+
   return (
     <div>
       <section>
@@ -10,11 +30,7 @@ const Explore = () => {
           <h2 className="section-header">Trending</h2>
           <PrevNext />
         </div>
-        <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
-          <BookFlip width={140} details={true} audio={false} />
-          <BookFlip width={140} details={true} audio={false} />
-          <BookFlip width={140} details={true} audio={false} />
-        </div>
+        <BookList isLoading={trendingLoading} books={trendingBooks} />
       </section>
 
       <section>
