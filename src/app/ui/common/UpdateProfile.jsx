@@ -152,7 +152,15 @@ const PasswordUpdate = ({ handleCancel }) => {
   const [oldPassword, setOldPassword] = useState();
   const [loading, setLoading] = useState(false);
 
-  const handleUpdate = () => {};
+  const handleUpdate = () => {
+    try {
+      
+    } catch (error) {
+      
+    } finally {
+      setLoading={false}
+    }
+  };
 
   return (
     <div className="flex flex-col">

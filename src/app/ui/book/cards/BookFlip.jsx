@@ -80,7 +80,7 @@ const BookFlip = ({
       {details && (
         <div className="mt-4 center content2">
           <Link
-            href={`/reader/view/book/cls50ph5c001r1aih26119zp3`}
+            href={`/reader/view/book/${book.id}`}
             className="font-medium hover"
           >
             {truncateText(book?.title, 36)}

@@ -79,14 +79,14 @@ const ViewBook = () => {
           <div className="absolute right-0 top-0 gap-y-4 flex flex-col items-end">
             <Link
               href={`/book/${bookId}/content?type=byte`}
-              className="flex gap-x-2 transition duration-300 items-center primary-btn py-1.5 px-6 text-sm"
+              className="flex gap-x-2 transition duration-300 items-center primary-btn py-1.5 w-36 justify-center text-sm"
             >
-              <p>Summary</p>
+              <p>Byte</p>
               <FiArrowRight />
             </Link>
             <Link
               href={`/book/${bookId}/content?type=chapter`}
-              className="flex gap-x-2 transition duration-300 items-center secondary-btn py-1.5 px-6 text-sm"
+              className="flex gap-x-2 transition duration-300 items-center secondary-btn py-1.5 text-sm w-36 justify-center"
             >
               <p>Full Book</p>
               <FiArrowRight />

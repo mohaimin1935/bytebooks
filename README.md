@@ -42,12 +42,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
-- [ ] book delete for creator
 - [ ] add search functionality in book list for creator
 - [ ] report book reader in chapter
-- [ ] create collection for creator
-- [ ] admin
 - [ ] profile page
+- [ ] bookmark, report
 
 ### Todo BACKEND
 
@@ -58,6 +56,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] notification [sub, author, creator, sched, streak]
 - [ ] highlights [startInd, endInd, bookId, type, chapterId]
 - [ ] userId -> top genre
+
+---
+
+- [ ] /api/users/userId -> email, password update
+- [ ] /users/userId/books -> get books depending on searchParams, isPublished
+- [ ] /book-info -> {query} : title match -> [books] (search)
+- [ ]
 
 ---
 

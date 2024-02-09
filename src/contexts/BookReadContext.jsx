@@ -49,7 +49,7 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
     try {
       const res = await axios.post(
         `/api/users/${user?.user?.id}/books/${bookId}`,
-        updateProgress
+        progress
       );
       console.log(res.data);
     } catch (error) {

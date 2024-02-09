@@ -1,6 +1,16 @@
 import BookFlip from "@/app/ui/book/cards/BookFlip";
 import Search from "@/app/ui/common/Search";
+import { baseApi } from "@/utils/util";
+import axios from "axios";
 import React from "react";
+
+const getData = async () => {
+  try {
+    const res = await axios.get(`${baseApi}/`)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const ViewAuthor = () => {
   return (
