@@ -10,10 +10,10 @@ import bcrypt from "bcrypt";
 // need to check for invalid userId
 export const POST = async (req,{params}) => {
     // self validation checks both login status and userid match
-    // const authError = await selfValidationOnlyFailed(params.userId);
-    // if (authError) {
-    //     return authError;
-    // }
+    const authError = await selfValidationOnlyFailed(params.userId);
+    if (authError) {
+        return authError;
+    }
     try {
         const body = await req.json();
         //console.log(body.old_password);
@@ -38,6 +38,17 @@ export const POST = async (req,{params}) => {
           );
         if (passwordMatch) {
             //const newHashedPassword = await bcrypt.hash(body.new_password, 10);
+            const r = await prisma.User.findUnique({
+                where: {
+                    email: body.email,
+                },
+            });
+            if (r) {
+                return NextResponse.json(
+                    {message: "conflict"},
+                    {status: 409}               //check response code
+                );
+            }
             const updateUser = await prisma.User.update({
                 where: {
                     id: params.userId,
