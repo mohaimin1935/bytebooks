@@ -80,7 +80,9 @@ export const convertMsToHMS = (ms) => {
 };
 
 export const textColorOnBg = (color) => {
-  var r, g, b, hsp;
+  if (!color) return "#272934";
+
+  let r, g, b, hsp;
 
   if (color.match(/^rgb/)) {
     color = color.match(

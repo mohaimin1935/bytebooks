@@ -1,12 +1,31 @@
+"use client";
+
+import BookBack from "@/app/ui/book/BookBack";
+import BookList from "@/app/ui/book/BookList";
 import BookFlip from "@/app/ui/book/cards/BookFlip";
 import PrevNext from "@/app/ui/common/PrevNext";
-import { textColorOnBg } from "@/utils/util";
+import { fetcher, textColorOnBg } from "@/utils/util";
+import { useSession } from "next-auth/react";
 import React from "react";
+import useSWR from "swr";
 
 const Library = () => {
-  const finishedBooks = [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  ];
+  const { data } = useSession();
+
+  const { data: continueBooks, isLoading: continueLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=latest`,
+    fetcher
+  );
+
+  const { data: savedBooks, isLoading: savedLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=latest`,
+    fetcher
+  );
+
+  const { data: finishedBooks, isLoading: finishedLoading } = useSWR(
+    `/api/users/${data?.user?.id}/books?type=latest`,
+    fetcher
+  );
 
   return (
     <div>
@@ -15,11 +34,7 @@ const Library = () => {
           <h2 className="section-header">Continue</h2>
           <PrevNext />
         </div>
-        <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
-          <BookFlip width={140} details={true} audio={true} />
-          <BookFlip width={140} details={true} audio={true} />
-          <BookFlip width={140} details={true} audio={true} />
-        </div>
+        <BookList isLoading={continueLoading} books={continueBooks} />
       </section>
 
       <section className="mt-16">
@@ -27,11 +42,7 @@ const Library = () => {
           <h2 className="section-header">Saved Books</h2>
           <PrevNext />
         </div>
-        <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
-          <BookFlip width={140} details={true} audio={true} />
-          <BookFlip width={140} details={true} audio={true} />
-          <BookFlip width={140} details={true} audio={true} />
-        </div>
+        <BookList books={savedBooks} isLoading={savedLoading} />
       </section>
 
       <section className="mt-16">
@@ -40,32 +51,9 @@ const Library = () => {
           <PrevNext />
         </div>
         <div className="flex flex-wrap justify-start items-end gap-x-0 border-b-4 border-check px-4 h-[200px]">
-          {finishedBooks.map((_, index) => {
-            const color = `#${Math.floor(Math.random() * 16777215).toString(
-              16
-            )}`;
-            return (
-              <div
-                key={index}
-                className="bottom-0 rounded-t border-t border-bkg-2 hover:mb-2"
-                style={{
-                  backgroundColor: color,
-
-                  height: `${70 + Math.random() * 25}%`,
-                  width: `${32 + Math.random() * 20}px`,
-                }}
-              >
-                <div
-                  className="rotate-90 text-left px-2 py-8"
-                  style={{
-                    color: textColorOnBg(color),
-                  }}
-                >
-                  {"Title"}
-                </div>
-              </div>
-            );
-          })}
+          {finishedBooks?.map((book) => (
+            <BookBack book={book} />
+          ))}
         </div>
       </section>
     </div>

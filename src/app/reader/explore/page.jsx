@@ -7,6 +7,7 @@ import { fetcher } from "@/utils/util";
 import { useSession } from "next-auth/react";
 import React from "react";
 import useSWR from "swr";
+import Loader from "@/app/ui/common/Loader";
 
 const Explore = () => {
   const { data } = useSession();
@@ -19,7 +20,7 @@ const Explore = () => {
     fetcher
   );
   const { data: categories, isLoading: categoriesLoading } = useSWR(
-    `/api/users/${data?.user?.id}/books?type=trending`,
+    `/api/genre`,
     fetcher
   );
 
@@ -36,15 +37,15 @@ const Explore = () => {
       <section>
         <h2 className="section-header mb-8 mt-16">Categories</h2>
         <div className="flex gap-x-4 gap-y-2 items-center flex-wrap">
-          <div className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer">
-            Genre
-          </div>
-          <div className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer">
-            Genre
-          </div>
-          <div className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer">
-            Genre
-          </div>
+          {categoriesLoading ? (
+            <Loader className="h-20" />
+          ) : (
+            categories?.map((category) => (
+              <div className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer">
+                {category.name}
+              </div>
+            ))
+          )}
         </div>
       </section>
 
@@ -53,11 +54,7 @@ const Explore = () => {
           <h2 className="section-header">Latest</h2>
           <PrevNext />
         </div>
-        <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">
-          <BookFlip width={140} details={true} audio={false} />
-          <BookFlip width={140} details={true} audio={false} />
-          <BookFlip width={140} details={true} audio={false} />
-        </div>
+        <BookList isLoading={latestLoading} books={latestBooks} />
       </section>
     </div>
   );
