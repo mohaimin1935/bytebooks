@@ -225,7 +225,7 @@ const EmailUpdate = ({ handleCancel }) => {
   const { data } = useSession();
   const { setModal } = useContext(ThemeContext);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (loading) return;
 
     if (!email || !password) {
@@ -239,6 +239,16 @@ const EmailUpdate = ({ handleCancel }) => {
     }
 
     try {
+      setLoading(true);
+      const res = await axios.post(
+        `/api/users/${data?.user?.id}/change-email`,
+        {
+          email,
+          password,
+        }
+      );
+      console.log(res.data);
+      toast.success("Email updated");
     } catch (error) {
       console.log(error);
       toast.error("Request failed");

@@ -47,6 +47,7 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
       progress.chapterId = contentId;
     }
     try {
+      console.log(`/api/users/${user.user.id}/books/${bookId}`);
       const res = await axios.post(
         `/api/users/${user?.user?.id}/books/${bookId}`,
         progress

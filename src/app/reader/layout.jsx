@@ -6,6 +6,7 @@ import TopBar from "../ui/common/TopBar";
 import { useSession } from "next-auth/react";
 import AudioBar from "../ui/reader/AudioBar";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const ReaderLayout = ({ children }) => {
   const { data, status } = useSession();
@@ -17,6 +18,21 @@ const ReaderLayout = ({ children }) => {
       router.push("/login");
     }
   }, [status]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      updateStreak();
+    }
+  }, [status]);
+
+  const updateStreak = async () => {
+    try {
+      const res = await axios.post(`/api/users/${data?.user?.id}/streak`, {});
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (status === "authenticated")
     return (
