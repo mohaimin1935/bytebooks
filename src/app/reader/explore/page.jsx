@@ -41,7 +41,10 @@ const Explore = () => {
             <Loader className="h-20" />
           ) : (
             categories?.map((category) => (
-              <div className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer">
+              <div
+                className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer"
+                key={category.id}
+              >
                 {category.name}
               </div>
             ))
