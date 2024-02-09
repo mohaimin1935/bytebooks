@@ -101,7 +101,7 @@ const UpdateProfile = ({ type = "reader" }) => {
         </Modal>
       )}
 
-      <div className="px-16 py-16 rounded-md shadow-xl bg1 center">
+      <div className="px-16 py-16 rounded-md shadow-xl bg1 center border-2 border-bkg-2">
         <UploadFile
           className="h-40 w-40 rounded-full border-1 mb-12"
           setURL={setImage}

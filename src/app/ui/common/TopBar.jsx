@@ -25,10 +25,7 @@ const TopBar = ({ role }) => {
   const { data } = useSession();
   const router = useRouter();
 
-  const { data: userData } = useSWR(
-    `/api/users/${data?.user?.id}`,
-    fetcher
-  );
+  const { data: userData } = useSWR(`/api/users/${data?.user?.id}`, fetcher);
 
   const handleSwitch = (mode) => {
     if (data?.user?.role !== "reader") {
@@ -91,9 +88,9 @@ const TopBar = ({ role }) => {
           )}
 
           <ToggleTheme />
-          <div className="text-xl">
+          {/* <div className="text-xl">
             <IoNotificationsOutline />
-          </div>
+          </div> */}
           <Link href={`/${data?.user?.role}/profile`}>
             <img
               src={userData?.image || "/profile.png"}

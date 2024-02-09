@@ -11,13 +11,13 @@ import useSWR from "swr";
 const CreatorHome = () => {
   const { data: inProgressBooks, isLoading: progressBooksLoading } = useSWR(
     "/api/book-info?isPublished=false",
-    fetcher
-    // { refreshInterval: 500 }
+    fetcher,
+    { refreshInterval: 500 }
   );
   const { data: publishedBooks, isLoading: publishedBooksLoading } = useSWR(
     "/api/book-info?isPublished=true",
-    fetcher
-    // { refreshInterval: 500 }
+    fetcher,
+    { refreshInterval: 500 }
   );
 
   return (

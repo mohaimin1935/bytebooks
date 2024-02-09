@@ -42,20 +42,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
-- [x] delete prev file from firebase
-- [x] remove your books from creator
 - [ ] book delete for creator
 - [ ] add search functionality in book list for creator
-- [x] audio player
 - [ ] report book reader in chapter
-- [x] design search bookcard
-- [x] search book modal reader
-- [x] settings for user
 - [ ] create collection for creator
-- [x] explore page reader
-- [x] highlights, library reader
 - [ ] admin
-- [x] author page
 - [ ] profile page
 
 ### Todo BACKEND
