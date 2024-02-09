@@ -59,7 +59,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-- [ ] /api/users/userId -> email, password update
+- [x] /api/users/userId -> email, password update
 - [ ] /users/userId/books -> get books depending on searchParams, isPublished
 - [ ] /book-info -> {query} : title match -> [books] (search)
 - [ ]

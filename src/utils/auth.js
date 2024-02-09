@@ -48,7 +48,8 @@ export const authOptions = {
           credentials.password,
           foundUser.hashedPassword
         );
-
+        console.log("pass:"+credentials.password);
+        console.log("hash:"+foundUser.hashedPassword);
         if (!passwordMatch) {
           throw new Error("Incorrect password");
         }

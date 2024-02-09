@@ -15,6 +15,12 @@ export const POST = async (req, { params }) => {
   if (authError) {
     return authError;
   }
+  
+  const passwordMatch1 = await bcrypt.compare(
+    "12345678",
+    "$2b$10$xd5ntDahqclgGe9joVzFVuVMN34/jRwNU22DiJCKeTXAJm.8DDb9."
+  );
+  if (passwordMatch1) console.log("matched");
   try {
     const body = await req.json();
     //console.log(body.old_password);
@@ -48,6 +54,7 @@ export const POST = async (req, { params }) => {
         },
       });
       console.log(updateUser);
+      console.log("new:"+newHashedPassword);
       return NextResponse.json(
         { message: "success" },
         { status: 200 } //check response code
