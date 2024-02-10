@@ -8,7 +8,7 @@ import { cn } from "@/utils/cn";
 import React, { useState } from "react";
 
 const AdminDataManager = () => {
-  const [active, setActive] = useState("author");
+  const [active, setActive] = useState("user");
 
   const changeTab = (tab) => {
     setActive(tab);
@@ -53,6 +53,15 @@ const AdminDataManager = () => {
         >
           Tag
         </div>
+        <div
+          className={cn(
+            "px-4 cursor-pointer border-b-4 border-transparent",
+            active === "book" && "border-check"
+          )}
+          onClick={() => changeTab("book")}
+        >
+          Book
+        </div>
       </div>
       {active === "user" && <UserList />}
 
@@ -61,6 +70,8 @@ const AdminDataManager = () => {
       {active === "tag" && <TagList />}
 
       {active === "genre" && <GenreList />}
+
+      {active === "book" && <UserList />}
     </div>
   );
 };
