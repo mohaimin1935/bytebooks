@@ -122,6 +122,55 @@ export const GET = async (req, { params }) => {
 
 
     } else if (filter.type === "recommended") {
+      //implement the recommanded books in such a way that you look into a user's bookmarked books and see what the genres are. then fetch books that are the same genre but havenot been read before
+
+      const { userId } = params; // Ensure 'userId' is correctly obtained
+    if (!userId) {
+        return NextResponse.json({ error: "User ID is required for 'recommended' filter" }, { status: 400 });
+    }
+
+    // Fetch the genres of the user's bookmarked books
+    const bookmarkedBooksGenres = await prisma.bookUser.findMany({
+        where: {
+            userId: userId,
+            isBookmarked: true, // Assuming there's an `isBookmarked` field
+        },
+        include: {
+            book: {
+                include: {
+                    genres: true, // Assuming a book has a relation to genres
+                },
+            },
+        },
+    });
+
+    // Extract unique genre IDs from bookmarked books
+    let genreIds = [];
+    bookmarkedBooksGenres.forEach(entry => {
+        entry.book.genres.forEach(genre => {
+            if (!genreIds.includes(genre.id)) {
+                genreIds.push(genre.id);
+            }
+        });
+    });
+
+    // Fetch unread books in these genres
+    const unreadBooksInGenres = await prisma.bookInfo.findMany({
+        where: {
+            AND: [
+                { genres: { some: { id: { in: genreIds } } } }, // Books in the bookmarked genres
+                { NOT: { bookUsers: { some: { userId: userId, status: "read" } } } } // That the user hasn't read
+            ],
+        },
+        skip: filter.count * filter.page,
+        take: filter.count,
+        include: {
+            authors: { include: { author: true } },
+            genres: { include: { genre: true } },
+        },
+    });
+
+    results = unreadBooksInGenres;
     }
     // results = await prisma.BookUser.findMany({
     //   skip: filter.count * filter.page,
