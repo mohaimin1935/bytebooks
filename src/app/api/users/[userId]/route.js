@@ -4,6 +4,7 @@ import {
   authenticatedOnlyFailed,
   creatorOnlyFailed,
   selfValidationOnlyFailed,
+  selfValidationAndAdminOnlyFailed
 } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
@@ -45,13 +46,13 @@ export const GET = async (req, { params }) => {
 export const PATCH = async (req, { params }) => {
   // self validation checks both login status and userid match
   console.log(params);
-  const authError = await selfValidationOnlyFailed(params.userId);
+  const authError = await selfValidationAndAdminOnlyFailed(params.userId);
   if (authError) {
     return authError;
   }
   try {
     const body = await req.json();
-
+    console.log(body);
     if (body.email) {
       // TODO: match password and update email
     } else if (body.password) {

@@ -36,6 +36,19 @@ export const selfValidationOnlyFailed = async (userId) => {
   }
 };
 
+export const selfValidationAndAdminOnlyFailed = async (userId) => {
+  const session = await getAuthSession();
+  //console.log(session.user);
+  if (!session) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  } else if (session.user.id !== userId && session.user.role !== "admin") {
+    console.log(userId, session.user.id);
+    return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+  } else {
+    return null;
+  }
+};
+
 export const adminOnlyFailed = async () => {
   const session = await getAuthSession();
 

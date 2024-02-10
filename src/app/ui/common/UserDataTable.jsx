@@ -39,7 +39,7 @@ const UserDataTable = ({
     if (query.length > 0 && allItems) {
       setSuggestions([]);
       allItems.forEach((r) => {
-        if (r?.name?.toString().toLowerCase().includes(query.toLowerCase())) {
+        if (r?.name?.toString().toLowerCase().includes(query.toLowerCase()) || r?.email?.toString().toLowerCase().includes(query.toLowerCase()) || r?.role?.toString().toLowerCase().includes(query.toLowerCase())) {
           setSuggestions((prev) => [...prev, r]);
         }
       });
@@ -167,8 +167,8 @@ const UserDataTable = ({
 
       {showModal === "edit-role" && (
         <EditRole
-          setGenres={setAllItems}
-          genre={allItems.find((item) => item.id === actionId)}
+          setUsers={setAllItems}
+          user={allItems.find((item) => item.id === actionId)}
         />
       )}
 
