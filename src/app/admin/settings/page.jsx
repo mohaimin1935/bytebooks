@@ -1,8 +1,8 @@
-import Profile from "@/app/ui/common/Profile";
+import UpdateProfile from "@/app/ui/common/UpdateProfile";
 import React from "react";
 
 const AdminSettings = () => {
-  return <Profile />;
+  return <UpdateProfile type={"creator"} />;
 };
 
 export default AdminSettings;

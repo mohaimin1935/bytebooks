@@ -50,6 +50,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] bookshelf profile image
 - [ ] streak
 - [ ] consecutive 2 image upload in creator
+- [ ] admin/data-manager user table data show ui design
 
 ### Todo BACKEND
 
