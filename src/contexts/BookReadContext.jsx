@@ -27,24 +27,13 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
   const [progressLoading, setProgressLoading] = useState(false);
 
   const { data: user } = useSession();
-  const {
-    audioUrl,
-    setAudioUrl,
-    audioProgress,
-    setAudioProgress,
-    audioBook,
-    setAudioBook,
-    updateAudioProgress,
-  } = useContext(ThemeContext);
+  const { setAudioUrl, setAudioBook } = useContext(AudioContext);
 
   const { data, isLoading } = useSWR(
     `/api/book-info/${bookId}/${type}s`,
     fetcher
   );
-  const { data: book, isLoading: bookLoading } = useSWR(
-    `/api/book-info/${bookId}`,
-    fetcher
-  );
+  const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
 
   const { data: progress } = useSWR(
     `/api/users/${user?.user?.id}/books/${bookId}`,

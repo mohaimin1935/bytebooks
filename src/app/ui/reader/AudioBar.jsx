@@ -28,6 +28,7 @@ import RangeSlider from "../common/RangeSlider";
 import { convertMsToHMS, getAuthors } from "@/utils/util";
 import Loader from "../common/Loader";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { AudioContext } from "@/contexts/AudioContext";
 
 const Book = {};
 const chapter = {
@@ -41,17 +42,17 @@ const AudioBar = () => {
     audioUrl,
     handlePlayPause,
     audioLoading,
-    playing,
-    getPosition,
+    audioPlayer,
     pos,
-    duration,
-    volume,
-    setVolume,
-    rate,
     handleSpeed,
     goTo,
-    pause,
-  } = useContext(ThemeContext);
+    volume,
+    setVolume,
+    duration,
+    playing,
+    rate,
+    getPosition,
+  } = useContext(AudioContext);
 
   if (audioUrl)
     return (

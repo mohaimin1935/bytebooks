@@ -10,7 +10,7 @@ const AudioProvider = ({ children }) => {
   }, []);
 
   if (mounted) {
-    return <div>AudioProvider</div>;
+    return <div>{children}</div>;
   }
 };
 

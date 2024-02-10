@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useAudioPlayer } from "react-use-audio-player";
 
 export const AudioContext = createContext();
@@ -33,8 +33,6 @@ export const AudioContextProvider = ({ children }) => {
   const [pos, setPos] = useState(0);
   const [audioLoading, setAudioLoading] = useState(true);
 
-  const audioPlayer = useAudioPlayer();
-
   const {
     load,
     togglePlayPause,
@@ -46,7 +44,6 @@ export const AudioContextProvider = ({ children }) => {
     setRate,
     seek,
     getPosition,
-    isReady,
     pause,
   } = useAudioPlayer();
 
@@ -118,7 +115,17 @@ export const AudioContextProvider = ({ children }) => {
         audioLoading,
         setAudioLoading,
         // audioPlayer
-        audioPlayer,
+        load,
+        togglePlayPause,
+        volume,
+        setVolume,
+        duration,
+        playing,
+        rate,
+        setRate,
+        seek,
+        getPosition,
+        pause,
         // functions
         updateAudioProgress,
         handlePlayPause,
