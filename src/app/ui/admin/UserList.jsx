@@ -2,10 +2,10 @@ import { fetcher } from "@/utils/util";
 import React from "react";
 import useSWR from "swr";
 import Loader from "../common/Loader";
-import DataTable from "../common/DataTable";
+import UserDataTable from "../common/UserDataTable";
 
 const UserList = () => {
-  const { data, isLoading } = useSWR("/api/author", fetcher);
+  const { data, isLoading } = useSWR("/api/users", fetcher);
   if (isLoading)
     return (
       <div className="mt-16">
@@ -14,7 +14,7 @@ const UserList = () => {
     );
 
   return (
-    <DataTable
+    <UserDataTable
       data={data}
       hasImage
       defaultImage={"/author.png"}
