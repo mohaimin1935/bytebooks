@@ -1,17 +1,10 @@
 "use client";
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { useAudioPlayer } from "react-use-audio-player";
 
-export const ThemeContext = createContext();
+export const AudioContext = createContext();
 
-const getThemeFromLocalStorage = () => {
-  if (typeof window !== "undefined") {
-    const value = localStorage.getItem("theme");
-    return value || "light";
-  }
-};
-// TODO: remove
 const getItemFromLocalStorage = (item) => {
   if (typeof window !== "undefined") {
     const value = localStorage.getItem(item);
@@ -26,17 +19,8 @@ const getObjectFromLocalStorage = (item) => {
     return JSON.parse(localStorage.getItem(item));
   }
 };
-// TODO: upto this
 
-export const ThemeContextProvider = ({ children }) => {
-  
-  const [theme, setTheme] = useState(() => {
-    return getThemeFromLocalStorage();
-  });
-
-  const [modal, setModal] = useState(false);
-
-  // TODO: remove
+export const AudioContextProvider = ({ children }) => {
   const [audioUrl, setAudioUrl] = useState(() => {
     return getItemFromLocalStorage("audioUrl") || "";
   });
@@ -48,6 +32,8 @@ export const ThemeContextProvider = ({ children }) => {
   });
   const [pos, setPos] = useState(0);
   const [audioLoading, setAudioLoading] = useState(true);
+
+  const audioPlayer = useAudioPlayer();
 
   const {
     load,
@@ -82,13 +68,7 @@ export const ThemeContextProvider = ({ children }) => {
   useEffect(() => {
     if (audioProgress) goTo(audioProgress);
   }, []);
-  // TODO: upto this
 
-  const toggle = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
-  // TODO: remove
   useEffect(() => {
     if (audioUrl) localStorage.setItem("audioUrl", audioUrl);
   }, [audioUrl]);
@@ -100,13 +80,7 @@ export const ThemeContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("audioProgress", audioProgress);
   }, [audioProgress]);
-  // TODO: upto this
 
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  // TODO: remove
   useEffect(() => {
     if (audioUrl)
       load(audioUrl, {
@@ -130,42 +104,29 @@ export const ThemeContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <ThemeContext.Provider
+    <AudioContext.Provider
       value={{
-        theme,
-        toggle,
-        modal,
-        setModal,
-        // TODO: remove
+        // states, setStates
         audioUrl,
         setAudioUrl,
         audioBook,
         setAudioBook,
         audioProgress,
         setAudioProgress,
-        updateAudioProgress,
         pos,
         setPos,
         audioLoading,
         setAudioLoading,
-        load,
-        togglePlayPause,
-        volume,
-        setVolume,
-        duration,
-        playing,
-        rate,
-        setRate,
-        seek,
-        getPosition,
-        isReady,
+        // audioPlayer
+        audioPlayer,
+        // functions
+        updateAudioProgress,
         handlePlayPause,
         handleSpeed,
         goTo,
-        pause,
       }}
     >
       {children}
-    </ThemeContext.Provider>
+    </AudioContext.Provider>
   );
 };

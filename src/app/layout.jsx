@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import NextTopLoader from "nextjs-toploader";
 import ModalBg from "./ui/common/ModalBg";
+import { AudioContextProvider } from "@/contexts/AudioContext";
+import AudioProvider from "@/providers/AudioProvider";
 
 export default function RootLayout({ children }) {
   return (
@@ -38,13 +40,17 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ThemeContextProvider>
             <ThemeProvider>
-              <div className="font-rubik relative min-h-screen bg1 content1">
-                {/* <div className="fixed bottom-12 right-12 cursor-pointer z-50">
+              <AudioContextProvider>
+                <AudioProvider>
+                  <div className="font-rubik relative min-h-screen bg1 content1">
+                    {/* <div className="fixed bottom-12 right-12 cursor-pointer z-50">
                   <ToggleTheme />
                 </div> */}
-                {children}
-                <ModalBg />
-              </div>
+                    {children}
+                    <ModalBg />
+                  </div>
+                </AudioProvider>
+              </AudioContextProvider>
             </ThemeProvider>
           </ThemeContextProvider>
         </AuthProvider>

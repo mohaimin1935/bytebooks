@@ -36,6 +36,7 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   const [reorderLoading, setReorderLoading] = useState(false);
+  const [audioDeleteLoading, setAudioDeleteLoading] = useState(false);
 
   const addChapter = async () => {
     if (addLoading) return;
@@ -83,6 +84,36 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
       toast.error("Something went wrong.");
     } finally {
       setDeleteLoading(false);
+      setShowModal("");
+      setModal(false);
+    }
+  };
+
+  const handleDeleteAudio = () => {
+    setModal(true);
+    setShowModal("delete-audio");
+  };
+
+  const handleCancelAudioDelete = () => {
+    setModal(false);
+    setShowModal("");
+  };
+
+  const handleConfirmDeleteAudio = async () => {
+    if (audioDeleteLoading) return;
+
+    try {
+      setAudioDeleteLoading(true);
+      await axios.patch(`/api/book-info/${bookId}/${type}s/${activeId}`, {
+        audioLink: null,
+      });
+      setAudioUrl(null);
+      toast.success("Audio deleted successfully");
+    } catch (error) {
+      toast.error("Request failed");
+      console.log(error);
+    } finally {
+      setAudioDeleteLoading(false);
       setShowModal("");
       setModal(false);
     }
@@ -208,6 +239,10 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
         unsavedOrder,
         handleOrderSave,
         reorderLoading,
+        handleDeleteAudio,
+        handleCancelAudioDelete,
+        handleConfirmDeleteAudio,
+        audioDeleteLoading,
       }}
     >
       {showModal === "delete" && (
@@ -215,6 +250,14 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
           handleDeleteConfirm={handleDeleteConfirm}
           handleCancel={handleCancel}
           loading={deleteLoading}
+        />
+      )}
+
+      {showModal === "delete-audio" && (
+        <DeleteConfirm
+          handleCancel={handleCancelAudioDelete}
+          handleDeleteConfirm={handleConfirmDeleteAudio}
+          loading={audioDeleteLoading}
         />
       )}
       {children}

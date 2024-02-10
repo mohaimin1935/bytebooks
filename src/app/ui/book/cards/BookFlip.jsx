@@ -7,7 +7,7 @@ import { FiPlayCircle, FiStar } from "react-icons/fi";
 import { LuHeadphones } from "react-icons/lu";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import { textColorOnBg, truncateText } from "@/utils/util";
+import { getAuthors, textColorOnBg, truncateText } from "@/utils/util";
 
 const BookFlip = ({
   audio = false,
@@ -21,15 +21,6 @@ const BookFlip = ({
 
   const getColors = (colors) => {
     if (colors) setBgColor(colors);
-  };
-
-  const getAuthors = () => {
-    let str = "";
-    for (let i = 0; i < book?.authors?.length; i++) {
-      str += book.authors[i].author?.name;
-      if (i < book?.authors?.length - 1) str += ", ";
-    }
-    return truncateText(str, 16);
   };
 
   return (
@@ -85,7 +76,7 @@ const BookFlip = ({
           >
             {truncateText(book?.title, 36)}
           </Link>
-          <p className="text-sm font-light">By {getAuthors()}</p>
+          <p className="text-sm font-light">By {getAuthors(book)}</p>
           <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar /> <p className="">4.7</p>

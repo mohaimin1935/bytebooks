@@ -8,7 +8,7 @@ const Input = ({ type, placeholder, value, setValue, rule, className }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className={cn("relative w-[300] flex items-center", className)}>
+    <div className={cn("relative w-[300px] flex items-center", className)}>
       <input
         type={!showPassword && type === "password" ? "password" : "text"}
         placeholder={placeholder}

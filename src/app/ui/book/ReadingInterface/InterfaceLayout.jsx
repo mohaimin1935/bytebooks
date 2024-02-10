@@ -3,9 +3,10 @@ import TopBar from "../../common/TopBar";
 import BookLeft from "./BookLeft";
 import AudioBar from "../../reader/AudioBar";
 import { BookReadContext } from "@/contexts/BookReadContext";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const InterfaceLayout = ({ children }) => {
-  const { activeChapter } = useContext(BookReadContext);
+  const { audioUrl } = useContext(ThemeContext);
 
   return (
     <div className="flex h-screen bg1">
@@ -27,8 +28,8 @@ const InterfaceLayout = ({ children }) => {
         </div>
 
         <div className="-mx-4 sm:-mx-12 xl:-mx-16 ">
-          {activeChapter?.audioLink ? (
-            <AudioBar audioUrl={activeChapter?.audioLink} />
+          {audioUrl ? (
+            <AudioBar audioUrl={audioUrl} />
           ) : (
             <p className="text-center py-4 bg2 m-2 rounded">
               No audio available.

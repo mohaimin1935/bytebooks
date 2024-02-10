@@ -110,3 +110,13 @@ export const textColorOnBg = (color) => {
     return "#fdfcf7";
   }
 };
+
+export const getAuthors = (book) => {
+  if (!book) return;
+  let str = "";
+  for (let i = 0; i < book?.authors?.length; i++) {
+    str += book.authors[i].author?.name;
+    if (i < book?.authors?.length - 1) str += ", ";
+  }
+  return truncateText(str, 16);
+};

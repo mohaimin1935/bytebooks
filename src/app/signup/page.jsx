@@ -68,7 +68,9 @@ const Signup = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 h-full bg2"></div>
+      <div className="w-1/2 h-full bg2 center">
+        <img src="/signup.svg" className="w-1/3" alt="" />
+      </div>
       <div className="w-1/2 center">
         <h3 className="text-center text-4xl font-semibold mb-12">Sign up</h3>
 

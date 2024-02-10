@@ -7,7 +7,8 @@ import "react-quill/dist/quill.snow.css";
 import UploadFile from "../common/UploadFile";
 import { LuFileAudio } from "react-icons/lu";
 import { BookEditContext } from "@/contexts/BookEditContext";
-import { FiArrowLeft } from "react-icons/fi";
+import { FiArrowLeft, FiTrash } from "react-icons/fi";
+import DeleteConfirm from "../common/DeleteConfirm";
 
 const ContentEditor = () => {
   const [uploaded, setUploaded] = useState(false);
@@ -25,6 +26,11 @@ const ContentEditor = () => {
     activeId,
     type,
     saved,
+    handleDeleteAudio,
+    handleCancelAudioDelete,
+    handleConfirmDeleteAudio,
+    audioDeleteLoading,
+    showModal,
   } = useContext(BookEditContext);
 
   useEffect(() => {
@@ -68,6 +74,13 @@ const ContentEditor = () => {
             showImage={audioUrl}
             setUploaded={setUploaded}
           />
+          {audioUrl && (
+            <FiTrash
+              size={32}
+              className="accent2 p-2 rounded cursor-pointer"
+              onClick={handleDeleteAudio}
+            />
+          )}
         </div>
       </div>
       .

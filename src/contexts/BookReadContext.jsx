@@ -3,8 +3,9 @@
 import { fetcher } from "@/utils/util";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
+import { ThemeContext } from "./ThemeContext";
 
 export const BookReadContext = createContext();
 
@@ -23,13 +24,27 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
   const [activeId, setActiveId] = useState();
   const [activeChapter, setActiveChapter] = useState();
 
+  const [progressLoading, setProgressLoading] = useState(false);
+
   const { data: user } = useSession();
+  const {
+    audioUrl,
+    setAudioUrl,
+    audioProgress,
+    setAudioProgress,
+    audioBook,
+    setAudioBook,
+    updateAudioProgress,
+  } = useContext(ThemeContext);
 
   const { data, isLoading } = useSWR(
     `/api/book-info/${bookId}/${type}s`,
     fetcher
   );
-  const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
+  const { data: book, isLoading: bookLoading } = useSWR(
+    `/api/book-info/${bookId}`,
+    fetcher
+  );
 
   const { data: progress } = useSWR(
     `/api/users/${user?.user?.id}/books/${bookId}`,
@@ -37,6 +52,8 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
   );
 
   const updateProgress = async (type, contentId) => {
+    if (progressLoading) return;
+
     let progress = {
       status: "reading",
     };
@@ -46,12 +63,16 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
       progress.chapterId = contentId;
     }
     try {
+      setProgressLoading(true);
       const res = await axios.post(
         `/api/users/${user?.user?.id}/books/${bookId}`,
         progress
       );
+      console.log(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setProgressLoading(false);
     }
   };
 
@@ -89,6 +110,13 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
       }
     }
   }, [activeId, bookId, type]);
+
+  useEffect(() => {
+    if (activeChapter) {
+      setAudioUrl(activeChapter?.at(0)?.audioLink);
+      setAudioBook(book);
+    }
+  }, [activeChapter]);
 
   return (
     <BookReadContext.Provider

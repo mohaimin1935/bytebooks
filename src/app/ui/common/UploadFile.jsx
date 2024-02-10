@@ -41,6 +41,14 @@ const UploadFile = ({
   }, [type]);
 
   useEffect(() => {
+    if (inputFileRef) {
+      inputFileRef.current.value = "";
+      inputFileRef.current.type = "text";
+      inputFileRef.current.type = "file";
+    }
+  }, []);
+
+  useEffect(() => {
     const storage = getStorage(app);
 
     const upload = () => {
@@ -112,7 +120,9 @@ const UploadFile = ({
         )}
         onClick={() => {
           if (inputFileRef.current) {
-            console.log("first");
+            inputFileRef.current.value = "";
+            inputFileRef.current.type = "text";
+            inputFileRef.current.type = "file";
             inputFileRef.current.click();
           }
         }}
@@ -135,7 +145,6 @@ const UploadFile = ({
           id=""
           className="hidden"
           onChange={(e) => {
-            console.log(e.target.files);
             setImage(e.target.files[0]);
           }}
           accept={acceptType}

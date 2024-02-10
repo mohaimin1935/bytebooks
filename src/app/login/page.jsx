@@ -53,7 +53,14 @@ const Login = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 h-full bg2"></div>
+      <div className="w-1/2 h-full bg2 center">
+        <img
+          src="/login.svg"
+          alt=""
+          className="w-1/3"
+          style={{ transform: "scaleX(-1)" }}
+        />
+      </div>
       <div className="center w-1/2">
         <h3 className="text-center text-4xl font-semibold mb-12">Log in</h3>
 

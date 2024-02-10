@@ -23,7 +23,14 @@ const LeftPanel = ({ options, active }) => {
       {/* logout button */}
       <button
         className="flex items-center hover:content-highlight transition duration-300"
-        onClick={() => signOut()}
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("audioUrl", "");
+            localStorage.setItem("audioBook", "{}");
+            localStorage.setItem("audioProgress", "0");
+          }
+          signOut();
+        }}
       >
         <div className={cn("w-1.5 py-6 bg2")}></div>
         <div className={cn("flex gap-x-4 ml-0 md:ml-8 items-center")}>

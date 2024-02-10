@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
+import Input from "../auth/Input";
 
 const UpdateProfile = ({ type = "reader" }) => {
   const [image, setImage] = useState();
@@ -90,13 +91,13 @@ const UpdateProfile = ({ type = "reader" }) => {
   return (
     <div className="center w-full h-full">
       {showModal === "updatePassword" && (
-        <Modal className={"h-[320px] pt-16"}>
+        <Modal className={"h-[320px] pt-16 w-[420px]"}>
           <PasswordUpdate handleCancel={handleCancel} />
         </Modal>
       )}
 
       {showModal === "updateEmail" && (
-        <Modal className={"h-[320px] pt-16"}>
+        <Modal className={"h-[320px] pt-16 w-[420px]"}>
           <EmailUpdate handleCancel={handleCancel} />
         </Modal>
       )}
@@ -111,34 +112,37 @@ const UpdateProfile = ({ type = "reader" }) => {
           setUploaded={setUploaded}
         />
 
-        <input
+        <Input
+          className=" mb-4"
+          setValue={setName}
           type="text"
-          className="auth-input w-56 mb-4"
           value={name}
-          onChange={(e) => setName(e.target.value)}
           placeholder="Name"
         />
 
         <button
-          className="auth-input w-56 mb-4 text-left"
+          className="auth-input w-[300PX] mb-4 text-left"
           onClick={handleEmail}
         >
           {email}
         </button>
 
         <button
-          className="auth-input w-56 mb-4 text-left"
+          className="auth-input w-[300PX] mb-4 text-left"
           onClick={handlePassword}
         >
           Update Password
         </button>
 
-        <button className="w-56 primary-btn py-2 mt-2" onClick={handleSave}>
+        <button
+          className="w-[300PX] primary-btn py-2 mt-2"
+          onClick={handleSave}
+        >
           {loading ? <Loader /> : <>Save</>}
         </button>
 
         {type === "reader" && (
-          <button className="w-56 secondary-btn py-2 mt-4">
+          <button className="w-[300PX] secondary-btn py-2 mt-4">
             Apply to be Creator
           </button>
         )}
@@ -158,7 +162,7 @@ const PasswordUpdate = ({ handleCancel }) => {
     if (loading) return;
 
     if (!password || !oldPassword) {
-      toast.error("All fields are reuqired");
+      toast.error("All fields are required");
       return;
     }
 
@@ -187,22 +191,22 @@ const PasswordUpdate = ({ handleCancel }) => {
   };
 
   return (
-    <div className="flex flex-col">
-      <input
+    <div className="flex flex-col center">
+      <Input
+        className=" mb-4"
+        setValue={setPassword}
         type="password"
-        className="auth-input w-full mb-4"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
         placeholder="New Password"
       />
-      <input
+      <Input
+        className=" mb-4"
+        setValue={setOldPassword}
         type="password"
-        className="auth-input w-full mb-2"
         value={oldPassword}
-        onChange={(e) => setOldPassword(e.target.value)}
         placeholder="Old Password"
       />
-      <div className="mt-12 flex items-center justify-between">
+      <div className="mt-12 flex items-center justify-between w-[300px]">
         <button
           className="border border-check px-4 py-1.5 rounded"
           onClick={handleCancel}
@@ -229,7 +233,7 @@ const EmailUpdate = ({ handleCancel }) => {
     if (loading) return;
 
     if (!email || !password) {
-      toast.error("All fields are reuired");
+      toast.error("All fields are required");
       return;
     }
 
@@ -259,22 +263,22 @@ const EmailUpdate = ({ handleCancel }) => {
   };
 
   return (
-    <div className="flex flex-col">
-      <input
+    <div className="flex flex-col center">
+      <Input
+        className=" mb-4"
+        setValue={setEmail}
         type="text"
-        className="auth-input w-full mb-4"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
         placeholder="New Email"
       />
-      <input
+      <Input
+        className=" mb-4"
+        setValue={setPassword}
         type="password"
-        className="auth-input w-full mb-2"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <div className="mt-12 flex items-center justify-between">
+      <div className="mt-12 flex items-center justify-between w-[300px]">
         <button
           className="border border-check px-4 py-1.5 rounded"
           onClick={handleCancel}
