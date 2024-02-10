@@ -51,43 +51,65 @@ export const GET = async (req, { params }) => {
         include: {
           authors: { include: { author: true } },
           genres: { include: { genre: true } },
-          // Include other relations as needed
         },
       });
 
     } else if (filter.type === "continue") {
+      const { userId } = params; // Ensure 'userId' is obtained correctly
+      if (!userId) {
+        return NextResponse.json({ error: "User ID is required for 'continue' filter" }, { status: 400 });
+      }
+
+      // Fetch books that the user has started reading but not finished
+      results = await prisma.bookUser.findMany({
+        where: {
+          userId: userId,
+          status: "reading", 
+        },
+        skip: filter.count * filter.page,
+        take: filter.count,
+        include: {
+          book: {
+            include: {
+              authors: { include: { author: true } },
+              genres: { include: { genre: true } },
+            },
+          },
+        },
+      });
+      results = results.map(result => result.book); 
     } else if (filter.type === "trending") {
     } else if (filter.type === "recommended") {
     }
-    results = await prisma.BookUser.findMany({
-      skip: filter.count * filter.page,
-      take: filter.count,
-      // where: {
-      //   userId: params.userId,
-      // },
-      // include: {
-      //     book: true,
-      // }
-    });
-    console.log(results);
-    let res = [];
-    for (let i = 0; i < results.length; i++) {
-      res.push(results[i].bookId);
-    }
-    console.log(res);
-    let books = await prisma.bookInfo.findMany({
-      where: {
-        // id: {
-        //   in: res,
-        // },
-      },
-      include: {
-        authors: { include: { author: true } },
-        genres: { include: { genre: true } },
-        // Include other relations as needed
-      },
-    });
-    return NextResponse.json(books);
+    // results = await prisma.BookUser.findMany({
+    //   skip: filter.count * filter.page,
+    //   take: filter.count,
+    //   // where: {
+    //   //   userId: params.userId,
+    //   // },
+    //   // include: {
+    //   //     book: true,
+    //   // }
+    // });
+    // console.log(results);
+    // let res = [];
+    // for (let i = 0; i < results.length; i++) {
+    //   res.push(results[i].bookId);
+    // }
+    // console.log(res);
+    // let books = await prisma.bookInfo.findMany({
+    //   where: {
+    //     // id: {
+    //     //   in: res,
+    //     // },
+    //   },
+    //   include: {
+    //     authors: { include: { author: true } },
+    //     genres: { include: { genre: true } },
+    //     // Include other relations as needed
+    //   },
+    // });
+    return NextResponse.json(results);
   } catch (err) {
     console.log(err);
 
