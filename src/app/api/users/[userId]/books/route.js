@@ -79,6 +79,48 @@ export const GET = async (req, { params }) => {
       });
       results = results.map(result => result.book); 
     } else if (filter.type === "trending") {
+      //logic: get those books that are most in number in bookuser table in last 7 days
+
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+      // Fetch BookUser entries updated within the last week and count them by bookId
+      const recentInteractions = await prisma.bookUser.groupBy({
+        by: ['bookId'],
+        where: {
+          updatedAt: {
+            gte: oneWeekAgo,
+          },
+        },
+        _count: {
+          bookId: true,
+        },
+        orderBy: {
+          _count: {
+            bookId: 'desc',
+          },
+        },
+        take: filter.count,
+        skip: filter.count * filter.page,
+      });
+
+      // Extract bookIds from the grouped results
+      const trendingBookIds = recentInteractions.map(entry => entry.bookId);
+
+      // Fetch the book details for these trending bookIds
+      results = await prisma.bookInfo.findMany({
+        where: {
+          id: {
+            in: trendingBookIds,
+          },
+        },
+        include: {
+          authors: { include: { author: true } },
+          genres: { include: { genre: true } },
+        },
+      });
+
+
     } else if (filter.type === "recommended") {
     }
     // results = await prisma.BookUser.findMany({
