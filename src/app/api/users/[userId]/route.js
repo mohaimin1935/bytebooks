@@ -52,7 +52,9 @@ export const PATCH = async (req, { params }) => {
   }
   try {
     const body = await req.json();
+    console.log("body");
     console.log(body);
+    console.log("bodyend");
     if (body.email) {
       // TODO: match password and update email
     } else if (body.password) {

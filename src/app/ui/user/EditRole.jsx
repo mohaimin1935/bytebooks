@@ -20,7 +20,7 @@ const EditRole = ({ user, setUsers }) => {
     try {
       setLoading(true);
       if (user) {
-        const res = await axios.patch(`/api/users/${users.id}`, { role });
+        const res = await axios.patch(`/api/users/${user.id}`, { role });
         setUsers((prev) =>
           prev.map((item) => (item.id === user.id ? { ...res.data } : item))
         );
