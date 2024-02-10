@@ -11,7 +11,7 @@ export const POST = async (req, { params }) => {
   const body = await req.json(); 
   const { status, chapterId, byteId, audioTimeStampChapter, audioTimeStampBytes, notes, rating ,isBookmarked } = body;
   console.log(userId, bookId, status, chapterId, byteId, audioTimeStampChapter, audioTimeStampBytes, notes, rating);
-  if (!userId || !bookId || !status) {
+  if (!userId || !bookId || !status || userId==="undefined" || bookId==="undefined" || status==="undefined" || userId==="" || bookId==="") {
     
     
     return new NextResponse(JSON.stringify({ error: 'Missing mandatory fields' }), { status: 400 });
