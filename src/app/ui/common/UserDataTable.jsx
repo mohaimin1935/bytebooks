@@ -274,7 +274,7 @@ const Item = ({
             />
           )}
           {/* change capitalize, show real name */}
-          <p className="capitalize">{item.name + " ("+"a@a.com"+ ") ("+"reader"+")"}</p> 
+          <p className="capitalize">{item.name + " ("+item.email+ ") ("+item.role+")"}</p> 
         </div>
         <div className="flex items-center gap-x-6">
           <FiEdit
