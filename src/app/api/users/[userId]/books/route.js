@@ -148,7 +148,7 @@ export const GET = async (req, { params }) => {
     } else if (filter.type === "recommended") {
       //implement the recommanded books in such a way that you look into a user's bookmarked books and see what the genres are. then fetch books that are the same genre but havenot been read before
 
-      const { userId } = params; // Ensure 'userId' is correctly obtained
+    const { userId } = params; // Ensure 'userId' is correctly obtained
     if (!userId) {
         return NextResponse.json({ error: "User ID is required for 'recommended' filter" }, { status: 400 });
     }
@@ -183,7 +183,7 @@ export const GET = async (req, { params }) => {
         where: {
             AND: [
                 { genres: { some: { id: { in: genreIds } } } }, // Books in the bookmarked genres
-                { NOT: { bookUsers: { some: { userId: userId, status: "read" } } } } // That the user hasn't read
+                { NOT: { BookUser: { some: { userId: userId, status: "read" } } } } // That the user hasn't read
             ],
         },
         skip: filter.count * filter.page,
@@ -195,6 +195,7 @@ export const GET = async (req, { params }) => {
     });
 
     results = unreadBooksInGenres;
+    console.log(results);
     
     if (results.length < 10) {
         const additionalBooksNeeded = 10 - results.length;
