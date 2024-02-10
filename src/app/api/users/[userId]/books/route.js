@@ -54,6 +54,18 @@ export const GET = async (req, { params }) => {
         },
       });
 
+      if (results.length < 10) {
+        const additionalBooksNeeded = 10 - results.length;
+        const additionalBooks = await prisma.bookInfo.findMany({
+            where: {
+                // Ensure the additional books are not already included
+                NOT: { id: { in: results.map(book => book.id) } }
+            },
+            take: additionalBooksNeeded
+        });
+        results = [...results, ...additionalBooks];
+    }
+
     } else if (filter.type === "continue") {
       const { userId } = params; // Ensure 'userId' is obtained correctly
       if (!userId) {
@@ -120,6 +132,18 @@ export const GET = async (req, { params }) => {
         },
       });
 
+      if (results.length < 10) {
+        const additionalBooksNeeded = 10 - results.length;
+        const additionalBooks = await prisma.bookInfo.findMany({
+            where: {
+                // Ensure the additional books are not already included
+                NOT: { id: { in: results.map(book => book.id) } }
+            },
+            take: additionalBooksNeeded
+        });
+        results = [...results, ...additionalBooks];
+    }
+
 
     } else if (filter.type === "recommended") {
       //implement the recommanded books in such a way that you look into a user's bookmarked books and see what the genres are. then fetch books that are the same genre but havenot been read before
@@ -171,6 +195,18 @@ export const GET = async (req, { params }) => {
     });
 
     results = unreadBooksInGenres;
+    
+    if (results.length < 10) {
+        const additionalBooksNeeded = 10 - results.length;
+        const additionalBooks = await prisma.bookInfo.findMany({
+            where: {
+                // Ensure the additional books are not already included
+                NOT: { id: { in: results.map(book => book.id) } }
+            },
+            take: additionalBooksNeeded
+        });
+        results = [...results, ...additionalBooks];
+    }
     }
     // results = await prisma.BookUser.findMany({
     //   skip: filter.count * filter.page,
@@ -200,6 +236,7 @@ export const GET = async (req, { params }) => {
     //     // Include other relations as needed
     //   },
     // });
+    
     return NextResponse.json(results);
   } catch (err) {
     console.log(err);
