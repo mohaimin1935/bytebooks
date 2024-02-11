@@ -2,11 +2,10 @@ import React, { useContext } from "react";
 import TopBar from "../../common/TopBar";
 import BookLeft from "./BookLeft";
 import AudioBar from "../../reader/AudioBar";
-import { BookReadContext } from "@/contexts/BookReadContext";
-import { ThemeContext } from "@/contexts/ThemeContext";
+import { AudioContext } from "@/contexts/AudioContext";
 
 const InterfaceLayout = ({ children }) => {
-  const { audioUrl } = useContext(ThemeContext);
+  const { audioUrl } = useContext(AudioContext);
 
   return (
     <div className="flex h-screen bg1">

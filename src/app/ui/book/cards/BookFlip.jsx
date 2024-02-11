@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./BookFlip.module.css";
 import { ColorExtractor } from "react-color-extractor";
 import { FiPlayCircle, FiStar } from "react-icons/fi";
@@ -8,6 +8,13 @@ import { LuHeadphones } from "react-icons/lu";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { getAuthors, textColorOnBg, truncateText } from "@/utils/util";
+import toast from "react-hot-toast";
+import axios from "axios";
+import Loader from "../../common/Loader";
+import { useSession } from "next-auth/react";
+import { AudioContext } from "@/contexts/AudioContext";
+
+// TODO: bookmark
 
 const BookFlip = ({
   audio = false,
@@ -18,9 +25,34 @@ const BookFlip = ({
   book = {},
 }) => {
   const [bgColor, setBgColor] = useState();
+  const [audioLoading, setAudioLoading] = useState(false);
+
+  const { data: user } = useSession();
+  const { setAudioUrl, play, setAudioBook } = useContext(AudioContext);
 
   const getColors = (colors) => {
     if (colors) setBgColor(colors);
+  };
+
+  // FIXME: also plays prev audio
+  const handleAudio = async () => {
+    try {
+      setAudioLoading(true);
+      const res = await axios.get(
+        `/api/users/${user?.user?.id}/books/${book.id}`
+      );
+      setAudioUrl(res.data?.byte?.audioLink);
+      play();
+      const bookData = await axios.get(`/api/book-info/${book.id}`);
+      setAudioBook(bookData.data);
+      play();
+      // TODO: how to know byte or chapter??
+    } catch (error) {
+      console.log(error);
+      toast.error("Audio load failed");
+    } finally {
+      setAudioLoading(false);
+    }
   };
 
   return (
@@ -88,19 +120,27 @@ const BookFlip = ({
         </div>
       )}
 
-      {audio && (
+      {/* {audio && (
         <button
           className="flex gap-x-2 items-center w-full"
           onClick={() => {
             console.log("first");
           }}
         >
-          <FiPlayCircle size={32} />
+          {!audioLoading ? (
+            <FiPlayCircle
+              size={32}
+              onClick={handleAudio}
+              className="cursor-pointer"
+            />
+          ) : (
+            <Loader className="w-6" />
+          )}
           <div className="relative h-1.5 w-full rounded-full bg2">
             <div className="absolute w-[30%] accent1 left-0 top-0 bottom-0 rounded-full bg2"></div>
           </div>
         </button>
-      )}
+      )} */}
     </div>
   );
 };

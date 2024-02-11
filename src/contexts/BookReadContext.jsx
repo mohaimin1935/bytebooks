@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
-import { ThemeContext } from "./ThemeContext";
+import { AudioContext } from "./AudioContext";
 
 export const BookReadContext = createContext();
 
@@ -41,7 +41,7 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
   );
 
   const updateProgress = async (type, contentId) => {
-    if (progressLoading) return;
+    if (progressLoading || !contentId) return;
 
     let progress = {
       status: "reading",
@@ -76,7 +76,11 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
         }
       } else if (type === "chapter") {
         setChapters(data?.chapters);
-        setActiveId(data?.chapters?.at(0)?.id);
+        if (progress?.chapterId) {
+          setActiveId(progress?.chapterId);
+        } else {
+          setActiveId(data?.chapters?.at(0)?.id);
+        }
       }
     }
   }, [bookId, data, progress]);

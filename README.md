@@ -42,14 +42,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
+- [ ] time update audio progress
+
 - [ ] add search functionality in book list for creator
 - [ ] report book reader in chapter
-- [ ] profile page
+- [ ] profile page for creator
 - [ ] bookmark, report
 - [ ] author get data
-- [ ] bookshelf profile image
 - [ ] streak
-- [ ] consecutive 2 image upload in creator
 - [ ] admin/data-manager user table data show ui design
 
 ### Todo BACKEND
@@ -67,9 +67,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] /api/users/userId -> email, password update
 - [ ] /users/userId/books -> get books depending on searchParams, isPublished
 - [ ] /book-info -> {query} : title match -> [books] (search)
-- [ ]
 
+- [ ] check in streak post that a day is already in or return the array loginDates with unique dates only
+author  
 ---
 
-- patch
-- delete
+- how to know byte or chapter in continue?

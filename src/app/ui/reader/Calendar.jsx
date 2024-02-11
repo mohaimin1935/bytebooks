@@ -1,9 +1,41 @@
+"use client";
+
 import { cn } from "@/utils/cn";
-import { getCurrentWeek } from "@/utils/util";
-import React from "react";
+import { fetcher, getCurrentWeek } from "@/utils/util";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import useSWR from "swr";
 
 const Calendar = () => {
+  const [loginDates, setLoginDates] = useState([]);
+
   const currentWeek = getCurrentWeek();
+  const { data } = useSession();
+
+  const { data: streaks, isLoading } = useSWR(
+    `/api/users/${data?.user?.id}/streak`,
+    fetcher
+  );
+
+  const streakIncludes = (date) => {
+    console.log(loginDates);
+    loginDates.forEach((d) => {
+      if (parseInt(d) === date) return true;
+    });
+    return false;
+  };
+
+  useEffect(() => {
+    if (streaks) {
+      setLoginDates(
+        streaks?.loginDates
+          ?.map((d) => d?.split("-")?.at(2))
+          ?.filter((val, idx, arr) => arr.indexOf(val) === idx)
+      );
+    }
+  }, [isLoading]);
+
+  console.log(streaks?.loginDates?.at(0)?.split("-")?.at(2));
 
   return (
     <div>
@@ -16,7 +48,7 @@ const Calendar = () => {
               new Date().getDate() == date && "shadow-xl border border-check"
             )}
           >
-            {Math.random() > 0.5 && (
+            {streakIncludes(day) && (
               <div className="w-1 h-1 rounded-full bottom-3 accent2 absolute"></div>
             )}
             <p className="">{day.substring(0, 3)}</p>

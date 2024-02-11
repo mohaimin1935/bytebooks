@@ -1,14 +1,21 @@
+"use client";
+
 import { cn } from "@/utils/cn";
 import React from "react";
 import styles from "./Bookshelf.module.css";
-import { textColorOnBg } from "@/utils/util";
+import { fetcher, textColorOnBg } from "@/utils/util";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 
 const Bookshelf = () => {
+  const { data } = useSession();
+  const { data: userData } = useSWR(`/api/users/${data?.user?.id}`, fetcher);
+
   return (
     <div className="relative">
-      <button className="bg2 z-10 block absolute px-4 py-1.5 text-sm rounded -bottom-0 right-0">
+      {/* <button className="bg2 z-10 block absolute px-4 py-1.5 text-sm rounded -bottom-0 right-0">
         Organize
-      </button>
+      </button> */}
       <div
         className={cn(
           "w-full flex items-end relative h-0 border-b border-bkg-2 before:shadow-xl mt-[200px]",
@@ -21,7 +28,7 @@ const Bookshelf = () => {
           <img src="/plant.png" alt="" className="w-32 ml-auto" />
 
           <img
-            src="/profile.png"
+            src={userData?.image || "/profile.png"}
             alt=""
             className="w-40 h-40  mx-4 rounded-sm"
           />

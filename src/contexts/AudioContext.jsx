@@ -45,6 +45,7 @@ export const AudioContextProvider = ({ children }) => {
     seek,
     getPosition,
     pause,
+    play,
   } = useAudioPlayer();
 
   const updateAudioProgress = (userId, bookId, type, contentId) => {};
@@ -79,7 +80,7 @@ export const AudioContextProvider = ({ children }) => {
   }, [audioProgress]);
 
   useEffect(() => {
-    if (audioUrl)
+    if (audioUrl) {
       load(audioUrl, {
         html5: true,
         autoplay: false,
@@ -87,7 +88,9 @@ export const AudioContextProvider = ({ children }) => {
         initialRate: 1.0,
         onload: () => setAudioLoading(false),
       });
-    else pause();
+    } else {
+      pause();
+    }
   }, [audioUrl]);
 
   useEffect(() => {
@@ -126,6 +129,7 @@ export const AudioContextProvider = ({ children }) => {
         seek,
         getPosition,
         pause,
+        play,
         // functions
         updateAudioProgress,
         handlePlayPause,

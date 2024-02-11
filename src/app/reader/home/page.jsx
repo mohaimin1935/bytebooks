@@ -35,8 +35,8 @@ const ReaderHome = () => {
           books={continueBooks}
         />
         <CalenderSection />
-        <AuthorSection />
-        <NotificationSection />
+        {/* <AuthorSection /> */}
+        {/* <NotificationSection /> */}
       </div>
 
       <div className="order-2 xl:order-1 w-full xl:w-3/5">
@@ -46,7 +46,7 @@ const ReaderHome = () => {
           isLoading={recommendedLoading}
           books={recommendedBooks?.slice(0, 3)}
         />
-        <CollectionSection />
+        {/* <CollectionSection /> */}
       </div>
     </div>
   );
@@ -89,7 +89,7 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
               ))}
             </Carousel>
           )}
-          {items.length === 1 && <div className="w-[240px]">{items[0]()}</div>}
+          {items.length === 1 && <div className="w-[240px]">{items[0]}</div>}
           {items.length === 0 && <>No book to continue</>}
         </>
       ) : (

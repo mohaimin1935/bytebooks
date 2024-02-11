@@ -7,29 +7,62 @@ import CustomTextArea from "@/app/ui/common/TextArea";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { baseApi, fetcher } from "@/utils/util";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiFillAudio } from "react-icons/ai";
 import { FiArrowRight, FiBookmark, FiShare2, FiStar } from "react-icons/fi";
+import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
+import { LuBookMarked } from "react-icons/lu";
 import { TbMessageReport } from "react-icons/tb";
 import useSWR from "swr";
 
 const ViewBook = () => {
   const { bookId } = useParams();
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
+  const { data: user } = useSession();
+  const { data: bookUser, isLoading } = useSWR(
+    `/api/users/${user?.user?.id}/books/${bookId}`,
+    fetcher
+  );
 
   const [reportText, setReportText] = useState();
   const [showModal, setShowModal] = useState();
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
 
   const { setModal } = useContext(ThemeContext);
+
+  useEffect(() => {
+    if (bookUser) {
+      setIsBookmarked(bookUser?.isBookmarked);
+    }
+  }, [isLoading]);
 
   const handleReport = () => {
     setModal(true);
     setShowModal("report");
   };
+
+  const handleBookMark = async () => {
+    try {
+      const res = await axios.post(
+        `/api/users/${user?.user?.id}/books/${bookId}`,
+        {
+          isBookmarked: !isBookmarked,
+          status: "will read",
+        }
+      );
+      setIsBookmarked(!isBookmarked);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleShare = () => {};
 
   const handleCancel = () => {
     setModal(false);
@@ -135,12 +168,12 @@ const ViewBook = () => {
 
         <div className="bg-pure w-full -mt-24 rounded-xl relative border-2 border-bkg-2">
           <div className="absolute top-6 right-8 flex gap-4">
-            <button className="bg2 rounded-full p-4">
-              <FiBookmark />
+            <button onClick={handleBookMark} className="bg2 rounded-full p-4">
+              {isBookmarked ? <IoBookmark /> : <IoBookmarkOutline />}
             </button>
-            <button className="bg2 rounded-full p-4">
+            {/* <button className="bg2 rounded-full p-4">
               <FiShare2 />
-            </button>
+            </button> */}
             <button className="bg2 rounded-full p-4" onClick={handleReport}>
               <TbMessageReport />
             </button>
