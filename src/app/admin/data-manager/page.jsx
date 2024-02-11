@@ -1,5 +1,6 @@
 "use client";
 
+import BookList from "@/app/ui/admin/BookList";
 import UserList from "@/app/ui/admin/UserList";
 import AuthorList from "@/app/ui/author/AuthorList";
 import GenreList from "@/app/ui/author/GenreList";
@@ -71,7 +72,7 @@ const AdminDataManager = () => {
 
       {active === "genre" && <GenreList />}
 
-      {active === "book" && <UserList />}
+      {active === "book" && <BookList />}
     </div>
   );
 };
