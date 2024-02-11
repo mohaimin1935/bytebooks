@@ -119,7 +119,7 @@ const NotificationSection = ({ notifications, isLoading }) => {
       </div>
       {notifications?.length > 0 ? (
         notifications?.map((notification) => (
-          <NotificationCard notification={notification} />
+          <NotificationCard key={notification.id} notification={notification} />
         ))
       ) : (
         <>No new notification</>
