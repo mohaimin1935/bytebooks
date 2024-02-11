@@ -25,7 +25,7 @@ import {
 } from "react-icons/tb";
 import { useAudioPlayer } from "react-use-audio-player";
 import RangeSlider from "../common/RangeSlider";
-import { convertMsToHMS, getAuthors } from "@/utils/util";
+import { convertMsToHMS, getAuthors, truncateText } from "@/utils/util";
 import Loader from "../common/Loader";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { AudioContext } from "@/contexts/AudioContext";
@@ -74,7 +74,9 @@ const AudioBar = () => {
               ></div>
             </div>
             <div className="">
-              <p className="font-light text-sm">{audioBook?.title}</p>
+              <p className="font-light text-sm">
+                {truncateText(audioBook?.title, 20)}
+              </p>
               <p className="font-light content2 text-xs">
                 By {getAuthors(audioBook)}
               </p>
