@@ -41,7 +41,6 @@ export const GET = async (req, { params }) => {
     //need to fix logic #check
     let results = [];
     if (filter.type === "latest") {
-
       results = await prisma.bookInfo.findMany({
         where: {
           isPublished: true,
@@ -49,7 +48,7 @@ export const GET = async (req, { params }) => {
         skip: filter.count * filter.page,
         take: filter.count,
         orderBy: {
-          updatedAt: 'desc', // Assuming 'updatedAt' is a field indicating when the book was added
+          updatedAt: "desc", // Assuming 'updatedAt' is a field indicating when the book was added
         },
         include: {
           authors: { include: { author: true } },
@@ -60,27 +59,29 @@ export const GET = async (req, { params }) => {
       if (results.length < 10) {
         const additionalBooksNeeded = 10 - results.length;
         const additionalBooks = await prisma.bookInfo.findMany({
-            where: {
-                isPublished: true,
-                // Ensure the additional books are not already included
-                NOT: { id: { in: results.map(book => book.id) } }
-            },
-            take: additionalBooksNeeded
+          where: {
+            isPublished: true,
+            // Ensure the additional books are not already included
+            NOT: { id: { in: results.map((book) => book.id) } },
+          },
+          take: additionalBooksNeeded,
         });
         results = [...results, ...additionalBooks];
-    }
-
+      }
     } else if (filter.type === "continue") {
       const { userId } = params; // Ensure 'userId' is obtained correctly
       if (!userId) {
-        return NextResponse.json({ error: "User ID is required for 'continue' filter" }, { status: 400 });
+        return NextResponse.json(
+          { error: "User ID is required for 'continue' filter" },
+          { status: 400 }
+        );
       }
 
       // Fetch books that the user has started reading but not finished
       results = await prisma.bookUser.findMany({
         where: {
           userId: userId,
-          status: "reading", 
+          status: "reading",
           book: {
             isPublished: true,
           },
@@ -96,7 +97,7 @@ export const GET = async (req, { params }) => {
           },
         },
       });
-      results = results.map(result => result.book); 
+      results = results.map((result) => result.book);
     } else if (filter.type === "trending") {
       //logic: get those books that are most in number in bookuser table in last 7 days
 
@@ -105,7 +106,7 @@ export const GET = async (req, { params }) => {
 
       // Fetch BookUser entries updated within the last week and count them by bookId
       const recentInteractions = await prisma.bookUser.groupBy({
-        by: ['bookId'],
+        by: ["bookId"],
         where: {
           updatedAt: {
             gte: oneWeekAgo,
@@ -116,7 +117,7 @@ export const GET = async (req, { params }) => {
         },
         orderBy: {
           _count: {
-            bookId: 'desc',
+            bookId: "desc",
           },
         },
         take: filter.count,
@@ -124,7 +125,7 @@ export const GET = async (req, { params }) => {
       });
 
       // Extract bookIds from the grouped results
-      const trendingBookIds = recentInteractions.map(entry => entry.bookId);
+      const trendingBookIds = recentInteractions.map((entry) => entry.bookId);
 
       // Fetch the book details for these trending bookIds
       results = await prisma.bookInfo.findMany({
@@ -143,82 +144,83 @@ export const GET = async (req, { params }) => {
       if (results.length < 10) {
         const additionalBooksNeeded = 10 - results.length;
         const additionalBooks = await prisma.bookInfo.findMany({
-            where: {
-                isPublished: true,
-                // Ensure the additional books are not already included
-                NOT: { id: { in: results.map(book => book.id) } }
-            },
-            take: additionalBooksNeeded
+          where: {
+            isPublished: true,
+            // Ensure the additional books are not already included
+            NOT: { id: { in: results.map((book) => book.id) } },
+          },
+          take: additionalBooksNeeded,
         });
         results = [...results, ...additionalBooks];
-    }
-
-
+      }
     } else if (filter.type === "recommended") {
       //implement the recommanded books in such a way that you look into a user's bookmarked books and see what the genres are. then fetch books that are the same genre but havenot been read before
 
-    const { userId } = params; // Ensure 'userId' is correctly obtained
-    if (!userId) {
-        return NextResponse.json({ error: "User ID is required for 'recommended' filter" }, { status: 400 });
-    }
+      const { userId } = params; // Ensure 'userId' is correctly obtained
+      if (!userId) {
+        return NextResponse.json(
+          { error: "User ID is required for 'recommended' filter" },
+          { status: 400 }
+        );
+      }
 
-    // Fetch the genres of the user's bookmarked books
-    const bookmarkedBooksGenres = await prisma.bookUser.findMany({
+      // Fetch the genres of the user's bookmarked books
+      const bookmarkedBooksGenres = await prisma.bookUser.findMany({
         where: {
-            userId: userId,
-            isBookmarked: true, // Assuming there's an `isBookmarked` field
+          userId: userId,
+          isBookmarked: true, // Assuming there's an `isBookmarked` field
         },
         include: {
-            book: {
-                include: {
-                    genres: true, // Assuming a book has a relation to genres
-                },
+          book: {
+            include: {
+              genres: true, // Assuming a book has a relation to genres
             },
+          },
         },
-    });
+      });
 
-    // Extract unique genre IDs from bookmarked books
-    let genreIds = [];
-    bookmarkedBooksGenres.forEach(entry => {
-        entry.book.genres.forEach(genre => {
-            if (!genreIds.includes(genre.id)) {
-                genreIds.push(genre.id);
-            }
+      // Extract unique genre IDs from bookmarked books
+      let genreIds = [];
+      bookmarkedBooksGenres.forEach((entry) => {
+        entry.book.genres.forEach((genre) => {
+          if (!genreIds.includes(genre.id)) {
+            genreIds.push(genre.id);
+          }
         });
-    });
+      });
 
-    // Fetch unread books in these genres
-    const unreadBooksInGenres = await prisma.bookInfo.findMany({
+      // Fetch unread books in these genres
+      const unreadBooksInGenres = await prisma.bookInfo.findMany({
         where: {
-            isPublished: true,
-            AND: [
-                { genres: { some: { id: { in: genreIds } } } }, // Books in the bookmarked genres
-                { NOT: { BookUser: { some: { userId: userId, status: "read" } } } } // That the user hasn't read
-            ],
+          isPublished: true,
+          AND: [
+            { genres: { some: { id: { in: genreIds } } } }, // Books in the bookmarked genres
+            { NOT: { BookUser: { some: { userId: userId, status: "read" } } } }, // That the user hasn't read
+          ],
         },
         skip: filter.count * filter.page,
         take: filter.count,
         include: {
-            authors: { include: { author: true } },
-            genres: { include: { genre: true } },
+          authors: { include: { author: true } },
+          genres: { include: { genre: true } },
         },
-    });
+      });
 
-    results = unreadBooksInGenres;
-    console.log(results);
-    
-    if (results.length < 10) {
+      results = unreadBooksInGenres;
+      console.log(results);
+
+      if (results.length < 10) {
         const additionalBooksNeeded = 10 - results.length;
         const additionalBooks = await prisma.bookInfo.findMany({
-            where: {
-                isPublished: true,
-                // Ensure the additional books are not already included
-                NOT: { id: { in: results.map(book => book.id) } }
-            },
-            take: additionalBooksNeeded
+          where: {
+            isPublished: true,
+            // Ensure the additional books are not already included
+            NOT: { id: { in: results.map((book) => book.id) } },
+          },
+          take: additionalBooksNeeded,
         });
         results = [...results, ...additionalBooks];
-    }
+      }
     }
     //check if published
 

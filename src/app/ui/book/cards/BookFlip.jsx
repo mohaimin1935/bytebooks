@@ -106,7 +106,7 @@ const BookFlip = ({
             href={`/reader/view/book/${book.id}`}
             className="font-medium hover"
           >
-            {truncateText(book?.title, 36)}
+            {truncateText(book?.title, 20)}
           </Link>
           <p className="text-sm font-light">By {getAuthors(book)}</p>
           <div className="flex items-center gap-x-4 text-xs  content3">
