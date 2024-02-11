@@ -51,6 +51,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] author get data
 - [ ] streak
 - [ ] admin/data-manager user table data show ui design
+- [ ] admin/data-manager book table data show ui design
 
 ### Todo BACKEND
 
