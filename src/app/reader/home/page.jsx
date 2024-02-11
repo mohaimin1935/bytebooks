@@ -79,8 +79,20 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
               ))}
             </Carousel>
           )}
-          {books.length === 1 && <div className="w-[240px]">{books[0]}</div>}
-          {books.length === 0 && <>No book to continue</>}
+          {books.length === 1 && (
+            <div className="w-[240px]">
+              <BookFlip
+                book={books[0]}
+                audio={true}
+                details={true}
+                ratio={1.3}
+                key={books[0].id}
+              />
+            </div>
+          )}
+          {books.length === 0 && (
+            <div className="h-240 center">No book to continue</div>
+          )}
         </>
       ) : (
         <div className="animate-pulse w-[240px] h-[320px] bg2 rounded-md my-4"></div>
