@@ -26,7 +26,7 @@ const GenreStat = () => {
       <div className="w-2/3">
         <section>
           <div className="flex items-start justify-between gap-x-8 w-full">
-            <h2 className="section-header">Recent Reads</h2>
+            <h2 className="section-header mb-8">Recent Reads</h2>
             <PrevNext />
           </div>
           <div className="flex flex-wrap justify-start gap-x-0 sm:gap-x-2 md:gap-x-4 xl:gap-x-8">

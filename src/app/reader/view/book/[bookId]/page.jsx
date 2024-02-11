@@ -206,13 +206,13 @@ const ViewBook = () => {
                 <AuthorCard key={author.id} author={author} />
               ))}
 
-              <p className="font-semibold text-lg mb-4 mt-12">
+              {/* <p className="font-semibold text-lg mb-4 mt-12">
                 Available Languages
               </p>
               <ul className="list-disc ml-8">
                 <li>English</li>
                 <li>বাংলা</li>
-              </ul>
+              </ul> */}
             </div>
           </div>
         </div>

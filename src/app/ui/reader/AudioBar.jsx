@@ -59,12 +59,14 @@ const AudioBar = () => {
       <div className="bg2 px-4 h-20 py-2 sm:px-4 xl:px-8 m-2 rounded ">
         {/* large screen */}
         <div className="hidden lg:flex items-center justify-between">
-          <div className="flex items-center gap-x-4 w-56 text-sm">
+          <div className="flex items-center gap-x-4 text-sm">
             <div className="w-12">
               <div
                 className="pb-[133%] bg1"
                 style={{
-                  backgroundImage: `url(${audioBook?.image})`,
+                  backgroundImage: `url(${
+                    audioBook?.image || "/bookImage.jpg"
+                  })`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -79,7 +81,7 @@ const AudioBar = () => {
             </div>
           </div>
 
-          <div className="flex-1 px-12 -ml-16">
+          <div className="flex-1 px-12">
             <div className="flex items-center gap-x-6 justify-center text-xl my-2">
               {/* prev */}
               {/* <button>
@@ -197,7 +199,7 @@ const BookView = ({ className }) => {
       <div
         className="pb-[133%] rounded-xl bg1 w-12"
         style={{
-          backgroundImage: `url(${audioBook?.image})`,
+          backgroundImage: `url(${audioBook?.image || "/bookImage.jpg"})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

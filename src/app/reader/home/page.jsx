@@ -26,6 +26,11 @@ const ReaderHome = () => {
     fetcher
   );
 
+  const { data: notifications, isLoading: notificationLoading } = useSWR(
+    `/api/users/${data?.user?.id}/notifications`,
+    fetcher
+  );
+
   return (
     <div className="flex flex-col xl:flex-row gap-8 md:gap-16">
       <div className="order-1 xl:order-2 w-full xl:w-2/5">
@@ -36,7 +41,10 @@ const ReaderHome = () => {
         />
         <CalenderSection />
         {/* <AuthorSection /> */}
-        {/* <NotificationSection /> */}
+        <NotificationSection
+          notifications={notifications?.slice(0, 5)}
+          isLoading={notificationLoading}
+        />
       </div>
 
       <div className="order-2 xl:order-1 w-full xl:w-3/5">
@@ -53,30 +61,12 @@ const ReaderHome = () => {
 };
 
 const ContinueCarouselSection = ({ isLoading, books = [] }) => {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    setItems(() =>
-      books?.map((book) => {
-        return (
-          <BookFlip
-            book={book}
-            audio={true}
-            details={true}
-            ratio={1.3}
-            key={book.id}
-          />
-        );
-      })
-    );
-  }, [isLoading]);
-
   return (
     <section>
       <h3 className="section-header">Continue</h3>
       {!isLoading ? (
         <>
-          {items?.length > 1 && (
+          {books?.length > 1 && (
             <Carousel className={"w-[240px] my-4"}>
               {books?.map((book) => (
                 <BookFlip
@@ -89,11 +79,11 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
               ))}
             </Carousel>
           )}
-          {items.length === 1 && <div className="w-[240px]">{items[0]}</div>}
-          {items.length === 0 && <>No book to continue</>}
+          {books.length === 1 && <div className="w-[240px]">{books[0]}</div>}
+          {books.length === 0 && <>No book to continue</>}
         </>
       ) : (
-        <div className="animate-pulse w-[240px] h-[360px] bg2 rounded-md my-4"></div>
+        <div className="animate-pulse w-[240px] h-[320px] bg2 rounded-md my-4"></div>
       )}
     </section>
   );
@@ -116,18 +106,24 @@ const AuthorSection = () => {
   );
 };
 
-const NotificationSection = () => {
+const NotificationSection = ({ notifications, isLoading }) => {
+  if (isLoading) return <Loader className="h-24" />;
+
   return (
     <section>
       <div className="flex items-center gap-x-8 w-full mt-16 mb-8">
         <h2 className="section-header">Notifications</h2>
-        <button className="bg1 py-1.5 px-4 secondary-btn text-sm sm:text-base">
+        {/* <button className="bg1 py-1.5 px-4 secondary-btn text-sm sm:text-base">
           Clear All
-        </button>
+        </button> */}
       </div>
-      <NotificationCard />
-      <NotificationCard />
-      <NotificationCard />
+      {notifications?.length > 0 ? (
+        notifications?.map((notification) => (
+          <NotificationCard notification={notification} />
+        ))
+      ) : (
+        <>No new notification</>
+      )}
     </section>
   );
 };
