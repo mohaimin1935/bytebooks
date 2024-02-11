@@ -13,17 +13,18 @@ const Library = () => {
   const { data } = useSession();
 
   const { data: continueBooks, isLoading: continueLoading } = useSWR(
-    `/api/users/${data?.user?.id}/books?type=latest`,
+    `/api/users/${data?.user?.id}/books?type=continue`,
     fetcher
   );
 
   const { data: savedBooks, isLoading: savedLoading } = useSWR(
-    `/api/users/${data?.user?.id}/books?type=latest`,
+    // FIXME: bookmarked
+    `/api/users/${data?.user?.id}/books?type=bookmarked`,
     fetcher
   );
 
   const { data: finishedBooks, isLoading: finishedLoading } = useSWR(
-    `/api/users/${data?.user?.id}/books?type=latest`,
+    `/api/users/${data?.user?.id}/books?type=finished`,
     fetcher
   );
 

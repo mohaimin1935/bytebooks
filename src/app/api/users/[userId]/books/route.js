@@ -222,6 +222,8 @@ export const GET = async (req, { params }) => {
         results = [...results, ...additionalBooks];
       }
     }
+    // TODO: if "bookmarked": get list of books bookmarked by an user.
+    // TODO: if "finished": get list of books whose bookUser status is finished by an user.
     //check if published
 
     return NextResponse.json(results);

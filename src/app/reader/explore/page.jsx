@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import useSWR from "swr";
 import Loader from "@/app/ui/common/Loader";
+import Link from "next/link";
 
 const Explore = () => {
   const { data } = useSession();
@@ -41,12 +42,13 @@ const Explore = () => {
             <Loader className="h-20" />
           ) : (
             categories?.map((category) => (
-              <div
+              <Link
+                href={`/reader/genre/${category.id}`}
                 className="bg2 px-6 py-2 rounded-md shadow hover:shadow-xl cursor-pointer"
                 key={category.id}
               >
                 {category.name}
-              </div>
+              </Link>
             ))
           )}
         </div>

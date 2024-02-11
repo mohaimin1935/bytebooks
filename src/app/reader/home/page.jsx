@@ -22,7 +22,7 @@ const ReaderHome = () => {
   );
 
   const { data: recommendedBooks, isLoading: recommendedLoading } = useSWR(
-    `/api/users/${data?.user?.id}/books?type=continue`,
+    `/api/users/${data?.user?.id}/books?type=recommended`,
     fetcher
   );
 
