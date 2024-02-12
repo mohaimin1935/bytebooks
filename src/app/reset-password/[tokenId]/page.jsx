@@ -11,8 +11,9 @@ import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
 import { validateEmail } from "@/utils/util";
 
-const SendEmail = () => {
-  const [email, setEmail] = useState("");
+const ResetPassword = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -26,18 +27,18 @@ const SendEmail = () => {
     }
   }, [status]);
 
-  const sendEmail = async () => {
+  const reset = async () => {
     if (status === "loading") return;
 
-    if (!email) {
-      toast.error("Email is required.");
+    if (!newPassword || !confirmNewPassword) {
+      toast.error("Both fields are required.");
       return;
     }
 
-    if (!validateEmail(email)) {
-      toast.error("Email is not valid.");
-      return;
-    }
+    // if (!validateEmail(email)) {
+    //   toast.error("Email is not valid.");
+    //   return;
+    // }
 
     setLoading(true);
     // signIn("credentials", { email, password, redirect: false }).then((res) => {
@@ -63,33 +64,33 @@ const SendEmail = () => {
         />
       </div>
       <div className="center w-1/2">
-        <h3 className="text-center text-4xl font-semibold mb-12">Send email</h3>
+        <h3 className="text-center text-4xl font-semibold mb-12">Reset password</h3>
 
         <Input
-          type="text"
-          placeholder="Email"
-          value={email}
-          setValue={setEmail}
+          type={"password"}
+          placeholder={"New password"}
+          value={newPassword}
+          setValue={setNewPassword}
           className={"mb-6"}
         />
 
-        {/* <Input
+        <Input
           type={"password"}
-          placeholder={"Password"}
-          value={password}
-          setValue={setPassword}
+          placeholder={"Confirm new password"}
+          value={confirmNewPassword}
+          setValue={setConfirmNewPassword}
           className={"mb-6"}
-        /> */}
+        />
 
         <button
           className={cn(
             "primary-btn w-[300px] center rounded py-2.5 mb-6 text-base",
             status === "loading" && "cursor-not-allowed"
           )}
-          onClick={sendEmail}
+          onClick={reset}
         >
           {status !== "loading" && !loading ? (
-            <>Submit</>
+            <>Reset</>
           ) : (
             <div className="animate-spin text-lg">
               <CgSpinner />
@@ -117,4 +118,4 @@ const SendEmail = () => {
   );
 };
 
-export default SendEmail;
+export default ResetPassword;
