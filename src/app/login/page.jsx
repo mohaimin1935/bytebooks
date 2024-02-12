@@ -102,7 +102,8 @@ const Login = () => {
           href="/reset-password"
           className="content3 text-left w-[300px] text-sm mb-1"
         >
-          Forgot password?
+          Forgot password?{" "}
+          <span className="font-semibold">Reset</span>
         </Link>
         <Link
           href="/signup"
