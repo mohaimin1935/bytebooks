@@ -32,9 +32,15 @@ import {
         console.log(timeComp);
       //const body = await req.json();
       //console.log(body.old_password);
+      // let t = "%242b%2413%24SQpJFLYFUMdNRJf7uLnCT.Trj9j7M3h0e4Dz2rDK2mLDEQ9mQeU8y";
+      // console.log("tok: "+params.tokenValue);
+      // console.log("tok: "+t);
+      // if (params.tokenValue==="%242b%2413%24wkvrNu5jxjYrwNdQwX%2FZhemxzRRZ6l5vkF9l8pVkxp96hayWJFCPO") {
+      //   console.log("matched");
+      // }
       const res = await prisma.ResetPasswordRequest.findUnique({
         where: {
-          tokenValue: params.tokenValue,
+          tokenValue: encodeURIComponent(params.tokenValue),
           updatedAt: {
             gte: timeComp,
           },
@@ -44,7 +50,7 @@ import {
       if (!res) {
         const r = await prisma.ResetPasswordRequest.deleteMany({
             where: {
-                tokenValue: params.tokenValue,
+                tokenValue: encodeURIComponent(params.tokenValue),
             },
         });
           return NextResponse.json(
@@ -119,7 +125,7 @@ import {
       //console.log(body.old_password);
       const res = await prisma.ResetPasswordRequest.findUnique({
         where: {
-          tokenValue: params.tokenValue,
+          tokenValue: encodeURIComponent(params.tokenValue),
           updatedAt: {
             gte: timeComp,
           },
@@ -129,7 +135,7 @@ import {
       if (!res) {
         const r = await prisma.ResetPasswordRequest.deleteMany({
             where: {
-                tokenValue: params.tokenValue,
+                tokenValue: encodeURIComponent(params.tokenValue),
             },
         });
           //console.log("api");

@@ -18,6 +18,7 @@ import {
     // if (authError) {
     //   return authError;
     // }
+    console.log("reset");
     try {
         const body = await req.json();
         if (!validateEmail(body.email)) {
@@ -46,7 +47,9 @@ import {
             },
         });
         // make token
-        let token = "ab";
+        let token = await bcrypt.hash(res.email+res.id, 13);
+        token = encodeURIComponent(token);
+        //console.log(token);
         const result = await prisma.ResetPasswordRequest.create({
             data: {
                 userId: res.id,

@@ -6,12 +6,13 @@ import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import Input from "@/app/ui/auth/Input";
 import ProviderLogin from "@/app/ui/auth/ProviderLogin";
+import axios from "axios";
 import { CgSpinner } from "react-icons/cg";
 import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
 import { validateEmail } from "@/utils/util";
 
-const SendEmail = () => {
+const RequestPasswordReset = () => {
   const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,7 @@ const SendEmail = () => {
     }
   }, [status]);
 
-  const sendEmail = async () => {
+  const requestReset = async () => {
     if (status === "loading") return;
 
     if (!email) {
@@ -46,12 +47,12 @@ const SendEmail = () => {
         {email}
       );
       setLoading(false);
-      if (res?.data?.message==="Invalid request token") {
-        toast.error("Invalid request token.");
-        setIsValid(false);
+      if (res?.data?.message==="not registered") {
+        toast.error("Email not registered");
+        
       }
       else if (res?.data?.message==="success") {
-        toast.success("Success");
+        toast.success("Email sent");
         router.push(`/login`);
       }
 
@@ -97,7 +98,7 @@ const SendEmail = () => {
             "primary-btn w-[300px] center rounded py-2.5 mb-6 text-base",
             status === "loading" && "cursor-not-allowed"
           )}
-          onClick={sendEmail}
+          onClick={requestReset}
         >
           {status !== "loading" && !loading ? (
             <>Submit</>
@@ -128,4 +129,4 @@ const SendEmail = () => {
   );
 };
 
-export default SendEmail;
+export default RequestPasswordReset;
