@@ -40,15 +40,26 @@ const SendEmail = () => {
     }
 
     setLoading(true);
-    // signIn("credentials", { email, password, redirect: false }).then((res) => {
-    //   setLoading(false);
-    //   if (res?.error) {
-    //     toast.error("Login failed.");
-    //     console.log(res?.error);
-    //   }
-    //   if (res?.ok && !res?.error) toast.success("Logged in successfully!");
-    // });
-    // send email
+    try {
+      const res = await axios.post(
+        `/api/reset-password`,
+        {email}
+      );
+      setLoading(false);
+      if (res?.data?.message==="Invalid request token") {
+        toast.error("Invalid request token.");
+        setIsValid(false);
+      }
+      else if (res?.data?.message==="success") {
+        toast.success("Success");
+        router.push(`/login`);
+      }
+
+    } catch (error) {
+      setLoading(false);
+      toast.error("Something went wrong.");
+      console.log(error);
+    }
 
   };
 
@@ -63,7 +74,7 @@ const SendEmail = () => {
         />
       </div>
       <div className="center w-1/2">
-        <h3 className="text-center text-4xl font-semibold mb-12">Send email</h3>
+        <h3 className="text-center text-4xl font-semibold mb-12">Request reset</h3>
 
         <Input
           type="text"

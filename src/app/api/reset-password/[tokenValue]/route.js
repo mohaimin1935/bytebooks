@@ -9,6 +9,8 @@ import {
   import validateMandatoryFields from "@/middleware/mandatoryFieldList";
   import bcrypt from "bcrypt";
 
+  let expireHours = 24;
+
   export const GET = async (req, { params }) => {
     // no validation needed
     // const authError = await selfValidationOnlyFailed(params.userId);
@@ -21,10 +23,11 @@ import {
     //   "$2b$10$xd5ntDahqclgGe9joVzFVuVMN34/jRwNU22DiJCKeTXAJm.8DDb9."
     // );
     // if (passwordMatch1) console.log("matched");
+
     try {
         // token gets invalidated after 24 hours
-        let t = 24;
-        const timeComp = new Date((new Date()).getTime() - (t * 60 * 60 * 1000)); // Subtracting  t hours from current time
+        
+        const timeComp = new Date((new Date()).getTime() - (expireHours * 60 * 60 * 1000)); // Subtracting  t hours from current time
 
         console.log(timeComp);
       //const body = await req.json();
@@ -45,8 +48,9 @@ import {
             },
         });
           return NextResponse.json(
+
               { message: "Invalid request token" },
-              { status: 404 }       // check error code
+              { status: 200 }
           );
       }
       
@@ -95,13 +99,23 @@ import {
     //   "$2b$10$xd5ntDahqclgGe9joVzFVuVMN34/jRwNU22DiJCKeTXAJm.8DDb9."
     // );
     // if (passwordMatch1) console.log("matched");
+    
+    //console.log("api");
     try {
         // token gets invalidated after 24 hours
-        let t = 24;
-        const timeComp = new Date((new Date()).getTime() - (t * 60 * 60 * 1000)); // Subtracting  t hours from current time
+        
+        const timeComp = new Date((new Date()).getTime() - (expireHours * 60 * 60 * 1000)); // Subtracting  t hours from current time
 
         console.log(timeComp);
       const body = await req.json();
+      //console.log(body);
+      // check if valid password
+      if (body?.newPassword?.length<6) {
+        return NextResponse.json(
+          { message: "Something went wrong" },
+          { status: 500 }
+        );
+      }
       //console.log(body.old_password);
       const res = await prisma.ResetPasswordRequest.findUnique({
         where: {
@@ -118,9 +132,10 @@ import {
                 tokenValue: params.tokenValue,
             },
         });
+          //console.log("api");
           return NextResponse.json(
               { message: "Invalid request token" },
-              { status: 404 }       // check error code
+              { status: 200 }       // check error code
           );
       }
       
