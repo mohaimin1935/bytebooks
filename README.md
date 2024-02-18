@@ -69,8 +69,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [x] /api/users/userId -> email, password update
 - [ ] /users/userId/books -> get books depending on searchParams, isPublished
-- [ ] /book-info -> {query} : title match -> [books] (search)
-
+- [x] /book-info -> {query} : title match -> [books] (search) /book-info/search?searchString=title
 - [ ] check in streak post that a day is already in or return the array loginDates with unique dates only
       author
 
