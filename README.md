@@ -43,6 +43,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Todo FRONTEND
 
 - [ ] time update audio progress
+- [ ] author update data-manager not working
+- [ ] creator topbar image
 
 - [ ] add search functionality in book list for creator
 - [ ] report book reader in chapter
@@ -70,7 +72,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] /book-info -> {query} : title match -> [books] (search)
 
 - [ ] check in streak post that a day is already in or return the array loginDates with unique dates only
-author  
+      author
+
 ---
 
 - how to know byte or chapter in continue?
