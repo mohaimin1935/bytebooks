@@ -95,7 +95,9 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
           )}
         </>
       ) : (
-        <div className="animate-pulse w-[240px] h-[320px] bg2 rounded-md my-4"></div>
+        <div className="animate-pulse w-[240px] h-[320px] bg2 rounded-md my-4 center">
+          <Loader />
+        </div>
       )}
     </section>
   );
