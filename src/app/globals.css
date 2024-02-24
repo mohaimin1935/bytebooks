@@ -216,3 +216,16 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   cursor: grab;
 }
+
+/* For online */
+
+.btn-online {
+  border: 2px black solid;
+  padding: 5px 8px;
+}
+
+.input-online {
+  border: 2px black solid;
+  padding: 5px 8px;
+  margin: 10px;
+}
