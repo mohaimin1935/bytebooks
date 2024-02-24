@@ -17,6 +17,8 @@ const Calendar = () => {
     fetcher
   );
 
+  console.log(streaks);
+
   const streakIncludes = (date) => {
     console.log(loginDates);
     loginDates.forEach((d) => {

@@ -44,7 +44,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [ ] time update audio progress
 - [ ] author update data-manager not working
-- [ ] creator topbar image
+- [x] creator topbar image
+- [ ] search - api done
+- 
 
 - [ ] add search functionality in book list for creator
 - [ ] report book reader in chapter
