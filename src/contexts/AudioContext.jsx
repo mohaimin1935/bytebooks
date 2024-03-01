@@ -48,7 +48,24 @@ export const AudioContextProvider = ({ children }) => {
     play,
   } = useAudioPlayer();
 
-  const updateAudioProgress = (userId, bookId, type, contentId) => {};
+  const updateAudioProgress = async (userId, bookId, type, contentId) => {
+    let progress = {};
+    if (type === "byte") {
+      progress.byteId = contentId;
+      audioTimeStampBytes = pos;
+    } else {
+      progress.chapterId = contentId;
+      audioTimeStampChapter = pos;
+    }
+    try {
+      const res = await axios.post(
+        `/api/users/${userId}/books/${bookId}`,
+        progress
+      );
+    } catch (error) {
+      console.log(error);
+    } 
+  };
 
   const handlePlayPause = () => {
     togglePlayPause();
