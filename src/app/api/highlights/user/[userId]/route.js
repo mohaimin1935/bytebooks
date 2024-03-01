@@ -5,10 +5,10 @@ import { NextResponse } from "next/server";
 // get user hightlights
 // need to add filters
 export const GET = async (req, {params}) => {
-//   const authError = await selfValidationOnlyFailed(params.userId);
-//   if (authError) {
-//     return authError;
-//   }
+  const authError = await selfValidationOnlyFailed(params.userId);
+  if (authError) {
+    return authError;
+  }
   
   try {
 
@@ -46,6 +46,16 @@ export const GET = async (req, {params}) => {
         o.bookId = res[i].bookId;
         o.chapterId = res[i].chapterId;
         o.byteId = res[i].byteId;
+        o.startIndex = res[i].startIndex;
+        o.endIndex = res[i].endIndex;
+        let content="";
+        if (res[i].chapter) {
+            content = res[i].chapter.content.substr(o.startIndex,o.endIndex);
+        }
+        else if (res[i].byte) {
+            content = res[i].byte.content.substr(o.startIndex,o.endIndex);
+        }
+        o.content = content;
         let a = [];
         for (let j=0;j<res[i].book.authors.length;j++) {
             a.push(res[i].book.authors[j].author.name);
