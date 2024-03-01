@@ -50,10 +50,10 @@ export const GET = async (req, {params}) => {
         o.endIndex = res[i].endIndex;
         let content="";
         if (res[i].chapter) {
-            content = res[i].chapter.content.substr(o.startIndex,o.endIndex);
+            content = res[i].chapter.content.substring(o.startIndex,o.endIndex);
         }
         else if (res[i].byte) {
-            content = res[i].byte.content.substr(o.startIndex,o.endIndex);
+            content = res[i].byte.content.substring(o.startIndex,o.endIndex);
         }
         o.content = content;
         let a = [];
