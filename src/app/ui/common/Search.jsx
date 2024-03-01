@@ -16,7 +16,8 @@ const Search = ({
         <FiSearch />
       </div>
       <input
-        value={""}
+        autoFocus
+        value={value}
         onChange={(e) => setValue(e.target.value)}
         type="text"
         className="px-1 py-1 bg1 outline-none content2 border-b text-sm w-64 hidden sm:block"

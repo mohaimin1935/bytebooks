@@ -1,26 +1,72 @@
-import React from "react";
-import { FiBook, FiBookOpen, FiShare, FiShare2 } from "react-icons/fi";
+"use client";
 
-const HighlightCard = () => {
+import { ThemeContext } from "@/contexts/ThemeContext";
+import React, { useContext, useState } from "react";
+import {
+  FiBook,
+  FiBookOpen,
+  FiDelete,
+  FiShare,
+  FiShare2,
+  FiTrash,
+} from "react-icons/fi";
+import DeleteConfirm from "../../common/DeleteConfirm";
+import axios from "axios";
+import Link from "next/link";
+
+const HighlightCard = ({ highlight }) => {
+  console.log(highlight);
+
+  const [loading, setLoading] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  const { modal, setModal } = useContext(ThemeContext);
+
+  const removeHighlight = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/highlights/${highlight.id}`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setModal(false);
+      setModalType("");
+    }
+  };
+
   return (
-    <div className="border border-bkg-2 shadow-md rounded-xl w-[31%] overflow-scroll p-4 pb-2 relative">
-      <p className="text-center mx-6 mt-6">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi hic cum
-        fuga ea necessitatibus! Soluta nostrum sapiente ipsa quos? Repudiandae
-        libero, ut consequatur quod eaque ex et provident facere quos at
-        perspiciatis cumque quis ea. In, qui? Ipsam delectus et asperiores ipsa
-        soluta voluptatum, quidem corporis animi earum neque! Possimus.
-      </p>
-      <h4 className="mt-4 text-center font-semibold text-lg">Book Title</h4>
+    <div className="border border-bkg-2 shadow-md rounded-xl w-[31%] h-72 overflow-y-auto overflow-scroll p-4 pb-2">
+      {modal && modalType === "delete" && (
+        <DeleteConfirm
+          handleCancel={() => {
+            setModal(false);
+            setModalType("");
+          }}
+          handleDeleteConfirm={removeHighlight}
+          loading={loading}
+        />
+      )}
+      <p className="text-center mx-6 mt-6">{highlight?.content}</p>
+      <Link
+        href={`/reader/view/book/${bookId}`}
+        className="mt-4 text-center font-semibold text-lg hover w-full inline-block"
+      >
+        {highlight.title}
+      </Link>
 
       <div className="flex items-center justify-between mx-4">
         <p className="text-xs">Added 2y ago</p>
         <div className="flex items-center gap-x-1">
-          <button className="p-2">
-            <FiBookOpen />
-          </button>
-          <button className="p-2">
-            <FiShare2 />
+          <button
+            className="p-2 content-highlight"
+            onClick={() => {
+              console.log("first");
+              setModal(true);
+              setModalType("delete");
+            }}
+          >
+            <FiTrash />
           </button>
         </div>
       </div>

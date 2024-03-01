@@ -14,6 +14,7 @@ import SearchModal from "./SearchModal";
 import Search from "./Search";
 import useSWR from "swr";
 import { fetcher } from "@/utils/util";
+import { cn } from "@/utils/cn";
 
 const TopBar = ({ role }) => {
   const [openSwitch, setOpenSwitch] = useState(false);
@@ -46,8 +47,15 @@ const TopBar = ({ role }) => {
       {searchModal && <SearchModal />}
       <div className="mt-6 flex items-center justify-between relative">
         {/* search */}
-        <div className="" onClick={handleSearchModal}>
-          <Search />
+        <div className="cursor-pointer" onClick={handleSearchModal}>
+          <div className={cn("flex items-center gap-x-3")}>
+            <div className="text-xl">
+              <FiSearch />
+            </div>
+            <div className="w-64 border-b px-1 py-1 content3">
+              eg, Harry Potter
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center gap-x-4">

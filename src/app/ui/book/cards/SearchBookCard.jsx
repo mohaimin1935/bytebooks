@@ -1,8 +1,12 @@
+import Link from "next/link";
 import React from "react";
 
 const SearchBookCard = ({ book }) => {
   return (
-    <div className="border border-bkg-2 shadow rounded-md flex gap-x-2 px-2 py-2 my-2 cursor-pointer">
+    <Link
+      href={`/reader/view/book/${book.id}`}
+      className="border border-bkg-2 shadow rounded-md flex gap-x-2 px-2 py-2 my-2 cursor-pointer"
+    >
       <div className="w-1/5">
         <div
           className="pb-[133%] bg2"
@@ -26,7 +30,7 @@ const SearchBookCard = ({ book }) => {
           ))}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

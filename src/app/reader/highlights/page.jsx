@@ -12,19 +12,11 @@ const Highlights = () => {
   const { data } = useSession();
   const userId = data?.user.id;
 
-  const { data: highlights } = useSWR(
+  const { data: highlights, loading } = useSWR(
     `/api/highlights/user/${userId}`,
     fetcher
   );
   console.log(highlights);
-
-  const removeHighlight = async (highlightId) => {
-    try {
-      await axios.delete(`/api/highlights/${highlightId}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div>
@@ -35,11 +27,11 @@ const Highlights = () => {
       </div>
 
       <div className="flex flex-wrap items-center gap-10">
-        <HighlightCard />
-        <HighlightCard />
-        <HighlightCard />
-        <HighlightCard />
-        <HighlightCard />
+        {!loading &&
+          highlights?.map((highlight) => (
+            <HighlightCard key={highlight.id} highlight={highlight} />
+          ))}
+        {loading && <Loader className="h-24 w-full" />}
       </div>
     </div>
   );
