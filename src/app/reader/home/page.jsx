@@ -91,7 +91,7 @@ const ContinueCarouselSection = ({ isLoading, books = [] }) => {
             </div>
           )}
           {books.length === 0 && (
-            <div className="h-240 center">No book to continue</div>
+            <div className="h-[240px] center">No book to continue</div>
           )}
         </>
       ) : (

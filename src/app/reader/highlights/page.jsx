@@ -1,8 +1,31 @@
+"use client";
+
 import HighlightCard from "@/app/ui/book/cards/HighlightCard";
 import Search from "@/app/ui/common/Search";
+import { fetcher } from "@/utils/util";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import React from "react";
+import useSWR from "swr";
 
 const Highlights = () => {
+  const { data } = useSession();
+  const userId = data?.user.id;
+
+  const { data: highlights } = useSWR(
+    `/api/highlights/user/${userId}`,
+    fetcher
+  );
+  console.log(highlights);
+
+  const removeHighlight = async (highlightId) => {
+    try {
+      await axios.delete(`/api/highlights/${highlightId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">

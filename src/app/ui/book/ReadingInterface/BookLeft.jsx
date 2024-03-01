@@ -28,7 +28,7 @@ const BookLeft = () => {
         className="flex items-center gap-x-3 mb-6 content-highlight font-semibold"
       >
         <FiBookOpen className="" />{" "}
-        <h3 className="">{truncateText(book?.title, 24)}</h3>
+        <h3 className="">{truncateText(book?.title, 18)}</h3>
       </Link>
 
       <div className="border-check border-b flex items-center justify-between mb-8">

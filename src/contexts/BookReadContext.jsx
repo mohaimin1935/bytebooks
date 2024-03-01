@@ -11,12 +11,12 @@ export const BookReadContext = createContext();
 
 export const BookReadContextProvider = ({ children, bookId, type }) => {
   const [fontFamily, setFontFamily] = useState(`"Rubik", sans-serif`);
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(18);
   const [fontWeight, setFontWeight] = useState(400);
 
-  const [margins, setMargins] = useState();
-  const [alignments, setAlignments] = useState();
-  const [spacing, setSpacing] = useState();
+  const [margins, setMargins] = useState(0);
+  const [alignments, setAlignments] = useState("justify");
+  const [spacing, setSpacing] = useState(1.8);
 
   const [warmth, setWarmth] = useState();
 
@@ -57,7 +57,6 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
         `/api/users/${user?.user?.id}/books/${bookId}`,
         progress
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -134,6 +133,8 @@ export const BookReadContextProvider = ({ children, bookId, type }) => {
         setActiveId,
         activeChapter,
         isLoading,
+        bookId,
+        type
       }}
     >
       {children}

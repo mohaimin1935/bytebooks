@@ -9,6 +9,9 @@ import { LuFileAudio } from "react-icons/lu";
 import { BookEditContext } from "@/contexts/BookEditContext";
 import { FiArrowLeft, FiTrash } from "react-icons/fi";
 import DeleteConfirm from "../common/DeleteConfirm";
+import CustomTextArea from "../common/TextArea";
+import { useAudioPlayer } from "react-use-audio-player";
+import { IoPause, IoPlay } from "react-icons/io5";
 
 const ContentEditor = () => {
   const [uploaded, setUploaded] = useState(false);
@@ -33,12 +36,22 @@ const ContentEditor = () => {
     showModal,
   } = useContext(BookEditContext);
 
+  const { load, togglePlayPause, playing } = useAudioPlayer();
+
   useEffect(() => {
-    console.log(audioUrl);
     if (uploaded) handleSave();
   }, [uploaded]);
 
-  console.log(audioUrl);
+  useEffect(() => {
+    if (audioUrl) {
+      load(audioUrl, {
+        html5: true,
+        autoplay: false,
+        initialVolume: 0.8,
+        initialRate: 1.0,
+      });
+    }
+  }, [audioUrl]);
 
   if (!activeId)
     return (
@@ -75,6 +88,23 @@ const ContentEditor = () => {
             setUploaded={setUploaded}
           />
           {audioUrl && (
+            <>
+              {playing ? (
+                <IoPause
+                  size={32}
+                  onClick={togglePlayPause}
+                  className="p-2 rounded cursor-pointer"
+                />
+              ) : (
+                <IoPlay
+                  size={32}
+                  onClick={togglePlayPause}
+                  className="p-2 rounded cursor-pointer"
+                />
+              )}
+            </>
+          )}
+          {audioUrl && (
             <FiTrash
               size={32}
               className="accent2 p-2 rounded cursor-pointer"
@@ -95,7 +125,7 @@ const ContentEditor = () => {
         </div>
       )}
       <div className="prose-xl w-full min-h-48">
-        <Suspense fallback={() => <>Loading</>}>
+        {/* <Suspense fallback={() => <>Loading</>}>
           <ReactQuill
             theme="snow"
             value={body}
@@ -119,7 +149,14 @@ const ContentEditor = () => {
               ],
             }}
           />
-        </Suspense>
+        </Suspense> */}
+        <CustomTextArea
+          value={body}
+          setValue={setBody}
+          placeholder={"Tell a story..."}
+          maxLength={-1}
+          maxHeight={-1}
+        />
       </div>
       <div className="center w-full">
         <button

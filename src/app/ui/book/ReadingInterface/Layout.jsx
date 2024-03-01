@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import RangeSlider from "../../common/RangeSlider";
 import { BookReadContext } from "@/contexts/BookReadContext";
 import { cn } from "@/utils/cn";
@@ -13,7 +13,7 @@ const Layout = () => {
         <Margins />
         <Alignments />
         <Spacing />
-        <Warmth />
+        {/* <Theme /> */}
       </div>
     </div>
   );
@@ -57,26 +57,17 @@ const FontFamily = () => {
 const FontSize = () => {
   const { fontSize, setFontSize } = useContext(BookReadContext);
 
-  const sizes = [12, 14, 16, 18];
-
   return (
-    <section>
-      <p className="mb-2 mt-6">Font Size</p>
-      <div className="flex items-center gap-x-2 text-sm pl-4">
-        {sizes.map((size) => (
-          <div
-            onClick={() => setFontSize(size)}
-            className={cn(
-              "cursor-pointer rounded px-2",
-              fontSize === size ? "border border-check" : ""
-            )}
-            key={size}
-          >
-            {size}
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className="flex items-center gap-x-4 my-6">
+      <p className="">Size</p>
+      <RangeSlider
+        className="bg1 h-1 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3"
+        max={32}
+        min={8}
+        value={fontSize}
+        setValue={setFontSize}
+      />
+    </div>
   );
 };
 
@@ -107,46 +98,36 @@ const FontWeight = () => {
 };
 
 const Margins = () => {
-  const margins = [0, 40, 80];
+  const { margins, setMargins } = useContext(BookReadContext);
 
   return (
-    <section>
-      <p className="mb-2 mt-6">Margins</p>
-      <div className="flex items-center gap-x-2 text-sm pl-4">
-        <div className="px-[1px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px]">
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-        </div>
-
-        <div className="px-[4px] w-8 border-2 border-check py-1 rounded flex flex-col gap-y-[2px]">
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-        </div>
-
-        <div className="px-[8px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px]">
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-        </div>
-      </div>
-    </section>
+    <div className="flex items-center gap-x-4 my-6">
+      <p className="">Margins</p>
+      <RangeSlider
+        className="bg1 h-1 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3"
+        max={400}
+        min={0}
+        value={margins}
+        setValue={setMargins}
+      />
+    </div>
   );
 };
 
 const Alignments = () => {
+  const { alignments, setAlignments } = useContext(BookReadContext);
+
   return (
     <section>
       <p className="mb-2 mt-6">Alignments</p>
       <div className="flex items-center gap-x-2 text-sm pl-4">
-        <div className="px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px]">
+        <div
+          className={cn(
+            "px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px]",
+            alignments === "justify" && "border-2"
+          )}
+          onClick={() => setAlignments("justify")}
+        >
           <div className="w-full accent1 h-px"></div>
           <div className="w-full accent1 h-px"></div>
           <div className="w-full accent1 h-px"></div>
@@ -154,7 +135,41 @@ const Alignments = () => {
           <div className="w-full accent1 h-px"></div>
         </div>
 
-        <div className="px-[4px] w-8 border-2 border-check py-1 rounded flex flex-col gap-y-[2px]">
+        <div
+          className={cn(
+            "px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px]",
+            alignments === "left" && "border-2"
+          )}
+          onClick={() => setAlignments("left")}
+        >
+          <div className="w-full accent1 h-px"></div>
+          <div className="w-full accent1 h-px"></div>
+          <div className="w-3/4 accent1 h-px"></div>
+          <div className="w-full accent1 h-px"></div>
+          <div className="w-1/2 accent1 h-px"></div>
+        </div>
+
+        <div
+          className={cn(
+            "px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px] items-center",
+            alignments === "center" && "border-2"
+          )}
+          onClick={() => setAlignments("center")}
+        >
+          <div className="w-full accent1 h-px"></div>
+          <div className="w-full accent1 h-px"></div>
+          <div className="w-3/4 accent1 h-px"></div>
+          <div className="w-full accent1 h-px"></div>
+          <div className="w-1/2 accent1 h-px"></div>
+        </div>
+
+        <div
+          className={cn(
+            "px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[2px] items-end",
+            alignments === "right" && "border-2"
+          )}
+          onClick={() => setAlignments("right")}
+        >
           <div className="w-full accent1 h-px"></div>
           <div className="w-full accent1 h-px"></div>
           <div className="w-3/4 accent1 h-px"></div>
@@ -167,43 +182,26 @@ const Alignments = () => {
 };
 
 const Spacing = () => {
+  const { spacing, setSpacing } = useContext(BookReadContext);
+
   return (
-    <section>
-      <p className="mb-2 mt-6">Spacing</p>
-      <div className="flex items-center gap-x-2 text-sm pl-4">
-        <div className="px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[1px]">
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-        </div>
-
-        <div className="px-[4px] w-8 border-2 border-check py-1 rounded flex flex-col gap-y-[2px]">
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-        </div>
-
-        <div className="px-[4px] w-8 border border-check py-1 rounded flex flex-col gap-y-[4px]">
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-          <div className="w-full accent1 h-px"></div>
-        </div>
-      </div>
-    </section>
+    <div className="flex items-center gap-x-4 my-6">
+      <p className="">Spacing</p>
+      <RangeSlider
+        className="bg1 h-1 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3"
+        max={3.0}
+        min={1.2}
+        value={spacing}
+        setValue={setSpacing}
+      />
+    </div>
   );
 };
 
-const Warmth = () => {
+const Theme = () => {
   return (
     <div className="flex items-center gap-x-4 my-6">
-      <p className="">Warmth</p>
-      <RangeSlider className="bg1 h-1 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3" />
+      <p className="">Theme</p>
     </div>
   );
 };

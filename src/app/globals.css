@@ -229,3 +229,13 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 5px 8px;
   margin: 10px;
 }
+
+::selection {
+  background-color: #99f6e4;
+  color: black;
+}
+
+.highlight {
+  background-color: #99f6e4;
+  color: black;
+}

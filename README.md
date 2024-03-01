@@ -42,6 +42,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
+- [ ] logout icon left align
+
+
+
+
+
 - [ ] time update audio progress
 - [ ] author update data-manager not working
 - [x] creator topbar image
@@ -51,7 +57,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] add search functionality in book list for creator
 - [ ] report book reader in chapter
 - [ ] profile page for creator
-- [ ] bookmark, report
+- [ ] report
 - [ ] author get data
 - [ ] streak
 - [ ] admin/data-manager user table data show ui design
@@ -59,21 +65,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo BACKEND
 
-- [ ] /api/users/userId/books?type=[recommended, continue, trending, latest]&count=[int]&page=[pageIndex] -> bookList
-- [ ] book -> bookProgress[userid, bookid, type, chapterid, audioTimeStamp] <- user
-- [ ] bookmark -> userId, bookId
 - [ ] streak ???
-- [ ] notification [sub, author, creator, sched, streak]
-- [ ] highlights [startInd, endInd, bookId, type, chapterId]
-- [ ] userId -> top genre
+- highlight create
+request body:
+```
+userId: 'clsh4tkat0000eqi6zb8495lr',
+bookId: 'clsh5kd5w0007d9fv71le4p7v',
+chapterId: null,
+byteId: 'clt8wyqxm0007kmx03zzuubn8',
+startIndex: 1157,
+endIndex: 1188,
+```
 
----
-
-- [x] /api/users/userId -> email, password update
-- [ ] /users/userId/books -> get books depending on searchParams, isPublished
-- [x] /book-info -> {query} : title match -> [books] (search) /book-info/search?searchString=title
-- [ ] check in streak post that a day is already in or return the array loginDates with unique dates only
-      author
 
 ---
 

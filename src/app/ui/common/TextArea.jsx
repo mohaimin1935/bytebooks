@@ -12,7 +12,7 @@ const CustomTextArea = ({
   const textAreaRef = useRef(null);
   useEffect(() => {
     let height = textAreaRef?.current.scrollHeight;
-    if (height > maxHeight) height = maxHeight;
+    if (maxHeight > 0 && height > maxHeight) height = maxHeight;
     textAreaRef.current.style.height = height + "px";
   }, [value]);
 
@@ -20,6 +20,7 @@ const CustomTextArea = ({
     <div className="relative z-10">
       <textarea
         ref={textAreaRef}
+        style={{ whiteSpace: "pre-wrap" }}
         className={cn(
           "resize-none bg1 outline-none content2 my-2 w-full bg-transparent",
           className
@@ -31,9 +32,11 @@ const CustomTextArea = ({
       >
         {value}
       </textarea>
-      <div className="absolute content3 text-sm">
-        {value?.length ?? 0} / {maxLength}
-      </div>
+      {maxLength > 0 && (
+        <div className="absolute content3 text-sm">
+          {value?.length ?? 0} / {maxLength}
+        </div>
+      )}
     </div>
   );
 };

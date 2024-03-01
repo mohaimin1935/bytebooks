@@ -56,9 +56,9 @@ const AudioBar = () => {
 
   if (audioUrl)
     return (
-      <div className="bg2 px-4 h-20 py-2 sm:px-4 xl:px-8 m-2 rounded ">
+      <div className="bg2 h-20 py-2 px-8 m-2 rounded ">
         {/* large screen */}
-        <div className="hidden lg:flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-4 text-sm">
             <div className="w-12">
               <div
@@ -168,51 +168,8 @@ const AudioBar = () => {
             </div>
           </div>
         </div>
-
-        {/* small screen audio */}
-        <div className="flex lg:hidden relative h-full">
-          <div className="flex justify-between items-center w-full">
-            <BookView />
-            <div className="flex items-center gap-x-2">
-              <button className="border border-check rounded-full px-2 py-0.5 text-xs">
-                x1.5
-              </button>
-              <button className="text-2xl">
-                <IoPause />
-              </button>
-            </div>
-          </div>
-
-          <div className="absolute -bottom-2 -left-4 -right-4">
-            <div className="relative bg1 h-1 flex-1 rounded-full">
-              <div className="absolute rounded-full w-[30%] left-0 top-0 bottom-0 accent2"></div>
-            </div>
-          </div>
-        </div>
       </div>
     );
-};
-
-const BookView = ({ className }) => {
-  const { audioBook } = useContext(ThemeContext);
-
-  return (
-    <div className={cn("flex items-center gap-x-2")}>
-      <div
-        className="pb-[133%] rounded-xl bg1 w-12"
-        style={{
-          backgroundImage: `url(${audioBook?.image || "/bookImage.jpg"})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      ></div>
-      <div className="">
-        <p className="font-light">Book Title</p>
-        <p className="font-light content2 text-xs">By Author</p>
-      </div>
-    </div>
-  );
 };
 
 export default AudioBar;
