@@ -9,6 +9,7 @@ import {
   import validateMandatoryFields from "@/middleware/mandatoryFieldList";
   import bcrypt from "bcrypt";
   import { validateEmail } from "@/utils/util";
+  import nodemailer from 'nodemailer';
 
 
     
@@ -18,6 +19,15 @@ import {
     // if (authError) {
     //   return authError;
     // }
+
+    // const transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: '',
+    //       pass: '',
+    //     },
+    //   });
+
     console.log("reset");
     try {
         const body = await req.json();
@@ -57,6 +67,16 @@ import {
             }
         });
         //send email
+
+            // const mailOptions = {
+            //   from: '',
+            //   to: '',
+            //   subject: 'Test',
+            //   html: '<p> this is a test</p>',
+            // };
+        
+            // const info = await transporter.sendMail(mailOptions);
+            // console.log('Email sent:', info.response);
         
         return NextResponse.json(
             { message: "success" },
