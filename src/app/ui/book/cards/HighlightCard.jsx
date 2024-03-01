@@ -36,7 +36,7 @@ const HighlightCard = ({ highlight }) => {
   };
 
   return (
-    <div className="border border-bkg-2 shadow-md rounded-xl w-[31%] h-72 overflow-y-auto overflow-scroll p-4 pb-2">
+    <div className="border border-bkg-2 shadow-md rounded-xl w-[31%] h-72 overflow-y-auto overflow-scroll p-4 pb-2 flex flex-col justify-between">
       {modal && modalType === "delete" && (
         <DeleteConfirm
           handleCancel={() => {
@@ -47,16 +47,20 @@ const HighlightCard = ({ highlight }) => {
           loading={loading}
         />
       )}
-      <p className="text-center mx-6 mt-6">{highlight?.content}</p>
-      <Link
-        href={`/reader/view/book/${bookId}`}
-        className="mt-4 text-center font-semibold text-lg hover w-full inline-block"
-      >
-        {highlight.title}
-      </Link>
+      <p className="text-center mx-6 mt-6 flex">{highlight?.content}</p>
+      <div className="center">
+        <Link
+          href={`/reader/view/book/${highlight.bookId}`}
+          className="mt-4 text-center font-semibold text-lg hover mx-auto inline-block"
+        >
+          {highlight.title}
+        </Link>
+      </div>
 
       <div className="flex items-center justify-between mx-4">
-        <p className="text-xs">Added 2y ago</p>
+        <p className="text-xs">
+          {new Date(highlight.createdAt).getDate()} }
+        </p>
         <div className="flex items-center gap-x-1">
           <button
             className="p-2 content-highlight"
