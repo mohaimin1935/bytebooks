@@ -43,6 +43,7 @@ model User {
   hashedPassword String?
   role           String?
   lastLoginDate  DateTime?
+  appliedToBeCreator  Boolean @default(false)
   loginStreak    Int       @default(0)
   //need to add country and xp
   accounts       Account[]
@@ -101,6 +102,7 @@ model BookInfo {
   image          String?
   desc           String?
   isPublished    Boolean @default(false)
+  isSuspended    Boolean @default(false)
 
   authors  BookAuthor[]
   tags     BookTag[]
