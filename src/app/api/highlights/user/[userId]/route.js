@@ -45,6 +45,7 @@ export const GET = async (req, {params}) => {
         o.title = res[i].book.title;
         o.bookId = res[i].bookId;
         o.chapterId = res[i].chapterId;
+        o.byteId = res[i].byteId;
         let a = [];
         for (let j=0;j<res[i].book.authors.length;j++) {
             a.push(res[i].book.authors[j].author.name);
