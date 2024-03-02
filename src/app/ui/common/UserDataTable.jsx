@@ -30,6 +30,7 @@ const UserDataTable = ({
   const [showModal, setShowModal] = useState();
   const [loading, setLoading] = useState(false);
   const [actionId, setActionId] = useState();
+  const [showCreatorApplicant,setShowCreatorApplicant] = useState(false);
 
   const { modal, setModal } = useContext(ThemeContext);
 
@@ -39,19 +40,20 @@ const UserDataTable = ({
 
   useEffect(() => {
     setSuggestions(allItems);
-    if (query.length > 0 && allItems) {
+    if (allItems) {
       setSuggestions([]);
       allItems.forEach((r) => {
         if (
-          r?.name?.toString().toLowerCase().includes(query.toLowerCase()) ||
+          (r?.name?.toString().toLowerCase().includes(query.toLowerCase()) ||
           r?.email?.toString().toLowerCase().includes(query.toLowerCase()) ||
-          r?.role?.toString().toLowerCase().includes(query.toLowerCase())
+          r?.role?.toString().toLowerCase().includes(query.toLowerCase())) &&
+          (!showCreatorApplicant || r?.appliedToBeCreator?.toString() === "true")
         ) {
           setSuggestions((prev) => [...prev, r]);
         }
       });
     }
-  }, [query, allItems]);
+  }, [query, allItems, showCreatorApplicant]);
 
   useEffect(() => {
     const validCheckedList = checkedList.filter((id) =>
@@ -65,6 +67,15 @@ const UserDataTable = ({
     setActionId(id);
     setShowModal(`edit-role`);
   };
+
+  const handleApplicantFilter = (e) => {
+    if (!showCreatorApplicant) {
+      setShowCreatorApplicant(true);
+    }
+    else {
+      setShowCreatorApplicant(false);
+    }
+  }
 
   return (
     <div className="px-4">
@@ -85,6 +96,9 @@ const UserDataTable = ({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
+        <button className="flex gap-x-2 items-center" onClick={handleApplicantFilter}>
+          {showCreatorApplicant? <div className="w-4 h-4 rounded accent1"></div> : <div className="w-4 h-4 rounded border border-check"></div>} Creator Applicants
+        </button>
       </div>
 
       <div className="">

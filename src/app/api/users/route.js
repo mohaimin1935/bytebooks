@@ -24,6 +24,7 @@ import {
           email: true,
           image: true,
           role: true, // need to add country and xp
+          appliedToBeCreator: true,
         },
       });
       console.log(users);
