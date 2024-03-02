@@ -102,7 +102,6 @@ model BookInfo {
   image          String?
   desc           String?
   isPublished    Boolean @default(false)
-  isSuspended    Boolean @default(false)
 
   authors  BookAuthor[]
   tags     BookTag[]

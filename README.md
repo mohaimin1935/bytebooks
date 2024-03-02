@@ -52,7 +52,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] author update data-manager not working
 - [x] creator topbar image
 - [ ] search - api done
-- 
+-
 
 - [ ] add search functionality in book list for creator
 - [ ] report book reader in chapter
@@ -81,3 +81,6 @@ endIndex: 1188,
 ---
 
 - how to know byte or chapter in continue?
+  [ ] update
+  git add .
+  git diff --cached > patch_name.patch

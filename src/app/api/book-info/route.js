@@ -1,9 +1,7 @@
 import { creatorOnlyFailed } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
-import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
-
-
+import validateMandatoryFields from "@/middleware/mandatoryFieldList";
 
 // CREATE A BOOK INFO
 export const POST = async (req) => {
@@ -16,19 +14,22 @@ export const POST = async (req) => {
     const body = await req.json();
 
     //input validation
-     const { isValid, missingFields } = validateMandatoryFields('BookInfo', body);
+    const { isValid, missingFields } = validateMandatoryFields(
+      "BookInfo",
+      body
+    );
 
-        if (!isValid) {
-            return NextResponse.json(
-                { message: "Missing mandatory fields", missingFields },
-                { status: 400 }
-            );
-        }
-
+    if (!isValid) {
+      return NextResponse.json(
+        { message: "Missing mandatory fields", missingFields },
+        { status: 400 }
+      );
+    }
 
     const bookInfo = await prisma.bookInfo.create({
       data: {
         isbn: body.isbn,
+        language: body.language,
         publishingYear: body.publishingYear,
         title: body.title,
         image: body.image,
@@ -134,8 +135,6 @@ export const POST = async (req) => {
 //   } catch (err) {
 //     console.log(err);
 
-    
-
 //     return NextResponse.json(
 //       { message: "Something went wrong" },
 //       { status: 500 }
@@ -145,7 +144,7 @@ export const POST = async (req) => {
 
 // export const GET = async (req) => {
 //   try {
-    
+
 //     const url = req.nextUrl;
 
 //     const searchParams = url.searchParams;
@@ -186,7 +185,7 @@ export const POST = async (req) => {
 // };
 
 function parseBoolean(str) {
-  return str === 'true' || str === '1';
+  return str === "true" || str === "1";
 }
 
 export const GET = async (req) => {
@@ -198,20 +197,20 @@ export const GET = async (req) => {
     let filter = {};
 
     // Example search parameters based on your schema
-    if (searchParams.has('isbn')) {
-      filter.isbn = searchParams.get('isbn');
+    if (searchParams.has("isbn")) {
+      filter.isbn = searchParams.get("isbn");
     }
-    if (searchParams.has('publishingYear')) {
-      filter.publishingYear = parseInt(searchParams.get('publishingYear'), 10);
+    if (searchParams.has("publishingYear")) {
+      filter.publishingYear = parseInt(searchParams.get("publishingYear"), 10);
     }
-    if (searchParams.has('title')) {
-      filter.title = searchParams.get('title');
+    if (searchParams.has("title")) {
+      filter.title = searchParams.get("title");
     }
-    if (searchParams.has('creatorId')){
-      filter.id = searchParams.get('creatorId');
+    if (searchParams.has("creatorId")) {
+      filter.id = searchParams.get("creatorId");
     }
-    if(searchParams.has('isPublished')){
-      filter.isPublished = parseBoolean( searchParams.get('isPublished') );
+    if (searchParams.has("isPublished")) {
+      filter.isPublished = parseBoolean(searchParams.get("isPublished"));
     }
     // Add more filters as needed
     console.log(filter);
@@ -219,15 +218,18 @@ export const GET = async (req) => {
     let books = await prisma.bookInfo.findMany({
       where: filter,
       include: {
-        authors: { include: { author: true }},
-        genres: { include: { genre: true }},
+        authors: { include: { author: true } },
+        genres: { include: { genre: true } },
         // Include other relations as needed
-      }
+      },
     });
 
     return NextResponse.json(books);
   } catch (err) {
     console.error("Error: ", err.message);
-    return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 }
+    );
   }
 };
