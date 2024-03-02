@@ -11,11 +11,9 @@ export const GET = async (req, { params }) => {
       },
     });
 
-    console.log(bookUsers);
-
     let genreCounts = {};
 
-    bookUsers.forEach(async (bookUser) => {
+    bookUsers?.forEach(async (bookUser) => {
       const book = await prisma.bookInfo.findUnique({
         where: {
           id: bookUser.bookId,
@@ -28,17 +26,15 @@ export const GET = async (req, { params }) => {
           },
         },
       });
-      console.log(book.genres);
 
-      book.genres.forEach((genre) => {
-        console.log(genre.genre.name);
-        if (genreCounts[genre.genre.name]) {
-          console.log("first");
-          genreCounts[genre.genre.name]++;
-        } else {
-          console.log("sec");
-          genreCounts[genre.genre.name] = 1;
+      book.genres.forEach(({ genre }) => {
+        if (!genreCounts[genre.id]) {
+          genreCounts[genre.id] = {
+            count: 0,
+            name: genre.name,
+          };
         }
+        genreCounts[genre.id].count++;
       });
     });
 

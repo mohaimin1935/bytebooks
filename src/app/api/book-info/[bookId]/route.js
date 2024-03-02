@@ -217,6 +217,7 @@ export const PATCH = async (req, { params }) => {
         creators: {
           // TODO: check if the author is already there
           create: body.creatorIds?.map((creatorId) => ({ creatorId })),
+          deleteMany: deletedCreators?.map((creatorId) => ({ creatorId })),
         },
       },
     });
