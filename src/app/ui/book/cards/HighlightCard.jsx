@@ -59,7 +59,11 @@ const HighlightCard = ({ highlight }) => {
 
       <div className="flex items-center justify-between mx-4">
         <p className="text-xs">
-          {new Date(highlight.createdAt).getDate()} }
+          {/* {new Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }).format(new Date(highlight.createdAt))} */}
         </p>
         <div className="flex items-center gap-x-1">
           <button

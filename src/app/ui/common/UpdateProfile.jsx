@@ -19,6 +19,7 @@ const UpdateProfile = ({ type = "reader" }) => {
   const [showModal, setShowModal] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
+  const [applyLoading, setApplyLoading] = useState(false);
 
   const { setModal } = useContext(ThemeContext);
   const { data } = useSession();
@@ -67,6 +68,22 @@ const UpdateProfile = ({ type = "reader" }) => {
       console.log(res.data);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleApply = async () => {
+    try {
+      setApplyLoading(true);
+      const res = await axios.patch(
+        `/api/users/${data?.user?.id}/apply-to-be-creator`,
+        {}
+      );
+      console.log(res.data);
+      toast.success("Application submitted");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setApplyLoading(false);
     }
   };
 
@@ -142,8 +159,17 @@ const UpdateProfile = ({ type = "reader" }) => {
         </button>
 
         {type === "reader" && (
-          <button className="w-[300PX] secondary-btn py-2 mt-4">
-            Apply to be Creator
+          <button
+            className="w-[300PX] secondary-btn py-2 mt-4"
+            onClick={handleApply}
+          >
+            {(applyLoading || !userData) && <Loader />}
+            {userData && !applyLoading && userData?.appliedToBeCreator && (
+              <>Cancel Creator Application</>
+            )}
+            {userData && !applyLoading && !userData?.appliedToBeCreator && (
+              <>Apply to be Creator</>
+            )}
           </button>
         )}
       </div>

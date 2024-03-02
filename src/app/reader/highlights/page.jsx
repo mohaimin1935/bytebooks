@@ -14,7 +14,8 @@ const Highlights = () => {
 
   const { data: highlights, loading } = useSWR(
     `/api/highlights/user/${userId}`,
-    fetcher
+    fetcher,
+    { refreshInterval: 300 }
   );
   console.log(highlights);
 
