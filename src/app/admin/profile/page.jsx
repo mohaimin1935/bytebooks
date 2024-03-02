@@ -45,8 +45,14 @@ const AdminProfile = () => {
 export default AdminProfile;
 
 const GenreStat = ({ books }) => {
+  const { data } = useSession();
+  const userId = data?.user?.id;
+
+  const { data: genreStat } = useSWR(`/api/users/${userId}/topGenres`, fetcher);
+  console.log(genreStat);
+
   return (
-    <section className="mt-24 flex w-full">
+    <section className="mt-24 flex w-full min-h-96">
       <div className="w-1/3 flex items-center flex-col text-center ">
         <h2 className="section-header">Top Genres</h2>
         <PieChartCustom />

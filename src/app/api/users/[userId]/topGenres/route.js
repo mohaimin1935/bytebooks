@@ -68,34 +68,49 @@ export const GET = async (req, { params }) => {
       where: {
         userId: userId,
       },
-      include: {
-        book: {
-          include: {
-            genres: {
-              include: {
-                genre: true,
-              },
+    });
+
+    let genreCounts = {};
+
+    const genres = await prisma.genre.findMany();
+    genres.forEach((genre) => {
+      genreCounts[genre.id] = {
+        count: 0,
+        name: genre.name,
+      };
+    });
+
+    bookUsers?.forEach(async (bookUser) => {
+      const book = await prisma.bookInfo.findUnique({
+        where: {
+          id: bookUser.bookId,
+        },
+        include: {
+          genres: {
+            include: {
+              genre: true,
             },
           },
         },
-      },
-    });
+      });
 
     //console.log(Books);
     let booksByGenre = {};
     Books.forEach(({ book }) => {
       book.genres.forEach(({ genre }) => {
-        if (genre && genre.id) {
-          if (!booksByGenre[genre.id]) {
-            booksByGenre[genre.id] = { count: 0, genreName: genre.name };
-          }
-          booksByGenre[genre.id].count++;
-        }
-        //genreCounts[genre.id].count++;
+        // if (!genreCounts[genre.id]) {
+        //   genreCounts[genre.id] = {
+        //     count: 1,
+        //     name: genre.name,
+        //   };
+        // }
+        genreCounts[genre.id].count++;
       });
     });
 
-    return NextResponse.json({ booksByGenre });
+    console.log(genreCounts);
+
+    return NextResponse.json(genreCounts);
   } catch (err) {
     console.log(err);
     return NextResponse.json(

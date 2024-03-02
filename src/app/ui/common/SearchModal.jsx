@@ -9,7 +9,12 @@ import AuthorCard from "../author/AuthorCard";
 import Loader from "./Loader";
 import { ThemeContext } from "@/contexts/ThemeContext";
 
-const SearchModal = () => {
+const SearchModal = ({
+  showBooks = true,
+  showAuthors = true,
+  setValue = () => {},
+  global = true,
+}) => {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,17 +50,37 @@ const SearchModal = () => {
 
       {loading && <Loader className={"h-4 w-full"} />}
 
-      {result.books?.map((book) => (
-        <SearchBookCard key={book.id} book={book} />
-      ))}
-
-      {result.authors?.map((author) => (
-        <AuthorCard key={author.id} author={author} />
-      ))}
-
-      {result.books?.length === 0 && result.authors?.length === 0 && (
-        <div className="text-center">No results found.</div>
+      {result.books?.map((book) =>
+        global ? (
+          <SearchBookCard
+            setValue={setValue}
+            key={book.id}
+            book={book}
+            link={`/reader/view/book/${book.id}`}
+          />
+        ) : (
+          <div>
+            <SearchBookCard
+              link="#"
+              key={book.id}
+              book={book}
+              global={global}
+              setValue={setValue}
+            />
+          </div>
+        )
       )}
+
+      {showAuthors &&
+        result.authors?.map((author) => (
+          <AuthorCard key={author.id} author={author} />
+        ))}
+
+      {showBooks &&
+        result.books?.length === 0 &&
+        result.authors?.length === 0 && (
+          <div className="text-center">No results found.</div>
+        )}
     </Modal>
   );
 };

@@ -8,11 +8,12 @@ import Outline from "./Outline";
 import Layout from "./Layout";
 import { BookReadContext } from "@/contexts/BookReadContext";
 import { truncateText } from "@/utils/util";
+import { BsTranslate } from "react-icons/bs";
 
 const BookLeft = () => {
   const [active, setActive] = useState("outline");
 
-  const { book } = useContext(BookReadContext);
+  const { book, type } = useContext(BookReadContext);
 
   const changeTab = (tab) => {
     setActive(tab);
@@ -29,6 +30,15 @@ const BookLeft = () => {
       >
         <FiBookOpen className="" />{" "}
         <h3 className="">{truncateText(book?.title, 18)}</h3>
+        <Link
+          className="text-slate-700"
+          href={`/book/${book?.alternateBookId}/content?type=${type}`}
+        >
+          <BsTranslate
+            size={30}
+            className="cursor-pointer p-1.5 bg2 shadow-xl border border-slate-700 rounded-md hover:shadow-xl"
+          />
+        </Link>
       </Link>
 
       <div className="border-check border-b flex items-center justify-between mb-8">

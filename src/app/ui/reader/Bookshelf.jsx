@@ -9,11 +9,9 @@ import useSWR from "swr";
 import { ColorExtractor } from "react-color-extractor";
 import BookFlip from "../book/cards/BookFlip";
 
-const Bookshelf = ({books}) => {
+const Bookshelf = ({ books }) => {
   const { data } = useSession();
   const { data: userData } = useSWR(`/api/users/${data?.user?.id}`, fetcher);
-
-  
 
   return (
     <div className="relative">
@@ -42,9 +40,12 @@ const Bookshelf = ({books}) => {
 const Books = ({ books }) => {
   return (
     <div className="flex justify-start items-end gap-x-0 px-4 h-[200px]">
-      {books.map((book, index) => {
+      {books?.map((book, index) => {
         return (
-          <div className="-ml-16 hover:mr-4 transition-all duration-300">
+          <div
+            className="-ml-16 hover:mr-4 transition-all duration-300"
+            key={book.id}
+          >
             <BookFlip
               book={book}
               width={140}

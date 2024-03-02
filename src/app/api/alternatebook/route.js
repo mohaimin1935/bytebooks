@@ -39,7 +39,8 @@ import {
                 id: body.book1Id,
             },
         });
-        const r1 = await prisma.BookInfo.update({
+        if (r.alternateBookId!==null) {
+            const r1 = await prisma.BookInfo.update({
             where: {
                 id: r.alternateBookId,
             },
@@ -47,6 +48,7 @@ import {
                 alternateBookId: null,
             },
         });
+        }
         const r2 = await prisma.BookInfo.update({
             where: {
                 id: body.book1Id,

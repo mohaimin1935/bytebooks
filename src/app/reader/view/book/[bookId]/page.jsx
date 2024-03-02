@@ -23,12 +23,16 @@ import { PiStarFill } from "react-icons/pi";
 import { TbMessageReport } from "react-icons/tb";
 import useSWR from "swr";
 import { mutate } from "swr";
+import { BsTranslate } from "react-icons/bs";
 
 const ViewBook = () => {
-  const { bookId } = useParams();
+  const [bookId, setBookId] = useState(useParams().bookId);
+
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher, {
     refreshInterval: 200,
   });
+
+  console.log(book);
 
   const { data: user } = useSession();
   const { data: bookUser, isLoading } = useSWR(
@@ -110,7 +114,15 @@ const ViewBook = () => {
           </div>
 
           <div className="w-1/2">
-            <h3 className="font-semibold text-4xl mb-2">{book.title}</h3>
+            <h3 className="font-semibold text-4xl mb-2 flex items-center gap-x-6">
+              <>{book.title}</>
+              <Link href={`/reader/view/book/${book.alternateBookId}`}>
+                <BsTranslate
+                  size={36}
+                  className="cursor-pointer p-2 bg2 shadow-xl border border-check rounded-md hover:shadow-xl"
+                />
+              </Link>
+            </h3>
             <p className="text-lg content2 h-16 overflow-hidden">
               By{" "}
               {book.authors?.map(({ author }) => (

@@ -13,10 +13,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FiArrowLeft, FiArrowRight, FiPlus } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiPlus, FiSearch } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { IoCloudDoneOutline } from "react-icons/io5";
 import useSWR, { useSWRConfig } from "swr";
+import Search from "../common/Search";
+import SearchModal from "../common/SearchModal";
+import { cn } from "@/utils/cn";
 
 const AddBook = ({ bookInfo }) => {
   const { mutate } = useSWRConfig();
@@ -43,8 +46,10 @@ const AddBook = ({ bookInfo }) => {
   const [tags, setTags] = useState([]);
   const [desc, setDesc] = useState("");
   const [isbn, setIsbn] = useState("");
-  // const [language, setLanguage] = useState("");
+  const [language, setLanguage] = useState("");
   const [publishingYear, setPublishingYear] = useState("");
+  const [alternateBookId, setAlternateBookId] = useState("");
+  const [alternateBook, setAlternateBook] = useState(null);
 
   const [bookId, setBookId] = useState("");
   const [allAuthors, setAllAuthors] = useState([]);
@@ -73,9 +78,9 @@ const AddBook = ({ bookInfo }) => {
       setTags(book.tags?.map((a) => a.tag) || []);
       setDesc(book.desc);
       setIsbn(book.isbn);
-      // setLanguage(book.language);
+      setLanguage(book.language);
       setPublishingYear(book.publishingYear);
-
+      setAlternateBookId(book.alternateBookId);
       setBookId(book.id);
     }
   }, [book]);
@@ -94,8 +99,9 @@ const AddBook = ({ bookInfo }) => {
     tags,
     desc,
     isbn,
-    // language,
+    language,
     publishingYear,
+    alternateBookId,
   ]);
 
   useEffect(() => {
@@ -111,6 +117,26 @@ const AddBook = ({ bookInfo }) => {
   useEffect(() => {
     if (uploaded) handleUpload();
   }, [uploaded]);
+
+  useEffect(() => {
+    const getAlternateBook = async () => {
+      try {
+        const res = await axios.get(`/api/book-info/${alternateBookId}`);
+        setAlternateBook(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setModal(false);
+        setShowModal("");
+      }
+    };
+
+    if (alternateBookId) {
+      getAlternateBook();
+    } else {
+      setAlternateBook(null);
+    }
+  }, [alternateBookId]);
 
   const handleUpload = async () => {
     try {
@@ -151,6 +177,11 @@ const AddBook = ({ bookInfo }) => {
     setGenres(temp);
   };
 
+  const addAlternativeBook = () => {
+    setModal(true);
+    setShowModal("search-book");
+  };
+
   const addGenre = () => {
     setModal(true);
     setShowModal("genre");
@@ -185,7 +216,7 @@ const AddBook = ({ bookInfo }) => {
 
     const bookInfo = {
       isbn,
-      // language,
+      language,
       publishingYear: parseInt(publishingYear),
       title: bookTitle,
       image: bookImage,
@@ -208,6 +239,13 @@ const AddBook = ({ bookInfo }) => {
         // setBook(res.data);
         setBookId(res.data.id);
       }
+
+      const res = await axios.post(`/api/alternatebook`, {
+        book1Id: bookId,
+        book2Id: alternateBookId || "null",
+      });
+      console.log(res.data);
+
       mutate(`/api/book-info/${bookId}`);
       setSaved(true);
       // setModal(true);
@@ -275,6 +313,14 @@ const AddBook = ({ bookInfo }) => {
           creatable
           createApi="/api/genre"
           isLoading={genreLoading}
+        />
+      )}
+
+      {showModal === "search-book" && (
+        <SearchModal
+          global={false}
+          setValue={setAlternateBookId}
+          showAuthors={false}
         />
       )}
 
@@ -424,6 +470,71 @@ const AddBook = ({ bookInfo }) => {
           </div>
           <div className="w-2/5">
             {/* tags */}
+
+            <p className="font-semibold text-lg mb-4">Translation</p>
+            {!alternateBookId ? (
+              <div
+                className="cursor-pointer mb-12"
+                onClick={addAlternativeBook}
+              >
+                <div className={cn("flex items-center gap-x-3")}>
+                  <div className="text-xl">
+                    <FiSearch />
+                  </div>
+                  <div className="w-64 border-b px-1 py-1 content3">
+                    eg, Harry Potter
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="border border-bkg-2 shadow rounded-md flex gap-x-4 px-4 py-4 my-4">
+                {/* LEFT */}
+                <div className="w-1/5">
+                  <div
+                    className="pb-[133%] bg2"
+                    style={{
+                      backgroundImage: `url(${book.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  ></div>
+                </div>
+
+                {/* RIGHT */}
+                <div className="w-full">
+                  <div className="flex flex-col h-full justify-between">
+                    {/* TOP */}
+                    <div className="w-full">
+                      <h3 className="font-semibold capitalize">
+                        {alternateBook?.title}
+                      </h3>
+                      <p className="text-xs content2 my-1 w-full overflow-hidden flex flex-wrap items-center gap-1">
+                        <span>By </span>
+                        {alternateBook?.authors?.map(({ author }) => (
+                          <span
+                            key={author.id}
+                            className="bg2 px-2 py-1 rounded"
+                          >
+                            {author.name}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                    {/* Bottom */}
+                    <div>
+                      <button
+                        className="border-highlight border px-3 py-1 content-highlight rounded text-sm"
+                        onClick={() => setAlternateBookId(null)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <p className="font-semibold text-lg mb-4">Tags</p>
             <div className="flex items-center mb-12 flex-wrap gap-y-2">
               {tags?.map(({ name, id }) => (
@@ -454,14 +565,14 @@ const AddBook = ({ bookInfo }) => {
               onChange={(e) => setIsbn(e.target.value)}
             />
 
-            {/* <p className="font-semibold text-lg mb-4 mt-12">Language</p>
+            <p className="font-semibold text-lg mb-4 mt-12">Language</p>
             <input
               className={"mb-2 bg-transparent outline-none content2"}
               type="text"
               placeholder="English"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-            /> */}
+            />
 
             {/* publishing year */}
             <p className="font-semibold text-lg mb-4 mt-12">Publishing Year</p>

@@ -26,6 +26,7 @@ export const GET = async (req, { params }) => {
             tag: true,
           },
         },
+        alternateBook: true,
       },
     });
 
