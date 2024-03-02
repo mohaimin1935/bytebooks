@@ -12,10 +12,10 @@ import {
   
   //need to check error condition
   export const POST = async (req,{params}) => {
-      // const authError = await adminOnlyFailed();
-      // if (authError) {
-      //     return authError;
-      // }
+      const authError = await creatorOnlyFailed();
+      if (authError) {
+          return authError;
+      }
   
     try {
         const body = await req.json();
