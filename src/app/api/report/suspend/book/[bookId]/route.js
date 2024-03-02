@@ -61,10 +61,10 @@ import validateMandatoryFields  from "@/middleware/mandatoryFieldList";
 // need to check error condition
 export const POST = async (req,{params}) => {
 
-    //   const authError = await authenticatedOnlyFailed();
-    //   if (authError) {
-    //     return authError;
-    //   }
+      const authError = await adminOnlyFailed();
+      if (authError) {
+        return authError;
+      }
         
     try {
         /*
@@ -79,20 +79,115 @@ export const POST = async (req,{params}) => {
 
         */
         const body = await req.json();
-        console.log(body);
-        const res = await prisma.ContentReport.create({
-            data: body,
-            select: {
-                id: true,
-                userId: true,
-                bookId: true,
-                chapterId: true,
-                byteId: true,
-                comment: true,
-                status: true,
+        if (!body.comment) {
+            body.comment = "Contact with an admin";
+        }
+        let status = false;
+        if (body.status==="suspend") {
+            status = true;
+        }
+        else if (body.status==="unsuspend") {
+            status = false;
+        }
+        const res = await prisma.BookInfo.update({
+            where: {
+                id: params.bookId,
             },
+            data: {
+                isSuspended: status,
+            },
+            include: {
+                creators: {
+                    include: {
+                        creator: true,
+                    }
+                }
+            }
         });
-        return NextResponse.json(res);
+
+        console.log(res);
+        // const reporter = await prisma.ContentReport.findMany({
+        //     where: {
+        //         id: params.reportId,
+        //     },
+        //     select: {
+        //         userId: true,
+        //     }
+        // });
+        let creators = [];
+        for (let i=0;i<res.creators.length;i++) {
+            let b = {};
+            b.userId = res.creators[i].creator.id;
+            creators.push(b);
+        }
+        if (status===true) {
+            // Create a notification for each user
+        //   const notifications = reporter.map(user => ({
+        //     userId: user.userId,
+        //     title: "Report Reviewed",
+        //     message: `"${res.title}" has been suspended`,
+        //     type: "report",
+        //     bookId: res.id,
+        //   }));
+
+        //   // Use Prisma to create many notifications in one operation
+        //   await prisma.notification.createMany({
+        //     data: notifications,
+        //     //skipDuplicates: true, // Optional: skip if there's already a similar notification
+        //   });
+          const notifications1 = creators.map(user => ({
+            userId: user.userId,
+            title: "Book Suspended",
+            message: `Your book "${res.title}" has been suspended. Comment: ${body.comment}`,
+            type: "book_suspend_status_changed",
+            bookId: res.id,
+          }));
+
+          // Use Prisma to create many notifications in one operation
+          await prisma.notification.createMany({
+            data: notifications1,
+            //skipDuplicates: true, // Optional: skip if there's already a similar notification
+          });
+
+
+        }
+        else if (status===false) {
+            const notifications1 = creators.map(user => ({
+                userId: user.userId,
+                title: "Book Unsuspended",
+                message: `Your book "${res.title}" has been unsuspended`,
+                type: "book_suspend_status_changed",
+                bookId: res.id,
+              }));
+    
+              // Use Prisma to create many notifications in one operation
+              await prisma.notification.createMany({
+                data: notifications1,
+                //skipDuplicates: true, // Optional: skip if there's already a similar notification
+              });
+        }
+
+        // const users = await prisma.user.findMany({
+        //     select: { id: true }, // Select only the user IDs as that's what we need
+        //   });
+    
+        //   // Create a notification for each user
+        //   const notifications = users.map(user => ({
+        //     userId: user.id,
+        //     title: "New Book Published",
+        //     message: `A new book "${updatedBook.title}" has been published. Check it out!`,
+        //     type: "new_book",
+        //     bookId: updatedBook.id,
+        //   }));
+    
+        //   // Use Prisma to create many notifications in one operation
+        //   await prisma.notification.createMany({
+        //     data: notifications,
+        //     //skipDuplicates: true, // Optional: skip if there's already a similar notification
+        //   });
+        // }
+        return NextResponse.json({ message: "success" },
+        { status: 200 });
     } catch (err) {
         
         console.log(err);
