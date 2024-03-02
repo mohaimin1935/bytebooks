@@ -123,7 +123,7 @@ const ViewBook = () => {
             <div className="flex gap-x-4 mt-2">
               <div className="flex gap-x-2 items-center text-amber-500">
                 <PiStarFill size={18} />
-                <p className="">{book.rating.toFixed(2) || "No rating"}</p>
+                <p className="">{book.rating?.toFixed(2) || "No rating"}</p>
               </div>
               {/* <div className="flex gap-x-2 items-center">
                 <AiFillAudio size={18} />
