@@ -89,7 +89,7 @@ const TopBar = ({ role }) => {
                   className="cursor-pointer hover:bg1 py-2 w-full rounded-lg transition duration-300"
                   onClick={() => handleSwitch("admin")}
                 >
-                  Creator
+                  Admin
                 </button>
               )}
             </div>

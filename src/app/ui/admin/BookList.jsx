@@ -1,3 +1,5 @@
+"use client";
+
 import { fetcher } from "@/utils/util";
 import React from "react";
 import useSWR from "swr";
@@ -5,7 +7,10 @@ import Loader from "../common/Loader";
 import BookDataTable from "../common/BookDataTable";
 
 const BookList = () => {
-  const { data, isLoading } = useSWR("/api/book-info", fetcher);
+  const { data, isLoading } = useSWR("/api/book-info", fetcher, {
+    refreshInterval: 200,
+  });
+  console.log(data);
 
   if (isLoading)
     return (

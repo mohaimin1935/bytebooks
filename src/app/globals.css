@@ -96,6 +96,10 @@
     @apply border-[var(--bkg-2)] duration-300;
   }
 
+  .border-highlight {
+    @apply border-[var(--accent-2)] duration-300;
+  }
+
   .center {
     @apply flex flex-col items-center justify-center;
   }

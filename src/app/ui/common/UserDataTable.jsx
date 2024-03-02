@@ -11,7 +11,10 @@ import EditRole from "../user/EditRole";
 import AddAuthor from "../author/AddAuthor";
 import EditGenre from "../author/EditGenre";
 import EditTag from "../author/EditTag";
-
+import { cn } from "@/utils/cn";
+import useSWR from "swr";
+import { fetcher } from "@/utils/util";
+import Loader from "./Loader";
 
 const UserDataTable = ({
   data,
@@ -39,7 +42,11 @@ const UserDataTable = ({
     if (query.length > 0 && allItems) {
       setSuggestions([]);
       allItems.forEach((r) => {
-        if (r?.name?.toString().toLowerCase().includes(query.toLowerCase()) || r?.email?.toString().toLowerCase().includes(query.toLowerCase()) || r?.role?.toString().toLowerCase().includes(query.toLowerCase())) {
+        if (
+          r?.name?.toString().toLowerCase().includes(query.toLowerCase()) ||
+          r?.email?.toString().toLowerCase().includes(query.toLowerCase()) ||
+          r?.role?.toString().toLowerCase().includes(query.toLowerCase())
+        ) {
           setSuggestions((prev) => [...prev, r]);
         }
       });
@@ -53,142 +60,20 @@ const UserDataTable = ({
     setCheckedList(validCheckedList);
   }, [suggestions]);
 
-  // const toggleCheck = (id) => {
-  //   const index = checkedList.indexOf(id);
-
-  //   if (index !== -1) {
-  //     let temp = [...checkedList];
-  //     temp.splice(index, 1);
-  //     setCheckedList(temp);
-  //   } else {
-  //     setCheckedList((prev) => [...prev, id]);
-  //   }
-  // };
-
   const handleEdit = (id) => {
     setModal(true);
     setActionId(id);
     setShowModal(`edit-role`);
   };
 
-  // const handleDelete = (id) => {
-  //   setModal(true);
-  //   setShowModal("delete");
-  //   setActionId(id);
-  // };
-
-  const handleCancel = () => {
-    setModal(false);
-    setShowModal("");
-  };
-
-  // const handleDeleteConfirm = async () => {
-  //   if (loading) return;
-
-  //   try {
-  //     setLoading(true);
-  //     await axios.delete(`${deleteApi}/${actionId}`);
-  //     toast.success("Deleted successfully");
-  //     let items = allItems;
-  //     items = items.filter((item) => item.id !== actionId);
-  //     setAllItems(items);
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Something went wrong");
-  //   } finally {
-  //     setLoading(false);
-  //     setModal(false);
-  //     setShowModal("");
-  //   }
-  // };
-
-  // const handleDeleteSelected = () => {
-  //   if (!checkedList?.length > 0) return;
-
-  //   setModal(true);
-  //   setShowModal("delete-selected");
-  // };
-
-  // const handleDeleteSelectedConfirm = async () => {
-  //   if (loading) return;
-
-  //   try {
-  //     setLoading(true);
-  //     checkedList.forEach(async (item) => {
-  //       await axios.delete(`${deleteApi}/${item}`);
-  //     });
-  //     toast.success("Deleted successfully");
-  //     let items = allItems;
-  //     items = items.filter((item) => !checkedList.includes(item.id));
-  //     setAllItems(items);
-  //     setCheckedList([]);
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Something went wrong");
-  //   } finally {
-  //     setLoading(false);
-  //     setModal(false);
-  //     setShowModal("");
-  //   }
-  // };
-
-  // const handleAdd = () => {
-  //   setModal(true);
-  //   setShowModal(`add-${type}`);
-  // };
-
-  // const handleToggleSelectAll = () => {
-  //   if (checkedList.length === suggestions.length) setCheckedList([]);
-  //   else {
-  //     setCheckedList([]);
-  //     setCheckedList(suggestions.map((item) => item.id));
-  //   }
-  // };
-
   return (
     <div className="px-4">
-      {/* {showModal === "delete" && (
-        <DeleteConfirm
-          handleCancel={handleCancel}
-          handleDeleteConfirm={handleDeleteConfirm}
-          loading={loading}
-        />
-      )}
-
-      {showModal === "delete-selected" && (
-        <DeleteConfirm
-          handleCancel={handleCancel}
-          handleDeleteConfirm={handleDeleteSelectedConfirm}
-          loading={loading}
-        />
-      )} */}
-
-      {/* {showModal === "add-genre" && <EditGenre setGenres={setAllItems} />} */}
-
       {showModal === "edit-role" && (
         <EditRole
           setUsers={setAllItems}
           user={allItems.find((item) => item.id === actionId)}
         />
       )}
-
-      {/* {showModal === "add-tag" && <EditTag setTags={setAllItems} />}
-
-      {showModal === "edit-tag" && (
-        <EditTag
-          setTags={setAllItems}
-          tag={allItems.find((item) => item.id === actionId)}
-        />
-      )} */}
-
-      {/* {showModal === "add-author" && <AddAuthor setAuthors={setAllItems} />}
-
-      {showModal === "edit-author" && (
-        <AddAuthor
-          setAuthors={setAllItems}
-          author={allItems.find((item) => item.id === actionId)}
-        />
-      )} */}
 
       {/* search */}
       <div className="flex items-center justify-between gap-x-6 mb-4">
@@ -200,25 +85,6 @@ const UserDataTable = ({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        {/* <button
-          className="px-3 py-1.5 border border-check rounded"
-          onClick={handleToggleSelectAll}
-        >
-          {checkedList.length === suggestions.length ? "Deselect" : "Select"}{" "}
-          All
-        </button>
-        <button
-          onClick={handleDeleteSelected}
-          className="accent2 p-2.5 text-white rounded cursor-pointer"
-        >
-          <FiTrash size={20} />
-        </button>
-        <button
-          onClick={handleAdd}
-          className="accent1 p-2.5 text-white rounded"
-        >
-          <IoAdd size={20} />
-        </button> */}
       </div>
 
       <div className="">
@@ -227,11 +93,7 @@ const UserDataTable = ({
             <Item
               key={item.id}
               item={item}
-              hasImage={hasImage}
               defaultImage={defaultImage}
-              // checkedList={checkedList}
-              // toggleCheck={toggleCheck}
-              // handleDelete={handleDelete}
               handleEdit={handleEdit}
             />
           ))}
@@ -243,52 +105,71 @@ const UserDataTable = ({
   );
 };
 
-const Item = ({
-  hasImage,
-  defaultImage,
-  item,
-  // checkedList,
-  // toggleCheck,
-  handleEdit,
-  // handleDelete,
-}) => {
+const Item = ({ defaultImage, item, handleEdit }) => {
+  // console.log(item);
+  const [loading, setLoading] = useState(false);
+
+  const { data } = useSWR(`/api/users/${item.id}`, fetcher, {
+    refreshInterval: 200,
+  });
+
+  const handleApprove = async () => {
+    if (loading) return;
+
+    try {
+      setLoading(true);
+      const res = await axios.patch(`/api/users/${item.id}`, {
+        role: "creator",
+        appliedToBeCreator: false,
+      });
+      toast.success("Creator application approved");
+    } catch (error) {
+      console.log(error);
+      toast.error("Request Failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div
-      className="px-2 py-1 my-[2px] rounded-md hover:bg1 border-b-2 border-bkg-2 flex items-center gap-x-2"
-      key={item.id}
-    >
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center gap-x-2">
-          {/* <button className={"mr-2"} onClick={() => toggleCheck(item.id)}>
-            {checkedList.includes(item.id) ? (
-              <IoIosCheckbox size={20} />
-            ) : (
-              <MdOutlineCheckBoxOutlineBlank size={20} />
-            )}
-          </button> */}
-          {hasImage && (
-            <img
-              className="w-8 h-8 p-[1px] rounded-full border border-check"
-              src={item.image || defaultImage}
-              alt="user"
-            />
-          )}
-          {/* change capitalize, show real name */}
-          <p className="capitalize">{item.name + " ("+item.email+ ") ("+item.role+")"}</p> 
-        </div>
-        <div className="flex items-center gap-x-6">
-          <FiEdit
-            className="cursor-pointer p-1"
-            size={24}
-            onClick={() => handleEdit(item.id)}
-          />
-          {/* <FiDelete
-            className="cursor-pointer content-highlight p-1"
-            size={28}
-            onClick={() => handleDelete(item.id)}
-          /> */}
+    <div className="flex items-center justify-between border-b">
+      <div className="flex items-center gap-x-3 my-2 flex-1">
+        <img
+          className="w-12 h-12 p-[1px] rounded-full border border-check"
+          src={item.image || defaultImage}
+          alt="author"
+        />
+        <div className="">
+          <p className="relative">
+            {item.name}
+            <div
+              className={cn(
+                "absolute right-5 top-0 text-xs rounded px-1",
+                item.role === "admin" && "accent2",
+                item.role === "creator" && "accent1",
+                item.role === "reader" && "border border-check"
+              )}
+            >
+              {item.role}
+            </div>
+          </p>
+          <p className="text-sm">{item.email}</p>
         </div>
       </div>
+
+      {data?.appliedToBeCreator && (
+        <button
+          onClick={() => handleApprove()}
+          className="bg2 px-3 py-1.5 rounded mr-4"
+        >
+          {loading ? <Loader /> : <>Approve Creator Application</>}
+        </button>
+      )}
+      <FiEdit
+        className="cursor-pointer p-1"
+        size={24}
+        onClick={() => handleEdit(item.id)}
+      />
     </div>
   );
 };

@@ -17,7 +17,7 @@ const CreatorLayout = ({ children }) => {
     }
   }, [status]);
 
-  if (status === "authenticated")
+  if (status === "authenticated" && data?.user?.role === "creator")
     return (
       <div className="flex h-screen bg1">
         {/* left panel */}

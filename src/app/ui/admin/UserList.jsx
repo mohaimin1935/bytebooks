@@ -18,8 +18,6 @@ const UserList = () => {
       data={data}
       hasImage
       defaultImage={"/author.png"}
-      // deleteApi="/api/author"
-      // type={"author"}
     />
   );
 };

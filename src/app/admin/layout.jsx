@@ -17,7 +17,7 @@ const AdminLayout = ({ children }) => {
     }
   }, [status]);
 
-  if (status === "authenticated")
+  if (status === "authenticated" && data?.user?.role === "admin")
     return (
       <div className="flex h-screen bg1">
         {/* left panel */}
@@ -29,7 +29,6 @@ const AdminLayout = ({ children }) => {
         <div className="flex-1 flex flex-col overflow-hidden px-16">
           {/* top navbar */}
           <div className="bg-transparent">
-            {/* need to check admin topbar */}
             <TopBar role={"admin"} />
           </div>
 
