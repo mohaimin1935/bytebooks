@@ -105,9 +105,9 @@ const Item = ({ hasImage, defaultImage, item }) => {
     try {
       setLoading(true);
       const res = await axios.post(`/api/report/suspend/book/${item.id}`, {
-        status: item.isSuspended ? "suspend" : "unsuspend",
+        status: isSuspended ? "unsuspend" : "suspend",
       });
-      mutate("/api/book-info");
+      //mutate("/api/book-info");
       console.log(res.data);
       setIsSuspended(res.data?.isSuspended);
       toast.success("Request approved");
@@ -144,7 +144,7 @@ const Item = ({ hasImage, defaultImage, item }) => {
         <button
           className={cn(
             "w-32 text-center py-1.5 rounded mr-4",
-            isSuspended
+            !isSuspended
               ? "border-2 border-highlight content-highlight"
               : "border-2 border-emerald-400 text-emerald-500"
           )}

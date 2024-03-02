@@ -10,7 +10,7 @@ const BookList = () => {
   const { data, isLoading } = useSWR("/api/book-info", fetcher, {
     refreshInterval: 200,
   });
-  console.log(data);
+  console.log("bookdata: ", data);
 
   if (isLoading)
     return (
