@@ -95,6 +95,7 @@ export const POST = async (req,{params}) => {
             },
             data: {
                 isSuspended: status,
+                isPublished: false,
             },
             include: {
                 creators: {

@@ -61,6 +61,10 @@ export const PUT = async (req, { params }) => {
     return NextResponse.json({ message: "Book not found" }, { status: 404 });
   }
 
+  if (existingBook.isSuspended && body.isPublished) {
+    return NextResponse.json({ message: "Book is suspended" }, { status: 403 });
+  }
+
   try {
     const updatedBook = await prisma.bookInfo.update({
       where: {
