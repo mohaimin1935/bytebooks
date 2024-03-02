@@ -1,6 +1,7 @@
 "use client";
 
 import HighlightCard from "@/app/ui/book/cards/HighlightCard";
+import Loader from "@/app/ui/common/Loader";
 import Search from "@/app/ui/common/Search";
 import { fetcher } from "@/utils/util";
 import axios from "axios";
