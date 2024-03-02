@@ -81,7 +81,7 @@ export const GET = async (req, { params }) => {
       },
     });
 
-    console.log(Books);
+    //console.log(Books);
     let booksByGenre = {};
     Books.forEach(({ book }) => {
       book.genres.forEach(({ genre }) => {
@@ -91,7 +91,7 @@ export const GET = async (req, { params }) => {
           }
           booksByGenre[genre.id].count++;
         }
-        genreCounts[genre.id].count++;
+        //genreCounts[genre.id].count++;
       });
     });
 
