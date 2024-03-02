@@ -118,7 +118,7 @@ export const POST = async (req, { params }) => {
     // Add 6 hours to 'now' to adjust for Bangladesh time
     //const now = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
     const now = new Date();
-    //now.setDate(now.getDate() + 4);
+    now.setDate(now.getDate() + 5);
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     //const today = new Date(now);
     today.setDate(today.getDate() + 1);
@@ -126,7 +126,7 @@ export const POST = async (req, { params }) => {
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    console.log(today, yesterday);
+    //console.log(today, yesterday);
 
     // Check if a login record already exists for today
     const todayLogin = await prisma.userLogin.findFirst({
@@ -151,6 +151,8 @@ export const POST = async (req, { params }) => {
       ? new Date(new Date(user.lastLoginDate).getTime())
       : null;
 
+    //console.log(lastLoginDate);
+
     if (lastLoginDate) {
       const lastLoginDay = new Date(
         lastLoginDate.getFullYear(),
@@ -158,7 +160,8 @@ export const POST = async (req, { params }) => {
         lastLoginDate.getDate()
       );
 
-      lastLoginDate.setDate(lastLoginDate.getDate() + 1);
+      lastLoginDate.setDate(lastLoginDate.getDate());
+
       if (lastLoginDay.getTime() === yesterday.getTime()) {
         newStreak++;
       } else if (lastLoginDay.getTime() < yesterday.getTime()) {
