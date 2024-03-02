@@ -18,7 +18,7 @@ export const GET = async (req) => {
       },
     });
 
-    // Top 5 most bookmarked books
+    // Top  most bookmarked books
     const mostBookmarkedBooks = await prisma.bookUser.groupBy({
       by: ["bookId"],
       _count: {
@@ -32,23 +32,19 @@ export const GET = async (req) => {
           bookId: "desc",
         },
       },
-      take: 5,
     });
 
-    // Top 5 popular books based on user ratings
+    //Top  popular books based on user ratings
     const topRatedBooks = await prisma.bookInfo.findMany({
       where: {
         rating: {
           not: null,
         },
       },
-      take: 5,
       orderBy: {
         rating: "desc",
       },
     });
-
-    // You might need to further query book details using the bookIds from mostBookmarkedBooks and topRatedBooks
 
     const response = {
       totalBooks,
@@ -59,7 +55,7 @@ export const GET = async (req) => {
       })),
       topRatedBooks: topRatedBooks.map((book) => ({
         bookId: book.bookId,
-        averageRating: book._avg.rating,
+        averageRating: book.rating,
       })),
     };
 

@@ -103,7 +103,7 @@ model BookInfo {
   desc           String?
   isPublished    Boolean @default(false)
   isSuspended    Boolean @default(false)
-  rating        Float?
+  rating        Float? 
 
   authors  BookAuthor[]
   tags     BookTag[]
