@@ -44,7 +44,7 @@ const ReadingInterface = () => {
   );
 
   useEffect(() => {
-    if (!highlights) return;
+    if (!highlights || !chapter) return;
 
     highlights?.sort((a, b) => a.startIndex - b.startIndex);
     let lastIndex = 0;
@@ -75,6 +75,7 @@ const ReadingInterface = () => {
     setContentArray(tempArray);
   }, [highlights, activeChapter]);
 
+  // FIXME: highlight highlighted text breaks
   const handleMouseUp = async (index, id, start, end) => {
     if (mode === "normal") return;
 
@@ -84,24 +85,24 @@ const ReadingInterface = () => {
     }
 
     if (id) {
-      // return;
+      return;
       // console.log(start);
       // console.log(window.getSelection().anchorOffset + offset);
       // console.log(end);
       // console.log(window.getSelection().focusOffset + offset);
 
-      if (
-        window.getSelection().anchorOffset + offset >= start &&
-        window.getSelection().focusOffset + offset < end
-      ) {
-        try {
-          await axios.delete(`/api/highlights/${id}`);
-          toast.success("Highlight Removed");
-          return;
-        } catch (error) {
-          console.log(error);
-        }
-      } else return;
+      // if (
+      //   window.getSelection().anchorOffset + offset >= start &&
+      //   window.getSelection().focusOffset + offset < end
+      // ) {
+      //   try {
+      //     await axios.delete(`/api/highlights/${id}`);
+      //     toast.success("Highlight Removed");
+      //     return;
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // } else return;
     }
 
     if (typeof window !== "undefined") {

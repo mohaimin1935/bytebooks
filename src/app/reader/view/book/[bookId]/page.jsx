@@ -23,10 +23,6 @@ import { mutate } from "swr";
 const ViewBook = () => {
   const { bookId } = useParams();
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
-  const { data: bookmarksCountData } = useSWR(
-    `/api/book-info/${bookId}/bookmarkCount`,
-    fetcher
-  );
 
   const { data: user } = useSession();
   const { data: bookUser, isLoading } = useSWR(
@@ -38,15 +34,9 @@ const ViewBook = () => {
   const [showModal, setShowModal] = useState();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
-  const [bookmarkCount, setBookmarkCount] = useState(0);
 
   const { setModal } = useContext(ThemeContext);
 
-  useEffect(() => {
-    if (bookmarksCountData) {
-      setBookmarkCount(bookmarksCountData.bookmarkCount);
-    }
-  }, [bookmarksCountData]);
 
   useEffect(() => {
     if (bookUser) {
@@ -191,10 +181,6 @@ const ViewBook = () => {
             <button className="bg2 rounded-full p-4" onClick={handleReport}>
               <TbMessageReport />
             </button>
-            <div>
-              Bookmarks: {bookmarksCountData.bookmarkCount}
-              {/* Bookmarks: */}
-            </div>
           </div>
 
           <div className="flex gap-x-16 mt-32 mx-12 mb-12">
