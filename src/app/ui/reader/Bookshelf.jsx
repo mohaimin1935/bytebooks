@@ -1,36 +1,37 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Bookshelf.module.css";
-import { fetcher, textColorOnBg } from "@/utils/util";
+import { fetcher, textColorOnBg, truncateText } from "@/utils/util";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+import { ColorExtractor } from "react-color-extractor";
+import BookFlip from "../book/cards/BookFlip";
 
-const Bookshelf = () => {
+const Bookshelf = ({books}) => {
   const { data } = useSession();
   const { data: userData } = useSWR(`/api/users/${data?.user?.id}`, fetcher);
 
+  
+
   return (
     <div className="relative">
-      {/* <button className="bg2 z-10 block absolute px-4 py-1.5 text-sm rounded -bottom-0 right-0">
-        Organize
-      </button> */}
       <div
         className={cn(
-          "w-full flex items-end relative h-0 border-b border-bkg-2 before:shadow-xl mt-[200px]",
+          "w-full flex items-end relative h-0 border-b border-bkg-2 before:shadow-xl mt-[200px] z-50",
           styles.bookshelf
         )}
       >
-        <div className="w-full -mb-4 flex  items-end">
-          <Books />
+        <div className="w-full -mb-4 flex  items-end ml-16">
+          <Books books={books} />
 
           <img src="/plant.png" alt="" className="w-32 ml-auto" />
 
           <img
             src={userData?.image || "/profile.png"}
             alt=""
-            className="w-40 h-40  mx-4 rounded-sm"
+            className="w-40 h-40 mb-4 mx-4 rounded-sm -z-10"
           />
         </div>
       </div>
@@ -38,32 +39,19 @@ const Bookshelf = () => {
   );
 };
 
-const Books = () => {
-  const books = [1, 1, 1, 1];
-
+const Books = ({ books }) => {
   return (
     <div className="flex justify-start items-end gap-x-0 px-4 h-[200px]">
-      {books.map((_, index) => {
-        const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+      {books.map((book, index) => {
         return (
-          <div
-            key={index}
-            className="bottom-0 rounded-t border-t border-bkg-2 hover:mb-2"
-            style={{
-              backgroundColor: color,
-
-              height: `${70 + Math.random() * 25}%`,
-              width: `${32 + Math.random() * 20}px`,
-            }}
-          >
-            <div
-              className="rotate-90 text-left px-2 py-8"
-              style={{
-                color: textColorOnBg(color),
-              }}
-            >
-              {"Title"}
-            </div>
+          <div className="-ml-16 hover:mr-4 transition-all duration-300">
+            <BookFlip
+              book={book}
+              width={140}
+              details={false}
+              ratio={1.5}
+              initialAngle={70}
+            />
           </div>
         );
       })}

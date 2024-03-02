@@ -18,7 +18,6 @@ const Library = () => {
   );
 
   const { data: savedBooks, isLoading: savedLoading } = useSWR(
-    // FIXME: bookmarked
     `/api/users/${data?.user?.id}/books?type=bookmarked`,
     fetcher
   );

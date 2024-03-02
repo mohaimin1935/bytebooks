@@ -95,7 +95,6 @@ const BookDataTable = ({
 };
 
 const Item = ({ hasImage, defaultImage, item }) => {
-  const { mutate } = useSWRConfig();
   const [isSuspended, setIsSuspended] = useState(item.isSuspended);
   const [loading, setLoading] = useState(false);
   console.log(item.title, item.isSuspended);

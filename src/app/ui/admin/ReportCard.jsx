@@ -1,7 +1,7 @@
 "use client";
 
 import { fetcher } from "@/utils/util";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import Loader from "../common/Loader";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
@@ -19,6 +19,8 @@ const ReportCard = ({ report }) => {
     refreshInterval: 200,
   });
 
+  console.log(book?.isSuspended);
+
   const handleSuspend = async () => {
     if (loading) return;
     try {
@@ -26,10 +28,9 @@ const ReportCard = ({ report }) => {
       const res = await axios.post(
         `/api/report/${report.id}/suspend/${report.bookId}`,
         {
-          status: book.isSuspended ? "suspend" : "unsuspend",
+          status: book.isSuspended ? "unsuspend" : "suspend",
         }
       );
-      console.log(res.data);
       toast.success("Request approved");
     } catch (error) {
       console.log(error);
@@ -44,9 +45,9 @@ const ReportCard = ({ report }) => {
       await axios.patch(`/api/report/${report.id}`, {
         status: status === "like" ? "positive" : "negative",
       });
-      toast("Feedback submitted");
+      toast.success("Feedback submitted");
     } catch (error) {
-      toast("Something went wrong");
+      toast.error("Something went wrong");
       console.log(error);
     }
   };

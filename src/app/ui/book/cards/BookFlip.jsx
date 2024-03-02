@@ -23,6 +23,7 @@ const BookFlip = ({
   width = 200,
   ratio = 1.7,
   book = {},
+  initialAngle = 0,
 }) => {
   const [bgColor, setBgColor] = useState();
   const [audioLoading, setAudioLoading] = useState(false);
@@ -61,7 +62,13 @@ const BookFlip = ({
         className={styles.container}
         style={{ width: `${width}px`, height: `${width * ratio}px` }}
       >
-        <div className={cn(styles.book)}>
+        <div
+          className={cn(styles.book)}
+          style={{
+            transform:
+              initialAngle > 0 && `rotate3d(0, 1, 0, ${initialAngle}deg)`,
+          }}
+        >
           <div className={styles.front}>
             <div className={styles.cover}>
               <ColorExtractor src={book?.image} getColors={getColors}>

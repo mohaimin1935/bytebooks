@@ -15,11 +15,11 @@ const options = [
     link: "/admin/home",
     icon: () => <FiHome />,
   },
-  {
-    name: "Analytics",
-    link: "/admin/analytics",
-    icon: () => <IoAnalyticsOutline />,
-  },
+  // {
+  //   name: "Analytics",
+  //   link: "/admin/analytics",
+  //   icon: () => <IoAnalyticsOutline />,
+  // },
   {
     name: "Data Manager",
     link: "/admin/data-manager",

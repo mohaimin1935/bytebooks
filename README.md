@@ -42,9 +42,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
-- [ ] `reader/view/book/[bookId]` -> report, rating, mark as read, rate
+- [ ] report form content
+- [ ] suspend comment
 - [ ] profile
-
-
 
 - [ ] initialState, form
