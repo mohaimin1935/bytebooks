@@ -220,6 +220,7 @@ export const GET = async (req) => {
       include: {
         authors: { include: { author: true } },
         genres: { include: { genre: true } },
+        alternateBook: true,
         // Include other relations as needed
       },
     });

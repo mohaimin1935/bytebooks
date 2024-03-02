@@ -104,6 +104,8 @@ model BookInfo {
   isPublished    Boolean @default(false)
   isSuspended    Boolean @default(false)
   rating        Float?
+  language      String?
+  alternateBookId String? @unique
 
   authors  BookAuthor[]
   tags     BookTag[]
@@ -118,6 +120,8 @@ model BookInfo {
   BookUser      BookUser[]
   highlights    Highlights[]
   contentReport ContentReport[]
+  alternateBook BookInfo? @relation("rr",fields: [alternateBookId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  altBook BookInfo? @relation("rr")
 }
 
 model BookAuthor {
@@ -346,3 +350,4 @@ model ResetPasswordRequest {
   @@unique([userId])
   @@unique([tokenValue])
 }
+
