@@ -37,7 +37,6 @@ const ViewBook = () => {
 
   const { setModal } = useContext(ThemeContext);
 
-
   useEffect(() => {
     if (bookUser) {
       setIsBookmarked(bookUser?.isBookmarked);
@@ -155,7 +154,7 @@ const ViewBook = () => {
               ))}
             </p>
 
-            <div className="flex gap-x-4 mt-2">
+            {/* <div className="flex gap-x-4 mt-2">
               <div className="flex gap-x-2 items-center">
                 <FiStar size={18} />
                 <p className="">4.7</p>
@@ -164,7 +163,7 @@ const ViewBook = () => {
                 <AiFillAudio size={18} />
                 <p className="">22 min</p>
               </div>
-            </div>
+            </div> */}
 
             <p className="content2 my-4 w-3/4">{book.intro}</p>
           </div>
@@ -192,7 +191,7 @@ const ViewBook = () => {
                   book.genres?.map(({ genre }) => (
                     <Link
                       key={genre.id}
-                      href="/"
+                      href={`/reader/genre/${genre.id}`}
                       className="px-4 py-1.5 border border-check rounded-full"
                     >
                       {genre.name}
@@ -203,9 +202,6 @@ const ViewBook = () => {
 
               <p className="font-semibold text-lg mb-4">Description</p>
               <p className="text-justify">{book.desc}</p>
-
-              <p className="font-semibold text-lg mb-4">Language</p>
-              <p className="text-justify">{book.language}</p>
             </div>
             <div className="w-2/5">
               <p className="font-semibold text-lg mb-4">About the Author</p>

@@ -43,10 +43,12 @@ const AddAuthor = ({
     try {
       setLoading(true);
       if (!author) {
+        console.log("first");
         const res = await axios.post("/api/author", newAuthor);
         setAuthors((prev) => [...prev, res.data]);
         setSelectedAuthors((prev) => [...prev, res.data]);
       } else {
+        console.log("sec");
         const res = await axios.patch(`/api/author/${author.id}`, newAuthor);
         setAuthors((prev) =>
           prev.map((item) => (item.id === author.id ? { ...res.data } : item))

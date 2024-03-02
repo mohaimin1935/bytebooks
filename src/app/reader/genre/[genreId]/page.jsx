@@ -19,7 +19,7 @@ const GenrePage = () => {
   );
 
   const { data: books, isLoading: booksLoading } = useSWR(
-    `/api/book-info?genre=${genreId}`,
+    `/api/book-info?isPublished=true`,
     fetcher
   );
 

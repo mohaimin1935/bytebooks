@@ -16,7 +16,8 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
 
   const { data, isLoading } = useSWR(
     `/api/book-info/${bookId}/${type}s`,
-    fetcher
+    fetcher,
+    { refreshInterval: 200 }
   );
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
 
@@ -186,7 +187,7 @@ export const BookEditContextProvider = ({ children, bookId, type }) => {
     setSaved(true);
 
     if (index !== -1 && chapters) {
-      setBody(chapters[index].content);
+      setBody(chapters[index].content || "");
       setAudioUrl(chapters[index].audioLink);
       setActiveTitle(chapters[index].title);
     }

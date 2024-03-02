@@ -29,7 +29,6 @@ const ReaderLayout = ({ children }) => {
   const updateStreak = async () => {
     try {
       const res = await axios.post(`/api/users/${data?.user?.id}/streak`, {});
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }

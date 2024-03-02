@@ -17,27 +17,20 @@ const Calendar = () => {
     fetcher
   );
 
-  console.log(streaks);
-
   const streakIncludes = (date) => {
-    console.log(loginDates);
-    loginDates.forEach((d) => {
-      if (parseInt(d) === date) return true;
-    });
+    for (let i = 0; i < loginDates.length; i++) {
+      if (parseInt(loginDates[i]) == parseInt(date)) {
+        return true;
+      }
+    }
     return false;
   };
 
   useEffect(() => {
     if (streaks) {
-      setLoginDates(
-        streaks?.loginDates
-          ?.map((d) => d?.split("-")?.at(2))
-          ?.filter((val, idx, arr) => arr.indexOf(val) === idx)
-      );
+      setLoginDates(streaks?.loginDates?.map((d) => d?.split("-")?.at(2)));
     }
   }, [isLoading]);
-
-  console.log(loginDates);
 
   return (
     <div>
@@ -50,7 +43,7 @@ const Calendar = () => {
               new Date().getDate() == date && "shadow-xl border border-check"
             )}
           >
-            {streakIncludes(day) && (
+            {streakIncludes(date) && (
               <div className="w-1 h-1 rounded-full bottom-3 accent2 absolute"></div>
             )}
             <p className="">{day.substring(0, 3)}</p>

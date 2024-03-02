@@ -53,14 +53,14 @@ const ReadingInterface = () => {
       if (highlight.startIndex < lastIndex) return;
       tempArray.push({
         highlighted: false,
-        text: chapter.content.substring(lastIndex, highlight.startIndex),
+        text: chapter.content?.substring(lastIndex, highlight.startIndex),
       });
       tempArray.push({
         highlighted: true,
         id: highlight.id,
         startIndex: highlight.startIndex,
         endIndex: highlight.endIndex,
-        text: chapter.content.substring(
+        text: chapter.content?.substring(
           highlight.startIndex,
           highlight.endIndex
         ),
@@ -69,7 +69,7 @@ const ReadingInterface = () => {
     });
     tempArray.push({
       highlighted: false,
-      text: chapter.content.substring(lastIndex),
+      text: chapter.content?.substring(lastIndex),
     });
     console.log("updated", tempArray);
     setContentArray(tempArray);
@@ -136,10 +136,22 @@ const ReadingInterface = () => {
     setMousePosition({ x, y });
   };
 
+  const removeHighlight = async (id) => {
+    if (!id) return;
+
+    try {
+      await axios.delete(`/api/highlights/${id}`);
+      toast.success("Highlight Removed");
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <InterfaceLayout>
       <div
-        className="absolute right-12 bottom-12 bg1 z-50 rounded-full shadow-lg hover:shadow-2xl cursor-pointer p-4"
+        className="absolute right-12 bottom-20 bg1 z-50 rounded-full shadow-lg hover:shadow-2xl cursor-pointer p-4"
         onClick={() => {
           setMode((p) => (p === "normal" ? "highlight" : "normal"));
         }}
@@ -201,6 +213,7 @@ const ReadingInterface = () => {
                 content.endIndex
               )
             }
+            onClick={() => removeHighlight(content.id)}
             key={index}
             className={cn("", content.highlighted && "highlighted")}
           >

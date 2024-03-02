@@ -42,45 +42,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Todo FRONTEND
 
-- [ ] logout icon left align
-
-
-
-
-
-- [ ] time update audio progress
-- [ ] author update data-manager not working
-- [x] creator topbar image
-- [ ] search - api done
--
-
-- [ ] add search functionality in book list for creator
-- [ ] report book reader in chapter
-- [ ] profile page for creator
-- [ ] report
-- [ ] author get data
-- [ ] streak
-- [ ] admin/data-manager user table data show ui design
-- [ ] admin/data-manager book table data show ui design
-
-### Todo BACKEND
-
-- [ ] streak ???
-- highlight create
-request body:
-```
-userId: 'clsh4tkat0000eqi6zb8495lr',
-bookId: 'clsh5kd5w0007d9fv71le4p7v',
-chapterId: null,
-byteId: 'clt8wyqxm0007kmx03zzuubn8',
-startIndex: 1157,
-endIndex: 1188,
-```
-
-
----
-
-- how to know byte or chapter in continue?
-  [ ] update
-  git add .
-  git diff --cached > patch_name.patch
+- [ ] `reader/view/book/[bookId]` -> report, rating, mark as read, rate
+- [ ] profile
+- [ ] initialState, form

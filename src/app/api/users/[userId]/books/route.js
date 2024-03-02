@@ -221,10 +221,67 @@ export const GET = async (req, { params }) => {
         });
         results = [...results, ...additionalBooks];
       }
+    } else if (filter.type === "bookmarked") {
+      const { userId } = params; // Ensure 'userId' is obtained correctly
+      if (!userId) {
+        return NextResponse.json(
+          { error: "User ID is required for 'continue' filter" },
+          { status: 400 }
+        );
+      }
+
+      // Fetch books that the user has started reading but not finished
+      results = await prisma.bookUser.findMany({
+        where: {
+          userId: userId,
+          isBookmarked: true,
+          book: {
+            isPublished: true,
+          },
+        },
+        skip: filter.count * filter.page,
+        take: filter.count,
+        include: {
+          book: {
+            include: {
+              authors: { include: { author: true } },
+              genres: { include: { genre: true } },
+            },
+          },
+        },
+      });
+      results = results.map((result) => result.book);
+    } else if (filter.type === "finished") {
+      const { userId } = params; // Ensure 'userId' is obtained correctly
+      if (!userId) {
+        return NextResponse.json(
+          { error: "User ID is required for 'continue' filter" },
+          { status: 400 }
+        );
+      }
+
+      // Fetch books that the user has started reading but not finished
+      results = await prisma.bookUser.findMany({
+        where: {
+          userId: userId,
+          status: "finished",
+          book: {
+            isPublished: true,
+          },
+        },
+        skip: filter.count * filter.page,
+        take: filter.count,
+        include: {
+          book: {
+            include: {
+              authors: { include: { author: true } },
+              genres: { include: { genre: true } },
+            },
+          },
+        },
+      });
+      results = results.map((result) => result.book);
     }
-    // TODO: if "bookmarked": get list of books bookmarked by an user.
-    // TODO: if "finished": get list of books whose bookUser status is finished by an user.
-    //check if published
 
     return NextResponse.json(results);
   } catch (err) {

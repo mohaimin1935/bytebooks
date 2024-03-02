@@ -23,10 +23,13 @@ const UpdateProfile = ({ type = "reader" }) => {
 
   const { setModal } = useContext(ThemeContext);
   const { data } = useSession();
-  const { data: userData, isLoading } = useSWR(
-    `/api/users/${data?.user?.id}`,
-    fetcher
-  );
+  const {
+    data: userData,
+    isLoading,
+    error,
+  } = useSWR(`/api/users/${data?.user?.id}`, fetcher, { refreshInterval: 100 });
+
+  console.log(userData);
 
   const handlePassword = () => {
     setModal(true);
@@ -165,7 +168,7 @@ const UpdateProfile = ({ type = "reader" }) => {
           >
             {(applyLoading || !userData) && <Loader />}
             {userData && !applyLoading && userData?.appliedToBeCreator && (
-              <>Cancel Creator Application</>
+              <p className="content-highlight">Cancel Creator Application</p>
             )}
             {userData && !applyLoading && !userData?.appliedToBeCreator && (
               <>Apply to be Creator</>

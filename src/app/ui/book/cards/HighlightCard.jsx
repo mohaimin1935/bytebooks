@@ -36,7 +36,7 @@ const HighlightCard = ({ highlight }) => {
   };
 
   return (
-    <div className="border border-bkg-2 shadow-md rounded-xl w-[31%] h-72 overflow-y-auto overflow-scroll p-4 pb-2 flex flex-col justify-between">
+    <div className="border border-bkg-2 shadow-md rounded-xl w-[31%] h-64 overflow-y-auto overflow-scroll p-4 pb-2 flex flex-col justify-between">
       {modal && modalType === "delete" && (
         <DeleteConfirm
           handleCancel={() => {

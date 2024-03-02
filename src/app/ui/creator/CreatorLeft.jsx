@@ -20,11 +20,11 @@ const options = [
   //   link: "your-books",
   //   icon: () => <FiBookOpen />,
   // },
-  {
-    name: "Analytics",
-    link: "/creator/analytics",
-    icon: () => <IoAnalyticsOutline />,
-  },
+  // {
+  //   name: "Analytics",
+  //   link: "/creator/analytics",
+  //   icon: () => <IoAnalyticsOutline />,
+  // },
 
   {
     name: "Data Manager",
