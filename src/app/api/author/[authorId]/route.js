@@ -24,37 +24,32 @@ export const GET = async (req, { params }) => {
 };
 
 export const PATCH = async (req, { params }) => {
-  const { bookId, chapterId } = params;
+  const { authorId } = params;
   try {
     const body = await req.json();
+    console.log(body, authorId);
 
-    const existingChapter = await prisma.chapter.findUnique({
+    const existingAuthor = await prisma.author.findUnique({
       where: {
-        id_bookId: {
-          id: chapterId,
-          bookId: bookId,
-        },
+        id: authorId,
       },
     });
 
-    if (!existingChapter) {
+    if (!existingAuthor) {
       return NextResponse.json(
-        { message: "Chapter not found" },
+        { message: "Author not found" },
         { status: 404 }
       );
     }
 
-    const updatedChapter = await prisma.chapter.update({
+    const updatedAuthor = await prisma.author.update({
       where: {
-        id_bookId: {
-          id: chapterId,
-          bookId: bookId,
-        },
+        id: authorId,
       },
       data: body,
     });
 
-    return NextResponse.json(updatedChapter);
+    return NextResponse.json(updatedAuthor);
   } catch (err) {
     console.error(err);
 

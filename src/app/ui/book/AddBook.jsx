@@ -43,7 +43,7 @@ const AddBook = ({ bookInfo }) => {
   const [tags, setTags] = useState([]);
   const [desc, setDesc] = useState("");
   const [isbn, setIsbn] = useState("");
-  const [language, setLanguage] = useState("");
+  // const [language, setLanguage] = useState("");
   const [publishingYear, setPublishingYear] = useState("");
 
   const [bookId, setBookId] = useState("");
@@ -73,7 +73,7 @@ const AddBook = ({ bookInfo }) => {
       setTags(book.tags?.map((a) => a.tag) || []);
       setDesc(book.desc);
       setIsbn(book.isbn);
-      setLanguage(book.language);
+      // setLanguage(book.language);
       setPublishingYear(book.publishingYear);
 
       setBookId(book.id);
@@ -94,7 +94,7 @@ const AddBook = ({ bookInfo }) => {
     tags,
     desc,
     isbn,
-    language,
+    // language,
     publishingYear,
   ]);
 
@@ -185,7 +185,7 @@ const AddBook = ({ bookInfo }) => {
 
     const bookInfo = {
       isbn,
-      language,
+      // language,
       publishingYear: parseInt(publishingYear),
       title: bookTitle,
       image: bookImage,
@@ -454,14 +454,14 @@ const AddBook = ({ bookInfo }) => {
               onChange={(e) => setIsbn(e.target.value)}
             />
 
-            <p className="font-semibold text-lg mb-4 mt-12">Language</p>
+            {/* <p className="font-semibold text-lg mb-4 mt-12">Language</p>
             <input
               className={"mb-2 bg-transparent outline-none content2"}
               type="text"
               placeholder="English"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-            />
+            /> */}
 
             {/* publishing year */}
             <p className="font-semibold text-lg mb-4 mt-12">Publishing Year</p>

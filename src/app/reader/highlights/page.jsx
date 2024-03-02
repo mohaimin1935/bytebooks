@@ -17,14 +17,13 @@ const Highlights = () => {
     fetcher,
     { refreshInterval: 300 }
   );
-  console.log(highlights);
 
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <h2 className="section-header">Memories Bring Back You</h2>
 
-        <Search placeholder={"Search from memories..."} />
+        {/* <Search placeholder={"Search from memories..."} /> */}
       </div>
 
       <div className="flex flex-wrap items-center gap-10">

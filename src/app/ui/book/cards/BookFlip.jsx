@@ -109,14 +109,14 @@ const BookFlip = ({
             {truncateText(book?.title, 20)}
           </Link>
           <p className="text-sm font-light">By {getAuthors(book)}</p>
-          <div className="flex items-center gap-x-4 text-xs  content3">
+          {/* <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar /> <p className="">4.7</p>
             </div>
             <div className="flex items-center gap-x-1">
               <LuHeadphones /> <p className="">32 min</p>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 
