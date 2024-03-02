@@ -138,7 +138,7 @@ export const POST = async (req,{params}) => {
           const notifications1 = creators.map(user => ({
             userId: user.userId,
             title: "Book Suspended",
-            message: `Your book "${res.title}" has been suspended. Comment: ${body.comment}`,
+            message: `Your book "${res.title}" has been suspended.\nComment: ${body.comment}`,
             type: "book_suspend_status_changed",
             bookId: res.id,
           }));

@@ -79,6 +79,9 @@ export const POST = async (req,{params}) => {
 
         */
         const body = await req.json();
+        if (!body.comment) {
+            body.comment = "Contact with an admin";
+        }
         let status = false;
         if (body.status==="suspend") {
             status = true;
@@ -118,6 +121,15 @@ export const POST = async (req,{params}) => {
             creators.push(b);
         }
         if (status===true) {
+            
+            const rr = await prisma.ContentReport.update({
+                where: {
+                    id: params.reportId,
+                },
+                data: {
+                    status: "positive",
+                }
+            }); 
             // Create a notification for each user
           const notifications = reporter.map(user => ({
             userId: user.userId,
@@ -135,7 +147,7 @@ export const POST = async (req,{params}) => {
           const notifications1 = creators.map(user => ({
             userId: user.userId,
             title: "Book Suspended",
-            message: `Your book "${res.title}" has been suspended. Comment: ${body.comment}`,
+            message: `Your book "${res.title}" has been suspended.\nComment: ${body.comment}`,
             type: "book_suspend_status_changed",
             bookId: res.id,
           }));
