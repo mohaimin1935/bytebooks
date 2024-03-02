@@ -4,7 +4,7 @@ import {
   authenticatedOnlyFailed,
   creatorOnlyFailed,
   selfValidationOnlyFailed,
-  selfValidationAndAdminOnlyFailed
+  selfValidationAndAdminOnlyFailed,
 } from "@/middleware/authorization";
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
@@ -26,6 +26,7 @@ export const GET = async (req, { params }) => {
         email: true,
         image: true,
         role: true, // need to add country and xp
+        appliedToBeCreator: true,
       },
     });
     //console.log(user)

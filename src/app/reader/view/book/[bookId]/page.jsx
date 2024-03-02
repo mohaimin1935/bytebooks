@@ -18,10 +18,12 @@ import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import { LuBookMarked } from "react-icons/lu";
 import { TbMessageReport } from "react-icons/tb";
 import useSWR from "swr";
+import { mutate } from "swr";
 
 const ViewBook = () => {
   const { bookId } = useParams();
   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
+
   const { data: user } = useSession();
   const { data: bookUser, isLoading } = useSWR(
     `/api/users/${user?.user?.id}/books/${bookId}`,
@@ -34,6 +36,7 @@ const ViewBook = () => {
   const [reportLoading, setReportLoading] = useState(false);
 
   const { setModal } = useContext(ThemeContext);
+
 
   useEffect(() => {
     if (bookUser) {
@@ -57,6 +60,7 @@ const ViewBook = () => {
       );
       setIsBookmarked(!isBookmarked);
       console.log(res.data);
+      mutate(`/api/book-info/${bookId}/bookmarkCount`);
     } catch (error) {
       console.log(error);
     }
@@ -199,6 +203,9 @@ const ViewBook = () => {
 
               <p className="font-semibold text-lg mb-4">Description</p>
               <p className="text-justify">{book.desc}</p>
+
+              <p className="font-semibold text-lg mb-4">Language</p>
+              <p className="text-justify">{book.language}</p>
             </div>
             <div className="w-2/5">
               <p className="font-semibold text-lg mb-4">About the Author</p>

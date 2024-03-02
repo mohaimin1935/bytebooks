@@ -37,7 +37,7 @@ const Calendar = () => {
     }
   }, [isLoading]);
 
-  console.log(streaks?.loginDates?.at(0)?.split("-")?.at(2));
+  console.log(loginDates);
 
   return (
     <div>

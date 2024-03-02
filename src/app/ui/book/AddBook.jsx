@@ -43,6 +43,7 @@ const AddBook = ({ bookInfo }) => {
   const [tags, setTags] = useState([]);
   const [desc, setDesc] = useState("");
   const [isbn, setIsbn] = useState("");
+  const [language, setLanguage] = useState("");
   const [publishingYear, setPublishingYear] = useState("");
 
   const [bookId, setBookId] = useState("");
@@ -72,6 +73,7 @@ const AddBook = ({ bookInfo }) => {
       setTags(book.tags?.map((a) => a.tag) || []);
       setDesc(book.desc);
       setIsbn(book.isbn);
+      setLanguage(book.language);
       setPublishingYear(book.publishingYear);
 
       setBookId(book.id);
@@ -84,7 +86,17 @@ const AddBook = ({ bookInfo }) => {
 
   useEffect(() => {
     setSaved(false);
-  }, [book, bookImage, authors, genres, tags, desc, isbn, publishingYear]);
+  }, [
+    book,
+    bookImage,
+    authors,
+    genres,
+    tags,
+    desc,
+    isbn,
+    language,
+    publishingYear,
+  ]);
 
   useEffect(() => {
     if (saved && !modal && !actionProgressing && !book) {
@@ -173,6 +185,7 @@ const AddBook = ({ bookInfo }) => {
 
     const bookInfo = {
       isbn,
+      language,
       publishingYear: parseInt(publishingYear),
       title: bookTitle,
       image: bookImage,
@@ -439,6 +452,15 @@ const AddBook = ({ bookInfo }) => {
               placeholder="978-1-4028-9462-6"
               value={isbn}
               onChange={(e) => setIsbn(e.target.value)}
+            />
+
+            <p className="font-semibold text-lg mb-4 mt-12">Language</p>
+            <input
+              className={"mb-2 bg-transparent outline-none content2"}
+              type="text"
+              placeholder="English"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
             />
 
             {/* publishing year */}

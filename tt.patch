@@ -1,0 +1,134 @@
+diff --git a/README.md b/README.md
+index 6206489..d09cbd1 100644
+--- a/README.md
++++ b/README.md
+@@ -46,7 +46,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
+ - [ ] author update data-manager not working
+ - [x] creator topbar image
+ - [ ] search - api done
+-- 
++-
+ 
+ - [ ] add search functionality in book list for creator
+ - [ ] report book reader in chapter
+@@ -78,3 +78,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
+ ---
+ 
+ - how to know byte or chapter in continue?
++  [ ] update
++  git add .
++  git diff --cached > patch_name.patch
+diff --git a/prisma/schema.prisma b/prisma/schema.prisma
+index cdd4aec..e67e9d0 100644
+--- a/prisma/schema.prisma
++++ b/prisma/schema.prisma
+@@ -101,6 +101,7 @@ model BookInfo {
+   image          String?
+   desc           String?
+   isPublished    Boolean @default(false)
++  language       String?
+ 
+   authors  BookAuthor[]
+   tags     BookTag[]
+diff --git a/src/app/api/book-info/[bookId]/bookmarkCount/route.js b/src/app/api/book-info/[bookId]/bookmarkCount/route.js
+new file mode 100644
+index 0000000..f03e244
+--- /dev/null
++++ b/src/app/api/book-info/[bookId]/bookmarkCount/route.js
+@@ -0,0 +1,27 @@
++import prisma from "@/utils/connect";
++import { NextResponse } from "next/server";
++
++export const GET = async (req, { params }) => {
++  const { bookId } = params;
++
++  try {
++    // Counting the number of 'BookUser' entries where 'isBookmarked' is true for the given 'bookId'
++    const bookmarkCount = await prisma.bookUser.count({
++      where: {
++        bookId: bookId, // Matching the bookId
++        isBookmarked: true, // Where the entry is marked as a bookmark
++      },
++    });
++
++    console.log(bookmarkCount);
++    // Returning the count of bookmarks
++    return NextResponse.json({ bookmarkCount: bookmarkCount });
++  } catch (err) {
++    console.log(err);
++
++    return NextResponse.json(
++      { message: "Something went wrong" },
++      { status: 500 }
++    );
++  }
++};
+diff --git a/src/app/reader/view/book/[bookId]/page.jsx b/src/app/reader/view/book/[bookId]/page.jsx
+index 1ca1c06..9d20773 100644
+--- a/src/app/reader/view/book/[bookId]/page.jsx
++++ b/src/app/reader/view/book/[bookId]/page.jsx
+@@ -18,10 +18,16 @@ import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
+ import { LuBookMarked } from "react-icons/lu";
+ import { TbMessageReport } from "react-icons/tb";
+ import useSWR from "swr";
++import { mutate } from "swr";
+ 
+ const ViewBook = () => {
+   const { bookId } = useParams();
+   const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
++  const { data: bookmarksCountData } = useSWR(
++    `/api/book-info/${bookId}/bookmarkCount`,
++    fetcher
++  );
++
+   const { data: user } = useSession();
+   const { data: bookUser, isLoading } = useSWR(
+     `/api/users/${user?.user?.id}/books/${bookId}`,
+@@ -32,9 +38,16 @@ const ViewBook = () => {
+   const [showModal, setShowModal] = useState();
+   const [isBookmarked, setIsBookmarked] = useState(false);
+   const [reportLoading, setReportLoading] = useState(false);
++  const [bookmarkCount, setBookmarkCount] = useState(0);
+ 
+   const { setModal } = useContext(ThemeContext);
+ 
++  useEffect(() => {
++    if (bookmarksCountData) {
++      setBookmarkCount(bookmarksCountData.bookmarkCount);
++    }
++  }, [bookmarksCountData]);
++
+   useEffect(() => {
+     if (bookUser) {
+       setIsBookmarked(bookUser?.isBookmarked);
+@@ -57,6 +70,7 @@ const ViewBook = () => {
+       );
+       setIsBookmarked(!isBookmarked);
+       console.log(res.data);
++      mutate(`/api/book-info/${bookId}/bookmarkCount`);
+     } catch (error) {
+       console.log(error);
+     }
+@@ -177,6 +191,10 @@ const ViewBook = () => {
+             <button className="bg2 rounded-full p-4" onClick={handleReport}>
+               <TbMessageReport />
+             </button>
++            <div>
++              Bookmarks: {bookmarksCountData.bookmarkCount}
++              {/* Bookmarks: */}
++            </div>
+           </div>
+ 
+           <div className="flex gap-x-16 mt-32 mx-12 mb-12">
+diff --git a/src/app/ui/book/AddBook.jsx b/src/app/ui/book/AddBook.jsx
+index 9fc4547..a723790 100644
+--- a/src/app/ui/book/AddBook.jsx
++++ b/src/app/ui/book/AddBook.jsx
+@@ -43,6 +43,7 @@ const AddBook = ({ bookInfo }) => {
+   const [tags, setTags] = useState([]);
+   const [desc, setDesc] = useState("");
+   const [isbn, setIsbn] = useState("");
++  const [language, setLanguage] = useState("");
+   const [publishingYear, setPublishingYear] = useState("");
+ 
+   const [bookId, setBookId] = useState("");
