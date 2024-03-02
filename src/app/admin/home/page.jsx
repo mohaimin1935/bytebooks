@@ -42,7 +42,9 @@ const AdminHome = () => {
               <BookEditSkeleton />
             </>
           ) : (
-            pendingReports?.map((report) => <ReportCard report={report} />)
+            pendingReports?.map((report) => (
+              <ReportCard key={report.id} report={report} />
+            ))
           )}
         </div>
       </div>
@@ -65,7 +67,7 @@ const AdminHome = () => {
             </>
           ) : (
             todayResolvedReports?.map((report) => (
-              <ReportCard report={report} />
+              <ReportCard key={report.id} report={report} />
             ))
           )}
         </div>

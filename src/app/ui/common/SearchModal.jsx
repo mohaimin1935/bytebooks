@@ -59,10 +59,9 @@ const SearchModal = ({
             link={`/reader/view/book/${book.id}`}
           />
         ) : (
-          <div>
+          <div key={book.id}>
             <SearchBookCard
               link="#"
-              key={book.id}
               book={book}
               global={global}
               setValue={setValue}
