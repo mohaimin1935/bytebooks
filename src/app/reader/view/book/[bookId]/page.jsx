@@ -5,6 +5,7 @@ import Loader from "@/app/ui/common/Loader";
 import Modal from "@/app/ui/common/Modal";
 import CustomTextArea from "@/app/ui/common/TextArea";
 import Rating from "@/app/ui/reader/Rating";
+import Report from "@/app/ui/reader/Report";
 import Status from "@/app/ui/reader/Status";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { baseApi, fetcher } from "@/utils/util";
@@ -36,8 +37,6 @@ const ViewBook = () => {
     { refreshInterval: 200 }
   );
 
-  console.log(bookUser);
-
   const [reportText, setReportText] = useState();
   const [showModal, setShowModal] = useState();
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -50,11 +49,6 @@ const ViewBook = () => {
       setIsBookmarked(bookUser?.isBookmarked);
     }
   }, [isLoading]);
-
-  const handleReport = () => {
-    setModal(true);
-    setShowModal("report");
-  };
 
   const handleBookMark = async () => {
     try {
@@ -80,45 +74,9 @@ const ViewBook = () => {
     setShowModal("");
   };
 
-  const saveReport = async () => {
-    try {
-      setReportLoading(true);
-      // TODO: await axios.post
-      toast.success("Reported successfully");
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.log(error);
-    } finally {
-      setReportLoading(false);
-    }
-  };
-
   if (book)
     return (
       <div>
-        {showModal === "report" && (
-          <Modal className={"h-96"}>
-            <CustomTextArea
-              maxLength={400}
-              maxHeight={400}
-              placeholder={"Details..."}
-              value={reportText}
-              setValue={setReportText}
-            />
-            <div className="flex items-center justify-between mt-24">
-              <button
-                className="secondary-btn py-1 rounded"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-              <button className="primary-btn py-1 rounded" onClick={saveReport}>
-                {reportLoading ? <Loader /> : <>Report</>}
-              </button>
-            </div>
-          </Modal>
-        )}
-
         <div className="flex gap-x-16 ml-12 relative">
           <div className="absolute right-0 top-0 gap-y-4 flex flex-col items-end">
             <Link
@@ -165,7 +123,7 @@ const ViewBook = () => {
             <div className="flex gap-x-4 mt-2">
               <div className="flex gap-x-2 items-center text-amber-500">
                 <PiStarFill size={18} />
-                <p className="">{book.rating.toFixed(2)}</p>
+                <p className="">{book.rating.toFixed(2) || "No rating"}</p>
               </div>
               {/* <div className="flex gap-x-2 items-center">
                 <AiFillAudio size={18} />
@@ -175,8 +133,9 @@ const ViewBook = () => {
             </div>
 
             <div className="mt-4">
-              {bookUser?.status !== "will read" &&
-                bookUser?.status !== "no shelf" && (
+              {bookUser &&
+                bookUser?.status !== "will read" &&
+                bookUser?.status !== "no-shelf" && (
                   <div>
                     Your Rating: <Rating bookId={bookId} />
                   </div>
@@ -187,20 +146,19 @@ const ViewBook = () => {
           </div>
         </div>
 
-        <div className="bg-pure w-full -mt-24 rounded-xl relative border-2 border-bkg-2">
-          <div className="absolute top-6 right-8 flex gap-4">
+        <div className="bg-pure w-full -mt-24 rounded-xl border-2 border-bkg-2">
+          <div className="mt-6 mr-8 flex gap-4">
+            <div className="flex-1"></div>
             <button onClick={handleBookMark} className="bg2 rounded-full p-4">
               {isBookmarked ? <IoBookmark /> : <IoBookmarkOutline />}
             </button>
             {/* <button className="bg2 rounded-full p-4">
               <FiShare2 />
             </button> */}
-            <button className="bg2 rounded-full p-4" onClick={handleReport}>
-              <TbMessageReport />
-            </button>
+            <Report bookId={bookId} />
           </div>
 
-          <div className="flex gap-x-16 mt-32 mx-12 mb-12">
+          <div className="flex gap-x-16 mt-16 mx-12 mb-12">
             <div className="w-3/5">
               <p className="font-semibold text-lg mb-4">Genres</p>
               <div className="flex flex-wrap items-center mb-12 gap-2">

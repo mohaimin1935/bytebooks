@@ -8,6 +8,7 @@ const CustomTextArea = ({
   placeholder,
   maxLength = 120,
   maxHeight = 400,
+  autoFocus,
 }) => {
   const textAreaRef = useRef(null);
   useEffect(() => {
@@ -19,6 +20,7 @@ const CustomTextArea = ({
   return (
     <div className="relative z-10">
       <textarea
+      autoFocus={autoFocus}
         ref={textAreaRef}
         style={{ whiteSpace: "pre-wrap" }}
         className={cn(
