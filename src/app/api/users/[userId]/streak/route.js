@@ -118,7 +118,6 @@ export const POST = async (req, { params }) => {
     // Add 6 hours to 'now' to adjust for Bangladesh time
     //const now = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
     const now = new Date();
-    now.setDate(now.getDate() + 5);
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     //const today = new Date(now);
     today.setDate(today.getDate() + 1);
