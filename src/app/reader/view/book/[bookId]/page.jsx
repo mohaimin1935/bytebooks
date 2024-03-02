@@ -4,6 +4,8 @@ import AuthorCard from "@/app/ui/author/AuthorCard";
 import Loader from "@/app/ui/common/Loader";
 import Modal from "@/app/ui/common/Modal";
 import CustomTextArea from "@/app/ui/common/TextArea";
+import Rating from "@/app/ui/reader/Rating";
+import Status from "@/app/ui/reader/Status";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { baseApi, fetcher } from "@/utils/util";
 import axios from "axios";
@@ -16,19 +18,25 @@ import { AiFillAudio } from "react-icons/ai";
 import { FiArrowRight, FiBookmark, FiShare2, FiStar } from "react-icons/fi";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import { LuBookMarked } from "react-icons/lu";
+import { PiStarFill } from "react-icons/pi";
 import { TbMessageReport } from "react-icons/tb";
 import useSWR from "swr";
 import { mutate } from "swr";
 
 const ViewBook = () => {
   const { bookId } = useParams();
-  const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher);
+  const { data: book } = useSWR(`/api/book-info/${bookId}`, fetcher, {
+    refreshInterval: 200,
+  });
 
   const { data: user } = useSession();
   const { data: bookUser, isLoading } = useSWR(
     `/api/users/${user?.user?.id}/books/${bookId}`,
-    fetcher
+    fetcher,
+    { refreshInterval: 200 }
   );
+
+  console.log(bookUser);
 
   const [reportText, setReportText] = useState();
   const [showModal, setShowModal] = useState();
@@ -54,7 +62,7 @@ const ViewBook = () => {
         `/api/users/${user?.user?.id}/books/${bookId}`,
         {
           isBookmarked: !isBookmarked,
-          status: "will read",
+          status: bookUser?.status || "will read",
         }
       );
       setIsBookmarked(!isBookmarked);
@@ -154,16 +162,26 @@ const ViewBook = () => {
               ))}
             </p>
 
-            {/* <div className="flex gap-x-4 mt-2">
-              <div className="flex gap-x-2 items-center">
-                <FiStar size={18} />
-                <p className="">4.7</p>
+            <div className="flex gap-x-4 mt-2">
+              <div className="flex gap-x-2 items-center text-amber-500">
+                <PiStarFill size={18} />
+                <p className="">{book.rating.toFixed(2)}</p>
               </div>
-              <div className="flex gap-x-2 items-center">
+              {/* <div className="flex gap-x-2 items-center">
                 <AiFillAudio size={18} />
                 <p className="">22 min</p>
-              </div>
-            </div> */}
+              </div> */}
+              <Status bookId={bookId} />
+            </div>
+
+            <div className="mt-4">
+              {bookUser?.status !== "will read" &&
+                bookUser?.status !== "no shelf" && (
+                  <div>
+                    Your Rating: <Rating bookId={bookId} />
+                  </div>
+                )}
+            </div>
 
             <p className="content2 my-4 w-3/4">{book.intro}</p>
           </div>

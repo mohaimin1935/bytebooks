@@ -33,7 +33,7 @@ const LeftPanel = ({ options, active }) => {
         }}
       >
         <div className={cn("w-1.5 py-6 bg2")}></div>
-        <div className={cn("flex gap-x-4 ml-0 md:ml-8 items-center")}>
+        <div className={cn("flex gap-x-4 ml-0 md:ml-7 items-center")}>
           <div className="text-lg">
             <FiLogOut />
           </div>
