@@ -64,7 +64,7 @@ const AdminDataManager = () => {
           Book
         </div>
       </div>
-      {active === "user" && <UsergeneList />}
+      {active === "user" && <UserList />}
 
       {active === "author" && <AuthorList />}
 
