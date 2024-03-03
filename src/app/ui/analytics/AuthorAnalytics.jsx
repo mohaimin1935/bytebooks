@@ -28,8 +28,13 @@ const AuthorAnalytics = ({ data }) => {
         {authorBookCount ? (
           authorBookCount
             ?.slice(0, 5)
-            .map((item) => (
-              <Item item={item} label={"count"} icon={() => <PiBooksLight />} />
+            .map((item, index) => (
+              <Item
+                key={item.index}
+                item={item}
+                label={"count"}
+                icon={() => <PiBooksLight />}
+              />
             ))
         ) : (
           <Loader className="h-72" />
@@ -41,8 +46,9 @@ const AuthorAnalytics = ({ data }) => {
         {authorRating ? (
           authorRating
             ?.slice(0, 5)
-            .map((item) => (
+            .map((item, index) => (
               <Item
+                key={index}
                 item={item}
                 label={"averageRating"}
                 icon={() => <FiStar />}
@@ -59,8 +65,9 @@ const AuthorAnalytics = ({ data }) => {
         {authorBookmarks ? (
           authorBookmarks
             ?.slice(0, 5)
-            .map((item) => (
+            .map((item, index) => (
               <Item
+                key={index}
                 item={item}
                 label={"bookmarkCount"}
                 icon={() => <PiBookmarksSimpleLight />}

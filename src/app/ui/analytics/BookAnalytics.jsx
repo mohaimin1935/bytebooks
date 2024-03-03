@@ -24,8 +24,9 @@ const BookAnalytics = ({ data }) => {
         {mostBookmarked ? (
           mostBookmarked
             ?.slice(0, 5)
-            .map((item) => (
+            .map((item, index) => (
               <Item
+                key={index}
                 item={item}
                 label={"count"}
                 icon={() => <PiBookmarksSimpleLight />}
@@ -42,8 +43,9 @@ const BookAnalytics = ({ data }) => {
         {topRated ? (
           topRated
             ?.slice(0, 5)
-            .map((item) => (
+            .map((item, index) => (
               <Item
+                key={index}
                 item={item}
                 label={"averageRating"}
                 icon={() => <FiStar />}

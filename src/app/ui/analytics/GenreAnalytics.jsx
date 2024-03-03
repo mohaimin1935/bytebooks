@@ -53,8 +53,9 @@ const GenreAnalytics = ({ data }) => {
         <div className="w-full h-64 flex items-end gap-x-6">
           {barChartData ? (
             <>
-              {barChartData.map((item) => (
+              {barChartData.map((item, index) => (
                 <div
+                  key={index}
                   className="h-full w-16 flex flex-col items-center"
                   style={{ height: `${(item.rating * 100) / 5}%` }}
                 >
