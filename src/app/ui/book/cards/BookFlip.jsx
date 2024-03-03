@@ -35,6 +35,8 @@ const BookFlip = ({
     if (colors) setBgColor(colors);
   };
 
+  console.log(book?.author);
+
   // FIXME: also plays prev audio
   const handleAudio = async () => {
     try {
@@ -115,7 +117,9 @@ const BookFlip = ({
           >
             {truncateText(book?.title, 20)}
           </Link>
-          <p className="text-sm font-light">By {getAuthors(book)}</p>
+          {/* <p className="text-sm font-light">
+            By {book?.author?.authors?.at(0)?.name}
+          </p> */}
           <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar />{" "}

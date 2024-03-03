@@ -112,6 +112,8 @@ export const textColorOnBg = (color) => {
 };
 
 export const getAuthors = (book) => {
+  // return book?.authors?.at(0)?.name || "";
+
   if (!book) return;
   let str = "";
   for (let i = 0; i < book?.authors?.length; i++) {
