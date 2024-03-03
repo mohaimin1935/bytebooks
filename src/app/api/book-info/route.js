@@ -192,6 +192,22 @@ export const GET = async (req) => {
   try {
     const url = req.nextUrl;
     const searchParams = url.searchParams;
+    let a = [];
+    if (searchParams.has("creatorId")) {
+      let r = await prisma.BookCreator.findMany({
+        where: {
+          creatorId: searchParams.get("creatorId"),
+        },
+        select: {
+          bookId: true,
+        }
+      });
+      console.log(r);
+      for (let i=0;i<r.length;i++) {
+        a.push(r[i].bookId);
+      }
+      console.log(a);
+    }
 
     // Initialize an empty filter object
     let filter = {};
@@ -207,7 +223,7 @@ export const GET = async (req) => {
       filter.title = searchParams.get("title");
     }
     if (searchParams.has("creatorId")) {
-      filter.id = searchParams.get("creatorId");
+      filter.id = {in: a};
     }
     if (searchParams.has("isPublished")) {
       filter.isPublished = parseBoolean(searchParams.get("isPublished"));
@@ -224,7 +240,7 @@ export const GET = async (req) => {
         // Include other relations as needed
       },
     });
-
+    console.log("book:",books);
     return NextResponse.json(books);
   } catch (err) {
     console.error("Error: ", err.message);
