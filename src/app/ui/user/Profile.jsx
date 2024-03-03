@@ -84,7 +84,8 @@ const GenreStat = ({ books }) => {
             {books.map((book) => (
               <BookFlip
                 book={book}
-                width={140}
+                width={160}
+                ratio={1.5}
                 details={true}
                 audio={true}
                 key={book.id}

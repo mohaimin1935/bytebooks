@@ -10,6 +10,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
+import Report from "../../reader/Report";
 
 const ReadingInterface = () => {
   const {
@@ -174,13 +175,14 @@ const ReadingInterface = () => {
         </div>
       )}
       <h3
-        className="text-2xl font-semibold mb-4 "
+        className="text-2xl font-semibold mb-4 flex items-center gap-x-4"
         style={{
           padding: `${0}px ${margins}px`,
           textAlign: alignments,
         }}
       >
-        {truncateText(chapter?.title, 24)}
+        <>{truncateText(chapter?.title, 24)}</>
+        <Report bookId={bookId} contentId={chapter?.id} type={type} />
       </h3>
 
       <div

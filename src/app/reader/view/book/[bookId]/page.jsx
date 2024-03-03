@@ -114,14 +114,18 @@ const ViewBook = () => {
           </div>
 
           <div className="w-1/2">
-            <h3 className="font-semibold text-4xl mb-2 flex items-center gap-x-6">
+            <h3 className="font-semibold text-4xl mb-2 flex items-start gap-x-6 relative">
               <>{book.title}</>
-              <Link href={`/reader/view/book/${book.alternateBookId}`}>
-                <BsTranslate
-                  size={36}
-                  className="cursor-pointer p-2 bg2 shadow-xl border border-check rounded-md hover:shadow-xl"
-                />
-              </Link>
+              {book?.alternateBookId ? (
+                <Link href={`/reader/view/book/${book.alternateBookId}`}>
+                  <BsTranslate
+                    size={36}
+                    className="cursor-pointer p-2 bg2 shadow-xl border border-check rounded-md hover:shadow-xl"
+                  />
+                </Link>
+              ) : (
+                <></>
+              )}
             </h3>
             <p className="text-lg content2 h-16 overflow-hidden">
               By{" "}
@@ -135,7 +139,9 @@ const ViewBook = () => {
             <div className="flex gap-x-4 mt-2">
               <div className="flex gap-x-2 items-center text-amber-500">
                 <PiStarFill size={18} />
-                <p className="">{book.rating?.toFixed(2) || "No rating"}</p>
+                <p className="">
+                  {book?.rating > 0 ? book?.rating.toFixed(2) : "No rating"}
+                </p>
               </div>
               {/* <div className="flex gap-x-2 items-center">
                 <AiFillAudio size={18} />

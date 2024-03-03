@@ -8,8 +8,9 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { ColorExtractor } from "react-color-extractor";
 import BookFlip from "../book/cards/BookFlip";
+import BookshelfBooks from "../book/BookshelfBooks";
 
-const Bookshelf = ({ books }) => {
+const Bookshelf = ({ books, onlyBooks = false }) => {
   const { data } = useSession();
   const { data: userData } = useSWR(`/api/users/${data?.user?.id}`, fetcher);
 
@@ -22,40 +23,21 @@ const Bookshelf = ({ books }) => {
         )}
       >
         <div className="w-full -mb-4 flex  items-end ml-16">
-          <Books books={books} />
+          <BookshelfBooks books={books} />
 
-          <img src="/plant.png" alt="" className="w-32 ml-auto" />
+          {!onlyBooks && (
+            <>
+              <img src="/plant.png" alt="" className="w-32 ml-auto" />
 
-          <img
-            src={userData?.image || "/profile.png"}
-            alt=""
-            className="w-40 h-40 mb-4 mx-4 rounded-sm -z-10"
-          />
+              <img
+                src={userData?.image || "/profile.png"}
+                alt=""
+                className="w-40 h-40 mb-4 mx-4 rounded-sm -z-10"
+              />
+            </>
+          )}
         </div>
       </div>
-    </div>
-  );
-};
-
-const Books = ({ books }) => {
-  return (
-    <div className="flex justify-start items-end gap-x-0 px-4 h-[200px]">
-      {books?.map((book, index) => {
-        return (
-          <div
-            className="-ml-16 hover:mr-4 transition-all duration-300"
-            key={book.id}
-          >
-            <BookFlip
-              book={book}
-              width={140}
-              details={false}
-              ratio={1.5}
-              initialAngle={70}
-            />
-          </div>
-        );
-      })}
     </div>
   );
 };

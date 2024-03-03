@@ -17,6 +17,7 @@ export const GET = async (req) => {
       authorId: author.id,
       authorName: author.name,
       count: author.books.length,
+      authorImage: author.image,
     }));
 
     // Fetch all books with their authors for rating aggregation

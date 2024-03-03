@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-const Report = ({ bookId }) => {
+const Report = ({ bookId, type, contentId }) => {
   const [showModal, setShowModal] = useState();
   const [reportLoading, setReportLoading] = useState(false);
   const [reportText, setReportText] = useState();
@@ -30,13 +30,18 @@ const Report = ({ bookId }) => {
   };
 
   const saveReport = async () => {
+    const body = {
+      userId,
+      bookId,
+      comment: reportText,
+    };
+
+    if (type === "byte") {body.bookId = contentId;}
+    else if (type === "chapter") {body.chapterId = contentId;}
+    
     try {
       setReportLoading(true);
-      const res = await axios.post("/api/report", {
-        userId,
-        bookId,
-        comment: reportText,
-      });
+      const res = await axios.post("/api/report", body);
       toast.success("Reported successfully");
     } catch (error) {
       toast.error("Something went wrong");

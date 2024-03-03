@@ -45,8 +45,8 @@ const Status = ({ bookId }) => {
         <RiArrowDownSLine />
       </div>
 
-      {openSwitch && data?.user?.role !== "reader" && (
-        <div className="absolute w-36 bg2 center p-2 rounded-lg top-12 z-10">
+      {openSwitch && (
+        <div className="absolute w-36 bg2 center p-2 rounded-lg top-12 z-50">
           <button
             className="cursor-pointer hover:bg1 py-2 w-full rounded-lg transition duration-300"
             onClick={() => handleSwitch("no shelf")}

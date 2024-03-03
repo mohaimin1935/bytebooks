@@ -2,9 +2,11 @@ import { BookReadContext } from "@/contexts/BookReadContext";
 import { cn } from "@/utils/cn";
 import React, { useContext } from "react";
 import Loader from "../../common/Loader";
+import Rating from "../../reader/Rating";
+import Status from "../../reader/Status";
 
 const Outline = () => {
-  const { chapters, activeId, setActiveId, isLoading } =
+  const { chapters, activeId, setActiveId, isLoading, bookId } =
     useContext(BookReadContext);
 
   return (
@@ -25,6 +27,9 @@ const Outline = () => {
       ) : (
         <Loader className="h-32" />
       )}
+      <p className="mt-6 mb-2">Your activity</p>
+      <Rating bookId={bookId} />
+      <Status bookId={bookId} />
     </div>
   );
 };

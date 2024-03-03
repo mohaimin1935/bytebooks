@@ -54,7 +54,7 @@ export const GET = async (req) => {
         count: book._count.bookId,
       })),
       topRatedBooks: topRatedBooks.map((book) => ({
-        bookId: book.bookId,
+        bookId: book.id,
         averageRating: book.rating,
       })),
     };

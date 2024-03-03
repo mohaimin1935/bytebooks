@@ -264,7 +264,7 @@ export const GET = async (req, { params }) => {
       results = await prisma.bookUser.findMany({
         where: {
           userId: userId,
-          status: "finished",
+          status: "completed",
           book: {
             isPublished: true,
           },

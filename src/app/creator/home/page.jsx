@@ -3,22 +3,28 @@
 import BookEditCard from "@/app/ui/book/BookEditCard";
 import BookEditSkeleton from "@/app/ui/book/BookEditSkeleton";
 import { fetcher } from "@/utils/util";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import { IoMdAdd } from "react-icons/io";
 import useSWR from "swr";
 
 const CreatorHome = () => {
+  const { data } = useSession();
+  const userId = data?.user?.id;
+
   const { data: inProgressBooks, isLoading: progressBooksLoading } = useSWR(
-    "/api/book-info?isPublished=false",
+    "/api/book-info?isPublished=false&creatorId=" + userId,
     fetcher,
     { refreshInterval: 500 }
   );
   const { data: publishedBooks, isLoading: publishedBooksLoading } = useSWR(
-    "/api/book-info?isPublished=true",
+    "/api/book-info?isPublished=true&creatorId=" + userId,
     fetcher,
     { refreshInterval: 500 }
   );
+
+  console.log(publishedBooks);
 
   return (
     <div className="flex gap-12 relative">

@@ -119,7 +119,9 @@ const BookFlip = ({
           <div className="flex items-center gap-x-4 text-xs  content3">
             <div className="flex items-center gap-x-1">
               <FiStar />{" "}
-              <p className="">{book?.rating?.toFixed(2) || "No rating"}</p>
+              <p className="">
+                {book?.rating > 0 ? book?.rating.toFixed(2) : "No rating"}
+              </p>
             </div>
             {/* <div className="flex items-center gap-x-1">
               <LuHeadphones /> <p className="">32 min</p>
