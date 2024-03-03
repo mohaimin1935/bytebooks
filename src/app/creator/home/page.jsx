@@ -14,12 +14,12 @@ const CreatorHome = () => {
   const userId = data?.user?.id;
 
   const { data: inProgressBooks, isLoading: progressBooksLoading } = useSWR(
-    "/api/book-info?isPublished=false?creatorId=" + userId,
+    "/api/book-info?isPublished=false",
     fetcher,
     { refreshInterval: 500 }
   );
   const { data: publishedBooks, isLoading: publishedBooksLoading } = useSWR(
-    "/api/book-info?isPublished=true?creatorId=" + userId,
+    "/api/book-info?isPublished=true",
     fetcher,
     { refreshInterval: 500 }
   );

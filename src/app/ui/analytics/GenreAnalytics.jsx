@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { truncateText } from "@/utils/util";
 
 const GenreAnalytics = ({ data }) => {
   const piChartData = data?.booksPerGenre.map((item) => ({
@@ -29,6 +30,7 @@ const GenreAnalytics = ({ data }) => {
       barChartData.push({
         name: data?.ratingsByGenre[key].name,
         rating: data?.ratingsByGenre[key].totalRating,
+        count: data?.ratingsByGenre[key].count,
       });
     });
   }
@@ -56,12 +58,17 @@ const GenreAnalytics = ({ data }) => {
               {barChartData.map((item, index) => (
                 <div
                   key={index}
-                  className="h-full w-16 flex flex-col items-center"
-                  style={{ height: `${(item.rating * 100) / 5}%` }}
+                  className="h-full w-16 flex flex-col items-center max-h-full"
+                  style={{
+                    height: `${(item.rating * 50) / (5 * item.count)}%`,
+                  }}
                 >
                   <div className="">{item.rating?.toFixed(2)}</div>
-                  <div className={`w-16 accent2 h-12 flex-1`} style={{}}></div>
-                  <div className="mt-2">{item.name}</div>
+                  <div
+                    className={`w-16 accent2 h-full flex-1`}
+                    style={{}}
+                  ></div>
+                  <div className="mt-2">{truncateText(item.name, 6)}</div>
                 </div>
               ))}
             </>
