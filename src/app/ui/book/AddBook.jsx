@@ -493,7 +493,7 @@ const AddBook = ({ bookInfo }) => {
                   <div
                     className="pb-[133%] bg2"
                     style={{
-                      backgroundImage: `url(${book.image})`,
+                      backgroundImage: `url(${book?.image})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",

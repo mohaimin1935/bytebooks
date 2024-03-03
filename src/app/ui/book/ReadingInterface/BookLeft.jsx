@@ -31,7 +31,7 @@ const BookLeft = () => {
         <FiBookOpen className="" />{" "}
         <h3 className="">{truncateText(book?.title, 18)}</h3>
         {book?.alternateBookId ? (
-          <Link href={`/reader/view/book/${book.alternateBookId}`}>
+          <Link href={`/book/${book.alternateBookId}/content?type=byte`}>
             <BsTranslate
               size={30}
               className="cursor-pointer p-1.5 bg2 shadow-xl border border-check rounded-md hover:shadow-xl"

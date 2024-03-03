@@ -13,13 +13,7 @@ const UserList = () => {
       </div>
     );
 
-  return (
-    <UserDataTable
-      data={data}
-      hasImage
-      defaultImage={"/author.png"}
-    />
-  );
+  return <UserDataTable data={data} hasImage defaultImage={"/author.png"} />;
 };
 
 export default UserList;
