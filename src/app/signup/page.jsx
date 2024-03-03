@@ -115,7 +115,7 @@ const Signup = () => {
           )}
         </button>
 
-        <ProviderLogin className={"mb-6"} />
+        {/* <ProviderLogin className={"mb-6"} /> */}
 
         <Link
           href="/login"

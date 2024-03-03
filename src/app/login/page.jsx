@@ -96,15 +96,15 @@ const Login = () => {
           )}
         </button>
 
-        <ProviderLogin className={"mb-6"} />
+        {/* <ProviderLogin className={"mb-6"} /> */}
 
-        <Link
+        {/* <Link
           href="/reset-password"
           className="content3 text-left w-[300px] text-sm mb-1"
         >
           Forgot password?{" "}
           <span className="font-semibold">Reset</span>
-        </Link>
+        </Link> */}
         <Link
           href="/signup"
           className="content3 text-left w-[300px] text-sm mb-1"
