@@ -40,10 +40,32 @@ npx prisma studio
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Todo FRONTEND
+## About the Project
 
-- [ ] report form content
-- [ ] suspend comment
-- [ ] profile
+#### Technologies Used
+Next JS, Tailwind CSS, MongoDB, Prisma ORM, Next Auth, Framer Motion
 
-- [ ] initialState, form
+#### Short Description
+Bytebook is an audiobook library where users can listen to audiobooks and read the text version as well. There are three types of users: Admin, Creator and Reader. Admin can manage users, creators, and books. Creators can upload books and readers can listen to them. The application is built with Next.js, Tailwind CSS, MongoDB, Prisma ORM, Next Auth, and Framer Motion.
+
+##### Demo credentials
+Admin: admin@admin.com, Password: 123456
+Creator: creator1@creator.com, Password: 123456
+Reader: reader1@reader.com, Password: 123456
+
+#### Admin Features
+- Manage users, creators, and books
+- Resolve reports from users
+- View insightful analytics with charts
+
+#### Creator Features
+- Manage own books
+- Interactive editor
+
+#### Reader Features
+- Suggesting books according to user preference
+- Track real-time book progress
+- Notification upon publishing new audiobook
+- Maintain shelf for books
+- Highlight manager
+- Personal analytics
