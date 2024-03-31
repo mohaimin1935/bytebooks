@@ -49,9 +49,9 @@ Next JS, Tailwind CSS, MongoDB, Prisma ORM, Next Auth, Framer Motion
 Bytebook is an audiobook library where users can listen to audiobooks and read the text version as well. There are three types of users: Admin, Creator and Reader. Admin can manage users, creators, and books. Creators can upload books and readers can listen to them. The application is built with Next.js, Tailwind CSS, MongoDB, Prisma ORM, Next Auth, and Framer Motion.
 
 ##### Demo credentials
-Admin: admin@admin.com, Password: 123456
-Creator: creator1@creator.com, Password: 123456
-Reader: reader1@reader.com, Password: 123456
+Admin: ```admin@admin.com```, Password: ```123456``` <br />
+Creator: ```creator1@creator.com```, Password: ```123456``` <br />
+Reader: ```reader1@reader.com```, Password: ```123456```
 
 #### Admin Features
 - Manage users, creators, and books
